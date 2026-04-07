@@ -1,0 +1,43 @@
+{
+  "name": "4CITE.ai — Structural Integrity Analysis",
+  "short_name": "4CITE.ai",
+  "description": "Citation pattern scanner and structural integrity analysis. Free demo — runs entirely in your browser.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#07152E",
+  "theme_color": "#07152E",
+  "orientation": "any",
+  "icons": [
+    {
+      "src": "icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "icons/screenshot-wide.png",
+      "sizes": "1280x720",
+      "type": "image/png",
+      "form_factor": "wide",
+      "label": "4CITE.ai Citation Analysis — Desktop"
+    },
+    {
+      "src": "icons/screenshot-narrow.png",
+      "sizes": "390x844",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "4CITE.ai Citation Analysis — Mobile"
+    }
+  ],
+  "categories": ["productivity", "business", "utilities"],
+  "lang": "en-US",
+  "dir": "ltr"
+}
