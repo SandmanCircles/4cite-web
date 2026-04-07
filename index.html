@@ -432,7 +432,7 @@ footer { background:#030710; border-top:1px solid var(--border); padding:40px 80
   <div class="toast-label">◆ Power User Detected</div>
   <div class="toast-text">You've run 33 analyses. Want to see what the full 4CITE structural integrity engine does?</div>
   <div class="toast-row">
-    <a href="mailto:sandmancircles@gmail.com?subject=4CITE Full Demo Request" class="toast-btn">Schedule a Call</a>
+    <a href="mailto:web@4cite.ai?subject=4CITE Full Demo Request" class="toast-btn">Schedule a Call</a>
     <span class="toast-dismiss" onclick="document.getElementById('toast').classList.remove('visible')">Dismiss</span>
   </div>
 </div>
@@ -755,8 +755,15 @@ Example: In Smith v. Jones, 482 U.S. 522 (1987), the Court held that the Fourth 
 </footer>
 
 <script>
-// ── State (TODO Phase 0.5: replace localStorage with API) ──
+// ── State ─────────────────────────────────────────────────
 const FREE  = 3, MILE = 33;
+// Stable session ID — persists across page loads, one per browser
+function getSessionId() {
+  let sid = localStorage.getItem('4c_sid');
+  if (!sid) { sid = crypto.randomUUID(); localStorage.setItem('4c_sid', sid); }
+  return sid;
+}
+// localStorage cache — used as fallback if API is unavailable
 const gs = () => {
   try { return { n:+localStorage.getItem('4c_n')||0, u:localStorage.getItem('4c_u')==='true', sk:+localStorage.getItem('4c_sk')||0, m1:localStorage.getItem('4c_m1')==='true' }; }
   catch(e){ return {n:0,u:false,sk:0,m1:false}; }
@@ -766,6 +773,28 @@ const ss = p => {
   try{ localStorage.setItem('4c_n',s.n); localStorage.setItem('4c_u',s.u); localStorage.setItem('4c_sk',s.sk); localStorage.setItem('4c_m1',s.m1); } catch(e){}
   return s;
 };
+// ── API helpers ────────────────────────────────────────────
+async function apiCheck() {
+  try {
+    const r = await fetch('/api/usage/check', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({session_id:getSessionId()}) });
+    if (!r.ok) return null;
+    return await r.json();
+  } catch(e) { return null; }
+}
+async function apiStatus() {
+  try {
+    const r = await fetch('/api/usage/status?session_id='+encodeURIComponent(getSessionId()));
+    if (!r.ok) return null;
+    return await r.json();
+  } catch(e) { return null; }
+}
+async function apiGateEmail(email, vertical) {
+  try {
+    const r = await fetch('/api/gate/email', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({session_id:getSessionId(), email, vertical}) });
+    if (!r.ok) return null;
+    return await r.json();
+  } catch(e) { return null; }
+}
 
 // ── Pips ──────────────────────────────────────────────────
 function refreshPips() {
@@ -780,12 +809,25 @@ function refreshPips() {
 document.getElementById('inputArea').addEventListener('input',function(){ const n=this.value.length; document.getElementById('cc').textContent=n.toLocaleString()+' character'+(n===1?'':'s'); });
 
 // ── Run ───────────────────────────────────────────────────
-function runAnalysis() {
+async function runAnalysis() {
   const text = document.getElementById('inputArea').value.trim();
   if(!text||text.length<20){ const t=document.getElementById('inputArea'); t.style.borderColor='#E05050'; setTimeout(()=>t.style.borderColor='',1200); return; }
-  const {n,u,sk} = gs();
-  if(!u&&n>=FREE&&sk<2){ showModal(); return; }
-  if(!u&&n>=FREE+3){ showModal(); return; }
+
+  // Call API to record check and get gate status; fall back to local state if API unavailable
+  const api = await apiCheck();
+  let {n, u, sk, m1} = gs();
+  if (api) {
+    n = api.check_count; u = api.unlocked;
+    ss({n, u});
+  } else {
+    ss({n: n+1}); n = n+1;
+  }
+
+  // Gate check
+  const gateRequired = api ? api.gate_required : (!u && n >= FREE);
+  if (gateRequired && sk < 2) { showModal(); return; }
+  if (!u && n >= FREE + 3)    { showModal(); return; }
+
   const btn=document.getElementById('runBtn');
   btn.textContent='Analyzing…'; btn.classList.add('spin'); btn.disabled=true;
   setStatus('active','Analyzing');
@@ -793,9 +835,8 @@ function runAnalysis() {
     render(compute(text));
     btn.textContent='↗ Analyze'; btn.classList.remove('spin'); btn.disabled=false;
     setStatus('active','Complete');
-    const ns=ss({n:n+1});
     refreshPips();
-    if(ns.n===MILE&&!ns.m1){ ss({m1:true}); setTimeout(()=>document.getElementById('toast').classList.add('visible'),1800); }
+    if(n===MILE&&!m1){ ss({m1:true}); setTimeout(()=>document.getElementById('toast').classList.add('visible'),1800); }
   },1400);
 }
 
@@ -889,15 +930,17 @@ function submitAccess(){
   const vert=document.getElementById('aVertical').value;
   if(!email||!email.includes('@')){ document.getElementById('aEmail').style.borderColor='#E05050'; setTimeout(()=>document.getElementById('aEmail').style.borderColor='',1200); return; }
   const body=`Name: ${name||'Not provided'}\nEmail: ${email}\nOrganization: ${org||'Not provided'}\nVertical: ${vert||'Not specified'}\n\nI'd like to learn more about 4CITE.ai.`;
-  const mailto=`mailto:sandmancircles@gmail.com?subject=4CITE Access Request — ${encodeURIComponent(org||name||email)}&body=${encodeURIComponent(body)}`;
+  const mailto=`mailto:web@4cite.ai?subject=4CITE Access Request — ${encodeURIComponent(org||name||email)}&body=${encodeURIComponent(body)}`;
   window.location.href=mailto;
   document.getElementById('aForm').style.display='none'; document.getElementById('aSuccess').style.display='block';
   setTimeout(()=>{ document.getElementById('accessModal').classList.remove('visible'); document.getElementById('aForm').style.display=''; document.getElementById('aSuccess').style.display='none'; },3500);
 }
-function submitGate(){
+async function submitGate(){
   const e=document.getElementById('gEmail').value.trim();
+  const v=document.getElementById('gVertical').value;
   if(!e||!e.includes('@')){ document.getElementById('gEmail').style.borderColor='#E05050'; setTimeout(()=>document.getElementById('gEmail').style.borderColor='',1200); return; }
-  // TODO Phase 0.5: POST /api/gate/email
+  // Send to API — captures email in Supabase; fall back to local unlock if API unavailable
+  await apiGateEmail(e, v);
   ss({u:true}); refreshPips();
   document.getElementById('mForm').style.display='none'; document.getElementById('mSuccess').style.display='block';
   setTimeout(()=>{ document.getElementById('emailModal').classList.remove('visible'); document.getElementById('mForm').style.display=''; document.getElementById('mSuccess').style.display='none'; },2800);
@@ -905,7 +948,13 @@ function submitGate(){
 function skipGate(){ const {sk}=gs(); ss({sk:sk+1}); document.getElementById('emailModal').classList.remove('visible'); }
 
 // ── Init ──────────────────────────────────────────────────
-refreshPips();
+// Sync state from server on load; fall back to localStorage silently
+async function initState() {
+  const d = await apiStatus();
+  if (d) ss({ n: d.check_count, u: d.unlocked });
+  refreshPips();
+}
+initState();
 
 // ── PWA: Service Worker registration ─────────────────────
 if ('serviceWorker' in navigator) {

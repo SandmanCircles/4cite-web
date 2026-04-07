@@ -1,0 +1,8 @@
+{
+  "name": "4cite-web",
+  "version": "0.5.0",
+  "private": true,
+  "dependencies": {
+    "@supabase/supabase-js": "^2.39.0"
+  }
+}
