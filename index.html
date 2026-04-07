@@ -5,12 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>4CITE.ai — Structural Integrity Analysis Platform</title>
 <meta name="description" content="4CITE analyzes the structural integrity of any document — not just whether citations exist, but whether the reasoning holds. Domain-agnostic. Measurable. Reproducible.">
-<!-- PWA -->
-<link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#07152E">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="4CITE.ai">
 <link rel="apple-touch-icon" href="icons/icon-192.png">
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
@@ -837,13 +832,7 @@ async function initState() {
 }
 initState();
 
-// ── PWA: Service Worker registration ─────────────────────
-if ('serviceWorker' in navigator) {
-  window.addEventListener('load', () => {
-    navigator.serviceWorker.register('/sw.js')
-      .catch(err => console.warn('SW registration failed:', err));
-  });
-}
+// PWA lives at /app only — no service worker on homepage
 </script>
 </body>
 </html>
