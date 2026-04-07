@@ -22,6 +22,14 @@ module.exports = async function handler(req, res) {
 
   const cleanEmail = email.toLowerCase().trim();
 
+  // Ensure session exists before inserting (avoids FK constraint failure)
+  if (session_id) {
+    await supabase.from('usage_sessions').upsert(
+      { session_id, check_count: 0, unlocked: false },
+      { onConflict: 'session_id', ignoreDuplicates: true }
+    );
+  }
+
   // Capture email (ignore duplicate errors — same email submitting twice is fine)
   await supabase.from('email_captures').insert({
     email: cleanEmail,

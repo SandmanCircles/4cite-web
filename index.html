@@ -816,7 +816,6 @@ async function submitGate(){
   const v=document.getElementById('gVertical').value;
   if(!e||!e.includes('@')){ document.getElementById('gEmail').style.borderColor='#E05050'; setTimeout(()=>document.getElementById('gEmail').style.borderColor='',1200); return; }
   await apiGateEmail(e, v);
-  fetch('/api/contact',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({type:'gate',email:e,vertical:v})}).catch(()=>{});
   ss({u:true}); refreshPips();
   document.getElementById('mForm').style.display='none'; document.getElementById('mSuccess').style.display='block';
   setTimeout(()=>{ document.getElementById('emailModal').classList.remove('visible'); document.getElementById('mForm').style.display=''; document.getElementById('mSuccess').style.display='none'; },2800);
