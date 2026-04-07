@@ -2,12 +2,14 @@
 // Phase 0.5 — Cache-first strategy for static assets; network-first for API calls
 // Bump CACHE_VERSION when deploying a new build to force cache refresh
 
-const CACHE_VERSION = 'v1';
+const CACHE_VERSION = 'v2';
 const CACHE_NAME    = `4cite-${CACHE_VERSION}`;
 
 const PRECACHE = [
   '/',
   '/index.html',
+  '/app',
+  '/app.html',
   '/manifest.json'
 ];
 

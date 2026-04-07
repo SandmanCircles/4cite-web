@@ -2,7 +2,7 @@
   "name": "4CITE.ai — Structural Integrity Analysis",
   "short_name": "4CITE.ai",
   "description": "Citation pattern scanner and structural integrity analysis. Free demo — runs entirely in your browser.",
-  "start_url": "/",
+  "start_url": "/app",
   "display": "standalone",
   "background_color": "#07152E",
   "theme_color": "#07152E",
