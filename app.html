@@ -557,7 +557,9 @@ async function submitGate(){
   const e=document.getElementById('gEmail').value.trim();
   const v=document.getElementById('gVertical').value;
   if(!e||!e.includes('@')){ document.getElementById('gEmail').style.borderColor='#E05050'; setTimeout(()=>document.getElementById('gEmail').style.borderColor='',1200); return; }
+  // Save to Supabase + send email notification (fire and forget)
   await apiGateEmail(e,v);
+  fetch('/api/contact',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({type:'gate',email:e,vertical:v})}).catch(()=>{});
   ss({u:true}); refreshPips();
   document.getElementById('mForm').style.display='none'; document.getElementById('mSuccess').style.display='block';
   setTimeout(()=>{ document.getElementById('emailModal').classList.remove('visible'); document.getElementById('mForm').style.display=''; document.getElementById('mSuccess').style.display='none'; },2800);
@@ -569,10 +571,14 @@ async function submitAccess(){
   const org=document.getElementById('aOrg').value.trim();
   const vert=document.getElementById('aVertical').value;
   if(!email||!email.includes('@')){ document.getElementById('aEmail').style.borderColor='#E05050'; setTimeout(()=>document.getElementById('aEmail').style.borderColor='',1200); return; }
-  const body=`Name: ${name||'Not provided'}\nEmail: ${email}\nOrganization: ${org||'Not provided'}\nVertical: ${vert||'Not specified'}\n\nI'd like to learn more about 4CITE.ai.`;
-  window.location.href=`mailto:web@4cite.ai?subject=4CITE Access Request — ${encodeURIComponent(org||name||email)}&body=${encodeURIComponent(body)}`;
+  // Send directly via API — no mailto, no email client
+  const btn=document.querySelector('#aForm .modal-btn');
+  if(btn){ btn.textContent='Sending…'; btn.disabled=true; }
+  try {
+    await fetch('/api/contact',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({type:'access',name,email,org,vertical:vert})});
+  } catch(e){}
   document.getElementById('aForm').style.display='none'; document.getElementById('aSuccess').style.display='block';
-  setTimeout(()=>{ document.getElementById('accessModal').classList.remove('visible'); document.getElementById('aForm').style.display=''; document.getElementById('aSuccess').style.display='none'; },3500);
+  setTimeout(()=>{ document.getElementById('accessModal').classList.remove('visible'); document.getElementById('aForm').style.display=''; if(btn){btn.textContent='Send Request →';btn.disabled=false;} document.getElementById('aSuccess').style.display='none'; },3500);
 }
 
 // ── Init ──────────────────────────────────────────────────

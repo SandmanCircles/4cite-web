@@ -417,7 +417,7 @@ footer { background:#030710; border-top:1px solid var(--border); padding:40px 80
     <div class="modal-success" id="aSuccess">
       <div class="modal-success-icon">✓</div>
       <div class="modal-success-title">Request sent.</div>
-      <div class="modal-success-sub">We'll follow up within one business day.<br>Check your email client — it opened with your info pre-filled.</div>
+      <div class="modal-success-sub">We'll follow up within one business day.</div>
     </div>
   </div>
 </div>
@@ -799,24 +799,24 @@ function clearAll() {
 // ── Gate ──────────────────────────────────────────────────
 function showModal(){ document.getElementById('emailModal').classList.add('visible'); }
 function showAccessModal(){ document.getElementById('accessModal').classList.add('visible'); }
-function submitAccess(){
+async function submitAccess(){
   const name=document.getElementById('aName').value.trim();
   const email=document.getElementById('aEmail').value.trim();
   const org=document.getElementById('aOrg').value.trim();
   const vert=document.getElementById('aVertical').value;
   if(!email||!email.includes('@')){ document.getElementById('aEmail').style.borderColor='#E05050'; setTimeout(()=>document.getElementById('aEmail').style.borderColor='',1200); return; }
-  const body=`Name: ${name||'Not provided'}\nEmail: ${email}\nOrganization: ${org||'Not provided'}\nVertical: ${vert||'Not specified'}\n\nI'd like to learn more about 4CITE.ai.`;
-  const mailto=`mailto:web@4cite.ai?subject=4CITE Access Request — ${encodeURIComponent(org||name||email)}&body=${encodeURIComponent(body)}`;
-  window.location.href=mailto;
+  const btn=document.querySelector('#aForm .modal-btn');
+  if(btn){ btn.textContent='Sending…'; btn.disabled=true; }
+  try { await fetch('/api/contact',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({type:'access',name,email,org,vertical:vert})}); } catch(e){}
   document.getElementById('aForm').style.display='none'; document.getElementById('aSuccess').style.display='block';
-  setTimeout(()=>{ document.getElementById('accessModal').classList.remove('visible'); document.getElementById('aForm').style.display=''; document.getElementById('aSuccess').style.display='none'; },3500);
+  setTimeout(()=>{ document.getElementById('accessModal').classList.remove('visible'); document.getElementById('aForm').style.display=''; if(btn){btn.textContent='Send Request →';btn.disabled=false;} document.getElementById('aSuccess').style.display='none'; },3500);
 }
 async function submitGate(){
   const e=document.getElementById('gEmail').value.trim();
   const v=document.getElementById('gVertical').value;
   if(!e||!e.includes('@')){ document.getElementById('gEmail').style.borderColor='#E05050'; setTimeout(()=>document.getElementById('gEmail').style.borderColor='',1200); return; }
-  // Send to API — captures email in Supabase; fall back to local unlock if API unavailable
   await apiGateEmail(e, v);
+  fetch('/api/contact',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({type:'gate',email:e,vertical:v})}).catch(()=>{});
   ss({u:true}); refreshPips();
   document.getElementById('mForm').style.display='none'; document.getElementById('mSuccess').style.display='block';
   setTimeout(()=>{ document.getElementById('emailModal').classList.remove('visible'); document.getElementById('mForm').style.display=''; document.getElementById('mSuccess').style.display='none'; },2800);
