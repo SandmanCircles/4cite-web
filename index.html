@@ -283,18 +283,18 @@ textarea#inputArea::placeholder { color:var(--muted); }
 .th-txt { font-size:14px; color:var(--text); line-height:1.6; }
 .th-code { font-family:monospace; font-size:13px; color:#E05070; background:rgba(200,40,60,0.08); padding:2px 8px; border-radius:4px; margin-top:8px; display:inline-block; }
 
-.lc-tbl { width:100%; border-collapse:collapse; margin-top:8px; }
-.lc-tbl th { text-align:left; font-size:10px; letter-spacing:4px; text-transform:uppercase; color:var(--muted); border-bottom:1px solid var(--border); padding:12px 16px; }
-.lc-tbl td { padding:16px; border-bottom:1px solid rgba(26,48,96,0.4); font-size:14px; line-height:1.5; vertical-align:top; }
-.lc-tbl tr:last-child td { border-bottom:none; }
-.lcb { display:inline-block; font-size:12px; font-weight:700; padding:3px 12px; border-radius:20px; letter-spacing:1px; white-space:nowrap; }
-.lc1{background:rgba(34,201,122,0.15);color:#22C97A;border:1px solid rgba(34,201,122,0.3);}
-.lc2{background:rgba(125,235,255,0.12);color:#7DEBFF;border:1px solid rgba(125,235,255,0.3);}
-.lc3{background:rgba(240,160,32,0.12);color:#F0A020;border:1px solid rgba(240,160,32,0.3);}
-.lc4{background:rgba(224,80,80,0.12);color:#E05050;border:1px solid rgba(224,80,80,0.3);}
-.lc5{background:rgba(100,100,120,0.12);color:#8080A0;border:1px solid rgba(100,100,120,0.3);}
-.lc-sc{font-weight:700;color:var(--white);white-space:nowrap;}
-.lc-d{color:var(--steel);}
+.t-tbl { width:100%; border-collapse:collapse; margin-top:8px; }
+.t-tbl th { text-align:left; font-size:10px; letter-spacing:4px; text-transform:uppercase; color:var(--muted); border-bottom:1px solid var(--border); padding:12px 16px; }
+.t-tbl td { padding:16px; border-bottom:1px solid rgba(26,48,96,0.4); font-size:14px; line-height:1.5; vertical-align:top; }
+.t-tbl tr:last-child td { border-bottom:none; }
+.tb { display:inline-block; font-size:12px; font-weight:700; padding:3px 12px; border-radius:20px; letter-spacing:1px; white-space:nowrap; }
+.t1{background:rgba(34,201,122,0.15);color:#22C97A;border:1px solid rgba(34,201,122,0.3);}
+.t2{background:rgba(125,235,255,0.12);color:#7DEBFF;border:1px solid rgba(125,235,255,0.3);}
+.t3{background:rgba(240,160,32,0.12);color:#F0A020;border:1px solid rgba(240,160,32,0.3);}
+.t4{background:rgba(224,80,80,0.12);color:#E05050;border:1px solid rgba(224,80,80,0.3);}
+.t5{background:rgba(100,100,120,0.12);color:#8080A0;border:1px solid rgba(100,100,120,0.3);}
+.t-sc{font-weight:700;color:var(--white);white-space:nowrap;}
+.t-d{color:var(--steel);}
 
 .verts { display:grid; grid-template-columns:repeat(3,1fr); gap:24px; margin-top:8px; }
 .vc { background:var(--card); border:1px solid var(--border); border-radius:12px; padding:36px 28px; transition:border-color 0.25s,transform 0.25s; position:relative; overflow:hidden; }
@@ -548,19 +548,19 @@ footer { background:#030710; border-top:1px solid var(--border); padding:40px 80
 
 <hr class="divider">
 
-<!-- LC TAXONOMY -->
+<!-- TIER TAXONOMY -->
 <div class="sec" style="padding-top:80px;">
   <div class="sec-lbl">Scoring Framework</div>
   <div class="sec-t">The Integrity <span class="g">Tier Scale</span></div>
   <p class="sec-s">Every document receives a composite score (0–100) and a Tier classification (T1–T5). The framework is domain-agnostic — the same scale that scores a legal brief scores a regulatory filing, a corporate earnings call, or congressional testimony.</p>
-  <table class="lc-tbl">
-    <thead><tr><th>Class</th><th>Score Range</th><th>Designation</th><th>Profile</th></tr></thead>
+  <table class="t-tbl">
+    <thead><tr><th>Tier</th><th>Score Range</th><th>Designation</th><th>Profile</th></tr></thead>
     <tbody>
-      <tr><td><span class="lcb lc1">T1</span></td><td class="lc-sc">67 – 100</td><td class="lc-d">High Integrity</td><td class="lc-d">Genuine human authorship or AI-assisted with full human review and accountability architecture intact.</td></tr>
-      <tr><td><span class="lcb lc2">T2</span></td><td class="lc-sc">50 – 66</td><td class="lc-d">Assisted, Well-Reviewed</td><td class="lc-d">AI-assisted with substantive human review. Surface clarity present; foundational signals show engagement.</td></tr>
-      <tr><td><span class="lcb lc3">T3</span></td><td class="lc-sc">30 – 49</td><td class="lc-d">Surface-Clean, Structurally Weak</td><td class="lc-d">AI-generated with minimal review. Citation format may be correct; argument structure is hollow. Do not file without review.</td></tr>
-      <tr><td><span class="lcb lc4">T4</span></td><td class="lc-sc">5 – 30</td><td class="lc-d">Hallucinated / Fabricated</td><td class="lc-d">Near-total absence of structural integrity signals. Subtype T4E: regulatory hallucination (fabricated CFR/USC citations).</td></tr>
-      <tr><td><span class="lcb lc5">T5</span></td><td class="lc-sc">0 – 15</td><td class="lc-d">Formulaic / Boilerplate</td><td class="lc-d">No genuine engagement detected across any gate. Template text with accountability structure completely absent.</td></tr>
+      <tr><td><span class="tb t1">T1</span></td><td class="t-sc">67 – 100</td><td class="t-d">High Integrity</td><td class="t-d">Genuine human authorship or AI-assisted with full human review and accountability architecture intact.</td></tr>
+      <tr><td><span class="tb t2">T2</span></td><td class="t-sc">50 – 66</td><td class="t-d">Assisted, Well-Reviewed</td><td class="t-d">AI-assisted with substantive human review. Surface clarity present; foundational signals show engagement.</td></tr>
+      <tr><td><span class="tb t3">T3</span></td><td class="t-sc">30 – 49</td><td class="t-d">Surface-Clean, Structurally Weak</td><td class="t-d">AI-generated with minimal review. Citation format may be correct; argument structure is hollow. Do not file without review.</td></tr>
+      <tr><td><span class="tb t4">T4</span></td><td class="t-sc">5 – 30</td><td class="t-d">Hallucinated / Fabricated</td><td class="t-d">Near-total absence of structural integrity signals. Subtype T4E: all three absence gates collapse simultaneously — fabricated citations, hollow reasoning, concealed intent.</td></tr>
+      <tr><td><span class="tb t5">T5</span></td><td class="t-sc">0 – 15</td><td class="t-d">Formulaic / Boilerplate</td><td class="t-d">No genuine engagement detected across any gate. Template text with accountability structure completely absent.</td></tr>
     </tbody>
   </table>
 </div>
