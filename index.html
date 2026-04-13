@@ -27,7 +27,7 @@
   --red:      #E05050;
   --law:      #C42840;
   --biz:      #1A7ABF;
-  --med:      #0EA070;
+  --gov:      #3A7A52;
 }
 * { margin:0; padding:0; box-sizing:border-box; }
 html { scroll-behavior:smooth; }
@@ -299,13 +299,13 @@ textarea#inputArea::placeholder { color:var(--muted); }
 .verts { display:grid; grid-template-columns:repeat(3,1fr); gap:24px; margin-top:8px; }
 .vc { background:var(--card); border:1px solid var(--border); border-radius:12px; padding:36px 28px; transition:border-color 0.25s,transform 0.25s; position:relative; overflow:hidden; }
 .vc::before { content:''; position:absolute; top:0; left:0; right:0; height:4px; }
-.vc.law::before{background:var(--law);} .vc.biz::before{background:var(--biz);} .vc.med::before{background:var(--med);}
-.vc.law:hover{border-color:var(--law);transform:translateY(-3px);} .vc.biz:hover{border-color:var(--biz);transform:translateY(-3px);} .vc.med:hover{border-color:var(--med);transform:translateY(-3px);}
+.vc.law::before{background:var(--law);} .vc.biz::before{background:var(--biz);} .vc.gov::before{background:var(--gov);}
+.vc.law:hover{border-color:var(--law);transform:translateY(-3px);} .vc.biz:hover{border-color:var(--biz);transform:translateY(-3px);} .vc.gov:hover{border-color:var(--gov);transform:translateY(-3px);}
 .vp { font-size:10px; letter-spacing:4px; text-transform:uppercase; font-weight:700; margin-bottom:16px; }
-.vc.law .vp{color:var(--law);} .vc.biz .vp{color:var(--biz);} .vc.med .vp{color:var(--med);}
+.vc.law .vp{color:var(--law);} .vc.biz .vp{color:var(--biz);} .vc.gov .vp{color:var(--gov);}
 .vn { font-size:26px; font-weight:700; color:var(--white); margin-bottom:12px; }
 .vn sup{font-size:15px;font-weight:700;vertical-align:super;}
-.vc.law .vn sup{color:var(--law);} .vc.biz .vn sup{color:var(--biz);} .vc.med .vn sup{color:var(--med);}
+.vc.law .vn sup{color:var(--law);} .vc.biz .vn sup{color:var(--biz);} .vc.gov .vn sup{color:var(--gov);}
 .vd { font-size:14px; color:var(--steel); line-height:1.7; margin-bottom:24px; }
 .vs { font-size:10px; letter-spacing:2px; text-transform:uppercase; padding:5px 14px; border-radius:20px; display:inline-block; font-weight:600; }
 .s-act{background:rgba(34,201,122,0.12);color:var(--green);border:1px solid rgba(34,201,122,0.3);}
@@ -376,7 +376,7 @@ footer { background:#030710; border-top:1px solid var(--border); padding:40px 80
           <option value="">Select your domain…</option>
           <option value="law">Legal — law firm, court, compliance</option>
           <option value="biz">Business — SEC filings, public company comms</option>
-          <option value="med">Medicine — clinical, research, regulatory</option>
+          <option value="gov">Government — legislative, regulatory, federal agency</option>
           <option value="other">Other</option>
         </select>
       </div>
@@ -407,7 +407,7 @@ footer { background:#030710; border-top:1px solid var(--border); padding:40px 80
           <option value="">Select vertical…</option>
           <option value="law">4CITE for Law — legal, court, compliance</option>
           <option value="biz">4CITE for Business — SEC filings, public company comms</option>
-          <option value="med">4CITE for Medicine — clinical docs, research, regulatory</option>
+          <option value="gov">4CITE for Government — legislative, regulatory, federal agency</option>
           <option value="other">Other</option>
         </select>
       </div>
@@ -446,16 +446,15 @@ footer { background:#030710; border-top:1px solid var(--border); padding:40px 80
 <section class="hero">
   <div class="hero-glow1"></div>
   <div class="hero-glow2"></div>
-  <div class="hero-eyebrow">Structural Integrity Analysis · 4 SHIELD LLC</div>
+  <div class="hero-eyebrow">Structural Integrity Analysis · Law · Business · Government</div>
   <h1 class="hero-hl">
-    Citation tools<br>verify references.<br>
-    <span class="g">4CITE verifies</span><br>
-    <span class="c">arguments.</span>
+    Accountability has architecture.<br>
+    <span class="g">4CITE</span> <span class="c">measures it.</span>
   </h1>
   <p class="hero-sub">
-    4CITE analyzes the structural integrity of any document —
-    not just whether citations exist, but whether the <strong>reasoning holds</strong>.
-    Domain-agnostic. Measurable. Reproducible.
+    4CITE measures structural integrity — the layer that citation tools can't reach.
+    Law, business, government: three branches of institutional power,
+    one measurable standard for whether the <strong>reasoning actually holds</strong>.
   </p>
   <div class="hero-ctas">
     <a href="/app" class="btn-g">Try It Free →</a>
@@ -552,16 +551,16 @@ footer { background:#030710; border-top:1px solid var(--border); padding:40px 80
 <!-- LC TAXONOMY -->
 <div class="sec" style="padding-top:80px;">
   <div class="sec-lbl">Scoring Framework</div>
-  <div class="sec-t">The LC <span class="g">Integrity Scale</span></div>
-  <p class="sec-s">Every document receives a composite score (0–100) and an LC classification. The taxonomy is domain-agnostic — the same scale that scores a legal brief scores a regulatory filing, research paper, or board communication.</p>
+  <div class="sec-t">The Integrity <span class="g">Tier Scale</span></div>
+  <p class="sec-s">Every document receives a composite score (0–100) and a Tier classification (T1–T5). The framework is domain-agnostic — the same scale that scores a legal brief scores a regulatory filing, a corporate earnings call, or congressional testimony.</p>
   <table class="lc-tbl">
     <thead><tr><th>Class</th><th>Score Range</th><th>Designation</th><th>Profile</th></tr></thead>
     <tbody>
-      <tr><td><span class="lcb lc1">LC1</span></td><td class="lc-sc">67 – 100</td><td class="lc-d">High Integrity</td><td class="lc-d">Genuine human authorship or AI-assisted with full human review and accountability architecture intact.</td></tr>
-      <tr><td><span class="lcb lc2">LC2</span></td><td class="lc-sc">50 – 66</td><td class="lc-d">Assisted, Well-Reviewed</td><td class="lc-d">AI-assisted with substantive human review. Surface clarity present; foundational signals show engagement.</td></tr>
-      <tr><td><span class="lcb lc3">LC3</span></td><td class="lc-sc">30 – 49</td><td class="lc-d">Surface-Clean, Structurally Weak</td><td class="lc-d">AI-generated with minimal review. Citation format may be correct; argument structure is hollow. Do not file without review.</td></tr>
-      <tr><td><span class="lcb lc4">LC4</span></td><td class="lc-sc">5 – 30</td><td class="lc-d">Hallucinated / Fabricated</td><td class="lc-d">Near-total absence of structural integrity signals. Subtype LC4-E: regulatory hallucination (fabricated CFR/USC citations).</td></tr>
-      <tr><td><span class="lcb lc5">LC5</span></td><td class="lc-sc">0 – 15</td><td class="lc-d">Formulaic / Boilerplate</td><td class="lc-d">No genuine engagement detected across any gate. Template text with accountability structure completely absent.</td></tr>
+      <tr><td><span class="lcb lc1">T1</span></td><td class="lc-sc">67 – 100</td><td class="lc-d">High Integrity</td><td class="lc-d">Genuine human authorship or AI-assisted with full human review and accountability architecture intact.</td></tr>
+      <tr><td><span class="lcb lc2">T2</span></td><td class="lc-sc">50 – 66</td><td class="lc-d">Assisted, Well-Reviewed</td><td class="lc-d">AI-assisted with substantive human review. Surface clarity present; foundational signals show engagement.</td></tr>
+      <tr><td><span class="lcb lc3">T3</span></td><td class="lc-sc">30 – 49</td><td class="lc-d">Surface-Clean, Structurally Weak</td><td class="lc-d">AI-generated with minimal review. Citation format may be correct; argument structure is hollow. Do not file without review.</td></tr>
+      <tr><td><span class="lcb lc4">T4</span></td><td class="lc-sc">5 – 30</td><td class="lc-d">Hallucinated / Fabricated</td><td class="lc-d">Near-total absence of structural integrity signals. Subtype T4E: regulatory hallucination (fabricated CFR/USC citations).</td></tr>
+      <tr><td><span class="lcb lc5">T5</span></td><td class="lc-sc">0 – 15</td><td class="lc-d">Formulaic / Boilerplate</td><td class="lc-d">No genuine engagement detected across any gate. Template text with accountability structure completely absent.</td></tr>
     </tbody>
   </table>
 </div>
@@ -571,8 +570,8 @@ footer { background:#030710; border-top:1px solid var(--border); padding:40px 80
 <!-- VERTICALS -->
 <div class="sec" id="verticals">
   <div class="sec-lbl">Deployment Architecture</div>
-  <div class="sec-t">One Engine. <span class="g">Three Verticals.</span></div>
-  <p class="sec-s">4CITE is a domain-agnostic engine that deploys into domain-specific verticals. The legal vertical launches first because legal carries the highest near-term liability exposure.</p>
+  <div class="sec-t">One Engine. <span class="g">Three Branches.</span></div>
+  <p class="sec-s">4CITE is a domain-agnostic structural integrity engine that deploys into domain-specific verticals. Law, business, and government — the three institutional pillars where document integrity carries the highest public consequence.</p>
   <div class="verts">
     <div class="vc law">
       <div class="vp">Phase 1 · Active</div>
@@ -586,11 +585,11 @@ footer { background:#030710; border-top:1px solid var(--border); padding:40px 80
       <div class="vd">Structural integrity for public company communications. Scores SEC filings, earnings calls, and shareholder letters against a longitudinal baseline — detecting accountability drift before it becomes a disclosure liability.</div>
       <span class="vs s-act">Active · Build Phase</span>
     </div>
-    <div class="vc med">
-      <div class="vp">Phase 2 · Roadmap</div>
-      <div class="vn">4CITE<sup>4</sup>med</div>
-      <div class="vd">Structural integrity for clinical documentation, research publications, and regulatory submissions. Detects AI-generated medical content lacking genuine clinical engagement — where documentation integrity carries patient safety and liability implications.</div>
-      <span class="vs s-fut">Future · Phase 2</span>
+    <div class="vc gov">
+      <div class="vp">Phase 2 · Active</div>
+      <div class="vn">4CITE<sup>4</sup>gov</div>
+      <div class="vd">Structural integrity for the legislative branch. Scores congressional testimony, regulatory filings, and government communications against an institutional baseline — detecting accountability drift in the public record. Congress.gov · Federal Register · GovInfo.</div>
+      <span class="vs s-act">Active · Phase 2</span>
     </div>
   </div>
 </div>
@@ -612,8 +611,8 @@ footer { background:#030710; border-top:1px solid var(--border); padding:40px 80
 
 <!-- CTA -->
 <div class="cta-sec" id="contact">
-  <h2 class="cta-hl">The integrity layer<br><span style="color:var(--goldf);">your documents have been missing.</span></h2>
-  <p class="cta-s">4CITE for Law is entering its first institutional partnerships now. Reach out to discuss licensing for your firm or jurisdiction.</p>
+  <h2 class="cta-hl">Three branches.<br><span style="color:var(--goldf);">One integrity standard.</span></h2>
+  <p class="cta-s">4CITE for Law is in active go-to-market. 4CITE for Business and Government are in build. Reach out to discuss early access or institutional licensing.</p>
   <button onclick="showAccessModal()" class="btn-p" style="font-size:12px;letter-spacing:3px;">Request a Briefing</button>
   <p style="margin-top:28px;font-size:12px;color:var(--muted);letter-spacing:1px;">A product of 4 SHIELD LLC · 4CITE.ai · Wyoming Benefit LLC</p>
 </div>
@@ -700,7 +699,7 @@ async function runAnalysis() {
   }
 
   // Gate check
-  const gateRequired = api ? api.gate_required : (!u && n >= FREE);
+  const gateRequired = api ? api.gate_required : (!u && n > FREE);
   if (gateRequired && sk < 2) { showModal(); return; }
   if (!u && n >= FREE + 3)    { showModal(); return; }
 

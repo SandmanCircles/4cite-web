@@ -94,8 +94,26 @@ body {
 .app-brand .n4 { color:var(--goldf); }
 .app-brand .nc { color:var(--white); }
 .app-brand .na { color:var(--cyan); font-weight:300; }
+.app-brand-law { display:inline-flex; align-items:center; gap:10px; }
+.law-badge { font-size:13px; font-weight:700; letter-spacing:0; background:rgba(196,40,64,0.12); border:1px solid rgba(196,40,64,0.35); border-radius:5px; padding:3px 10px; color:#C42840; }
+.law-badge sup { font-size:8px; vertical-align:super; }
 .app-back { font-size:11px; color:var(--muted); text-decoration:none; letter-spacing:2px; text-transform:uppercase; transition:color 0.2s; }
 .app-back:hover { color:var(--steel); }
+
+/* ── DISCLOSURE BANNER ──────────────────────────────────── */
+.disclosure {
+  background:rgba(11,35,88,0.35);
+  border-bottom:1px solid var(--border);
+  padding:10px 40px;
+  display:flex;
+  align-items:center;
+  gap:14px;
+  flex-shrink:0;
+}
+.disc-icon { font-size:14px; flex-shrink:0; }
+.disc-text { font-size:11px; color:var(--steel); line-height:1.5; }
+.disc-text strong { color:var(--goldf); font-weight:600; }
+.disc-text em { color:var(--muted); font-style:normal; }
 
 /* ── MAIN TOOL AREA ─────────────────────────────────────── */
 .app-main {
@@ -257,7 +275,7 @@ textarea#inputArea::placeholder { color:var(--muted); }
           <option value="">Select your domain…</option>
           <option value="law">Legal — law firm, court, compliance</option>
           <option value="biz">Business — SEC filings, public company comms</option>
-          <option value="med">Medicine — clinical, research, regulatory</option>
+          <option value="gov">Government — legislative, regulatory, federal agency</option>
           <option value="other">Other</option>
         </select>
       </div>
@@ -284,9 +302,21 @@ textarea#inputArea::placeholder { color:var(--muted); }
 
 <!-- APP HEADER -->
 <header class="app-header">
-  <a href="/" class="app-brand"><span class="n4">4</span><span class="nc">CITE</span><span class="na">.ai</span></a>
+  <div class="app-brand-law">
+    <a href="/" class="app-brand"><span class="n4">4</span><span class="nc">CITE</span><span class="na">.ai</span></a>
+    <span class="law-badge">4CITE<sup>4</sup>law</span>
+  </div>
   <a href="/" class="app-back">← Back to site</a>
 </header>
+
+<!-- DISCLOSURE BANNER -->
+<div class="disclosure">
+  <span class="disc-icon">ℹ</span>
+  <p class="disc-text">
+    <strong>Layer 2 Citation Pattern Scanner — 4CITE⁴law demo only.</strong>
+    <em>This tool detects citation format patterns, structural density, and surface anomalies in legal documents. It is NOT the full 4CITE structural integrity engine — it does not run the four-gate ValueMirror analysis (G4 · G6 · G7 · G8), does not assign a Tier classification, and does not detect Accountability Theater. No data is transmitted or stored. For the full analysis, request access at <a href="/" style="color:var(--steel);text-decoration:none;border-bottom:1px solid var(--border);">4cite.ai</a>.</em>
+  </p>
+</div>
 
 <!-- MAIN TOOL -->
 <main class="app-main">
@@ -324,7 +354,7 @@ Example: In Smith v. Jones, 482 U.S. 522 (1987), the Court held that the Fourth 
       <div class="col-lbl">Integrity Readout</div>
       <div class="readout">
         <div class="readout-header">
-          <span class="rh-title">4CITE.ai · Citation Analysis</span>
+          <span class="rh-title">4CITE.ai · Citation Analysis <span style="display:inline-block;margin-left:8px;font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#D89A0B;background:rgba(216,154,11,0.12);border:1px solid rgba(216,154,11,0.35);border-radius:3px;padding:2px 7px;vertical-align:middle;">4CITE&#x2074;law</span></span>
           <span class="rh-status">
             <span class="rh-dot standby" id="statusDot"></span>
             <span id="statusTxt" style="color:var(--muted);font-size:10px;letter-spacing:2px;text-transform:uppercase;">Standby</span>
@@ -406,7 +436,7 @@ Example: In Smith v. Jones, 482 U.S. 522 (1987), the Court held that the Fourth 
           <option value="">Select vertical…</option>
           <option value="law">4CITE for Law</option>
           <option value="biz">4CITE for Business</option>
-          <option value="med">4CITE for Medicine</option>
+          <option value="gov">4CITE for Government</option>
           <option value="other">Other</option>
         </select>
       </div>
@@ -468,7 +498,7 @@ async function runAnalysis() {
   const api=await apiCheck();
   let {n,u,sk,m1}=gs();
   if(api){ n=api.check_count; u=api.unlocked; ss({n,u}); } else { ss({n:n+1}); n=n+1; }
-  const gateRequired=api?api.gate_required:(!u&&n>=FREE);
+  const gateRequired=api?api.gate_required:(!u&&n>FREE);
   if(gateRequired&&sk<2){ showModal(); return; }
   if(!u&&n>=FREE+3){ showModal(); return; }
   const btn=document.getElementById('runBtn');
