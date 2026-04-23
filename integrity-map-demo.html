@@ -1,0 +1,828 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>4CITE.ai — Integrity Map</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --midnight: #07152E;
+  --navy:     #0B2358;
+  --card:     #0C1628;
+  --border:   #1A3060;
+  --blue:     #2B63D9;
+  --cyan:     #7DEBFF;
+  --gold:     #D89A0B;
+  --goldf:    #F7D85D;
+  --steel:    #7A9ABE;
+  --muted:    #3A5A80;
+  --text:     #C8D8EE;
+  --white:    #FFFFFF;
+  --green:    #22C97A;
+  --amber:    #F0A020;
+  --red:      #C83040;
+  --law:      #C42840;
+  --biz:      #1A7ABF;
+  --gov:      #3A7A52;
+
+  /* Quadrant tier colors */
+  --t1-bg:    rgba(247,216,93,0.10);
+  --t1-bdr:   rgba(247,216,93,0.40);
+  --t1-txt:   #F7D85D;
+
+  --t2-bg:    rgba(125,235,255,0.08);
+  --t2-bdr:   rgba(125,235,255,0.35);
+  --t2-txt:   #7DEBFF;
+
+  --t3-bg:    rgba(240,160,32,0.10);
+  --t3-bdr:   rgba(240,160,32,0.45);
+  --t3-txt:   #F0A020;
+
+  --t4-bg:    rgba(200,48,64,0.10);
+  --t4-bdr:   rgba(200,48,64,0.40);
+  --t4-txt:   #E06070;
+
+  --t5-bg:    rgba(60,80,100,0.12);
+  --t5-bdr:   rgba(60,80,100,0.30);
+  --t5-txt:   #5A7090;
+}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior:smooth; }
+body {
+  background: var(--midnight);
+  color: var(--text);
+  font-family: 'Space Grotesk', -apple-system, sans-serif;
+  line-height: 1.5;
+  font-size: 14px;
+  overflow-x: hidden;
+  min-height: 100vh;
+}
+
+/* ── NAV ── */
+nav {
+  position: fixed; top:0; left:0; right:0; z-index:500;
+  background: rgba(7,21,46,0.97);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border);
+  padding: 0 40px;
+  height: 56px;
+  display: flex; align-items: center; gap: 32px;
+}
+.nav-brand { font-size:20px; font-weight:700; letter-spacing:-0.5px; margin-right:auto; }
+.nav-brand .n4 { color:var(--goldf); }
+.nav-brand .nc { color:var(--white); }
+.nav-brand .na { color:var(--cyan); font-weight:300; }
+.nav-link { font-size:11px; font-weight:500; letter-spacing:2.5px; text-transform:uppercase; color:var(--muted); text-decoration:none; transition:color 0.2s; }
+.nav-link:hover { color:var(--goldf); }
+.nav-link.active { color:var(--white); }
+
+/* Corpus counter */
+.corpus-counter {
+  display: flex; align-items: center; gap: 10px;
+  background: rgba(34,201,122,0.06);
+  border: 1px solid rgba(34,201,122,0.2);
+  border-radius: 20px;
+  padding: 6px 16px;
+}
+.cc-dot { width:7px; height:7px; border-radius:50%; background:var(--green); animation: pulse 2s ease infinite; }
+@keyframes pulse { 0%,100%{opacity:1;box-shadow:0 0 0 0 rgba(34,201,122,0.4);} 50%{opacity:0.7;box-shadow:0 0 0 6px rgba(34,201,122,0);} }
+.cc-label { font-size:10px; font-weight:600; letter-spacing:2px; text-transform:uppercase; color:var(--green); }
+.cc-count { font-size:13px; font-weight:700; color:var(--white); font-variant-numeric:tabular-nums; }
+
+/* ── HERO STRIP ── */
+.hero-strip {
+  margin-top: 56px;
+  background: linear-gradient(135deg, #060A1A 0%, #0B1A3A 100%);
+  border-bottom: 1px solid var(--border);
+  padding: 40px 48px 32px;
+  position: relative;
+  overflow: hidden;
+}
+.hero-strip::before {
+  content: '';
+  position: absolute; inset:0;
+  background-image:
+    linear-gradient(rgba(43,99,217,0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(43,99,217,0.03) 1px, transparent 1px);
+  background-size: 40px 40px;
+  pointer-events: none;
+}
+.hero-glow {
+  position:absolute; top:-200px; right:-300px;
+  width:700px; height:700px;
+  background:radial-gradient(circle,rgba(216,154,11,0.06) 0%,transparent 65%);
+  pointer-events:none;
+}
+.hero-eyebrow {
+  font-size:10px; font-weight:700; letter-spacing:5px;
+  text-transform:uppercase; color:var(--muted); margin-bottom:14px;
+  display:flex; align-items:center; gap:12px;
+}
+.hero-eyebrow::before { content:''; width:32px; height:1px; background:var(--muted); }
+.hero-hl {
+  font-size: clamp(22px,3vw,36px);
+  font-weight:700; color:var(--white);
+  line-height:1.1; margin-bottom:10px;
+}
+.hero-hl .g { color:var(--goldf); }
+.hero-sub {
+  font-size:14px; color:var(--steel); max-width:620px; line-height:1.7;
+}
+.hero-meta {
+  display:flex; gap:32px; margin-top:20px; flex-wrap:wrap;
+}
+.hm-item { text-align:center; }
+.hm-n { font-size:22px; font-weight:700; color:var(--white); }
+.hm-n .g { color:var(--goldf); }
+.hm-n .c { color:var(--cyan); }
+.hm-l { font-size:9px; font-weight:600; letter-spacing:2px; text-transform:uppercase; color:var(--muted); margin-top:3px; }
+.hm-div { width:1px; background:var(--border); align-self:stretch; }
+
+/* ── FILTER BAR ── */
+.filter-bar {
+  position: sticky; top:56px; z-index:400;
+  background: rgba(7,21,46,0.97);
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--border);
+  padding: 12px 48px;
+  display: flex; align-items:center; gap:10px; flex-wrap:wrap;
+}
+.filter-label {
+  font-size:9px; font-weight:700; letter-spacing:3px;
+  text-transform:uppercase; color:var(--muted); margin-right:4px;
+}
+.filter-pill {
+  font-size:10px; font-weight:600; letter-spacing:1.5px;
+  text-transform:uppercase; padding:5px 14px; border-radius:20px;
+  border: 1px solid; cursor:pointer; transition:all 0.2s; background:transparent;
+  color:var(--muted); border-color:var(--border);
+}
+.filter-pill:hover { color:var(--white); border-color:var(--steel); }
+.filter-pill.active { background:rgba(43,99,217,0.15); color:var(--white); border-color:var(--blue); }
+.filter-pill.t1 { color:var(--t1-txt); border-color:var(--t1-bdr); }
+.filter-pill.t1.active { background:var(--t1-bg); }
+.filter-pill.t2 { color:var(--t2-txt); border-color:var(--t2-bdr); }
+.filter-pill.t2.active { background:var(--t2-bg); }
+.filter-pill.t3 { color:var(--t3-txt); border-color:var(--t3-bdr); }
+.filter-pill.t3.active { background:var(--t3-bg); }
+.filter-pill.t4 { color:var(--t4-txt); border-color:var(--t4-bdr); }
+.filter-pill.t4.active { background:var(--t4-bg); }
+.filter-pill.theater { color:#FF8090; border-color:rgba(255,128,144,0.4); }
+.filter-pill.theater.active { background:rgba(255,80,96,0.12); }
+.filter-sep { width:1px; height:20px; background:var(--border); margin:0 4px; }
+
+/* ── VERTICAL SELECTOR ── */
+.vert-selector {
+  display:flex; gap:8px; margin-left:auto;
+}
+.vs-btn {
+  font-size:10px; font-weight:700; letter-spacing:2px; text-transform:uppercase;
+  padding:5px 14px; border-radius:20px; border:1px solid; cursor:pointer;
+  transition:all 0.2s; background:transparent;
+}
+.vs-btn.law { color:var(--law); border-color:rgba(196,40,64,0.4); }
+.vs-btn.law.active { background:rgba(196,40,64,0.12); }
+.vs-btn.biz { color:var(--biz); border-color:rgba(26,122,191,0.4); }
+.vs-btn.biz.active { background:rgba(26,122,191,0.12); }
+.vs-btn.gov { color:var(--gov); border-color:rgba(58,122,82,0.4); }
+.vs-btn.gov.active { background:rgba(58,122,82,0.12); }
+
+/* ── MAIN MAP ── */
+.map-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 0;
+  min-height: calc(100vh - 200px);
+}
+.map-col {
+  border-right: 1px solid var(--border);
+  padding: 0 0 40px;
+}
+.map-col:last-child { border-right:none; }
+
+/* Column header */
+.col-header {
+  position: sticky; top: calc(56px + 46px); z-index:300;
+  padding: 16px 24px 14px;
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--border);
+}
+.col-header.law { background:rgba(196,40,64,0.08); border-left:3px solid var(--law); }
+.col-header.biz { background:rgba(26,122,191,0.08); border-left:3px solid var(--biz); }
+.col-header.gov { background:rgba(58,122,82,0.08); border-left:3px solid var(--gov); }
+.ch-vert { font-size:9px; font-weight:700; letter-spacing:3px; text-transform:uppercase; margin-bottom:5px; }
+.col-header.law .ch-vert { color:var(--law); }
+.col-header.biz .ch-vert { color:var(--biz); }
+.col-header.gov .ch-vert { color:var(--gov); }
+.ch-name { font-size:16px; font-weight:700; color:var(--white); margin-bottom:4px; }
+.ch-name sup { font-size:10px; }
+.ch-sub { font-size:11px; color:var(--muted); }
+.ch-count { float:right; font-size:11px; font-weight:600; color:var(--steel); padding:3px 10px; background:rgba(255,255,255,0.04); border-radius:20px; border:1px solid var(--border); margin-top:2px; }
+
+/* Sector group within column */
+.sector-group { padding: 14px 16px 4px; }
+.sg-label {
+  font-size:9px; font-weight:700; letter-spacing:3px;
+  text-transform:uppercase; color:var(--muted);
+  margin-bottom:10px; padding-bottom:6px;
+  border-bottom:1px solid rgba(26,48,96,0.4);
+}
+.tiles-wrap { display:flex; flex-wrap:wrap; gap:7px; }
+
+/* Individual tile */
+.tile {
+  border-radius:6px;
+  border:1px solid;
+  padding:8px 10px;
+  cursor:pointer;
+  transition:all 0.2s;
+  position:relative;
+  min-width:110px;
+  max-width:160px;
+  flex:1;
+  opacity:0;
+  transform:translateY(8px);
+  animation:tileIn 0.4s ease forwards;
+}
+.tile:hover { transform:translateY(-2px); z-index:100; }
+
+.tile.t1 { background:var(--t1-bg); border-color:var(--t1-bdr); }
+.tile.t2 { background:var(--t2-bg); border-color:var(--t2-bdr); }
+.tile.t3 { background:var(--t3-bg); border-color:var(--t3-bdr); }
+.tile.t4 { background:var(--t4-bg); border-color:var(--t4-bdr); }
+.tile.t5 { background:var(--t5-bg); border-color:var(--t5-bdr); }
+
+.tile:hover.t1 { border-color:rgba(247,216,93,0.9); box-shadow:0 4px 24px rgba(247,216,93,0.15); }
+.tile:hover.t2 { border-color:rgba(125,235,255,0.9); box-shadow:0 4px 24px rgba(125,235,255,0.12); }
+.tile:hover.t3 { border-color:rgba(240,160,32,0.9); box-shadow:0 4px 24px rgba(240,160,32,0.15); }
+.tile:hover.t4 { border-color:rgba(200,80,96,0.9); box-shadow:0 4px 24px rgba(200,48,64,0.15); }
+
+@keyframes tileIn { to { opacity:1; transform:translateY(0); } }
+
+.tile-theater-flag {
+  position:absolute; top:-4px; right:-4px;
+  width:10px; height:10px; border-radius:50%;
+  background:#FF5060; border:2px solid var(--midnight);
+  animation:pulse-red 1.8s ease infinite;
+}
+@keyframes pulse-red { 0%,100%{opacity:1;} 50%{opacity:0.5;} }
+
+.tile-tier {
+  font-size:8px; font-weight:700; letter-spacing:2px; text-transform:uppercase;
+  margin-bottom:5px; display:flex; align-items:center; justify-content:space-between;
+}
+.tile.t1 .tile-tier { color:var(--t1-txt); }
+.tile.t2 .tile-tier { color:var(--t2-txt); }
+.tile.t3 .tile-tier { color:var(--t3-txt); }
+.tile.t4 .tile-tier { color:var(--t4-txt); }
+.tile.t5 .tile-tier { color:var(--t5-txt); }
+
+.tile-entity { font-size:11px; font-weight:700; color:var(--white); margin-bottom:3px; line-height:1.2; }
+.tile-archetype { font-size:9px; color:var(--muted); letter-spacing:0.5px; }
+.tile-score {
+  font-size:14px; font-weight:700; float:right; margin-top:-22px;
+}
+.tile.t1 .tile-score { color:var(--t1-txt); }
+.tile.t2 .tile-score { color:var(--t2-txt); }
+.tile.t3 .tile-score { color:var(--t3-txt); }
+.tile.t4 .tile-score { color:var(--t4-txt); }
+.tile.t5 .tile-score { color:var(--t5-txt); }
+
+/* ── TOOLTIP ── */
+.tooltip {
+  display:none;
+  position:fixed;
+  z-index:1000;
+  width:280px;
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:12px;
+  padding:18px 20px;
+  box-shadow:0 20px 60px rgba(0,0,0,0.6);
+  pointer-events:none;
+}
+.tooltip.visible { display:block; }
+.tt-tier {
+  font-size:9px; font-weight:700; letter-spacing:3px; text-transform:uppercase;
+  margin-bottom:8px;
+}
+.tt-entity { font-size:16px; font-weight:700; color:var(--white); margin-bottom:4px; }
+.tt-doc { font-size:11px; color:var(--steel); margin-bottom:14px; line-height:1.5; }
+.tt-composite { display:flex; align-items:baseline; gap:6px; margin-bottom:14px; }
+.tt-score-n { font-size:32px; font-weight:700; }
+.tt-score-l { font-size:11px; color:var(--muted); letter-spacing:1px; }
+.tt-gates { display:flex; flex-direction:column; gap:8px; }
+.tt-gate { display:flex; flex-direction:column; gap:3px; }
+.tt-gate-hdr { display:flex; justify-content:space-between; }
+.tt-gate-name { font-size:10px; font-weight:600; color:var(--steel); }
+.tt-gate-val { font-size:10px; font-weight:700; color:var(--white); }
+.tt-bar-track { height:4px; background:rgba(255,255,255,0.05); border-radius:2px; }
+.tt-bar-fill { height:4px; border-radius:2px; }
+.tt-arch { margin-top:12px; padding-top:12px; border-top:1px solid var(--border); font-size:10px; }
+.tt-arch-label { color:var(--muted); letter-spacing:2px; text-transform:uppercase; margin-bottom:3px; }
+.tt-arch-name { color:var(--text); }
+.tt-theater { margin-top:10px; padding:8px 12px; background:rgba(255,80,96,0.08); border:1px solid rgba(255,80,96,0.3); border-radius:6px; font-size:10px; color:#FF8090; letter-spacing:0.5px; }
+
+/* ── ARCHETYPE SIDEBAR ── */
+.arch-bar {
+  background: rgba(11,35,88,0.6);
+  border-top: 1px solid var(--border);
+  padding: 24px 48px;
+}
+.ab-title {
+  font-size:10px; font-weight:700; letter-spacing:4px;
+  text-transform:uppercase; color:var(--muted); margin-bottom:18px;
+}
+.ab-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:16px; }
+.ab-item { }
+.ab-name { font-size:11px; font-weight:600; color:var(--steel); margin-bottom:6px; }
+.ab-track { height:6px; background:rgba(255,255,255,0.04); border-radius:3px; }
+.ab-fill { height:6px; border-radius:3px; transition:width 1.2s cubic-bezier(0.16,1,0.3,1); }
+.ab-meta { display:flex; justify-content:space-between; margin-top:4px; }
+.ab-count { font-size:10px; color:var(--muted); }
+.ab-pct { font-size:10px; font-weight:600; color:var(--steel); }
+
+/* ── EMPTY STATE ── */
+.empty-state {
+  display:flex; flex-direction:column; align-items:center;
+  justify-content:center; height:200px; color:var(--muted);
+  font-size:11px; letter-spacing:2px; text-transform:uppercase; gap:12px;
+}
+.empty-state::before { content:'◇'; font-size:24px; opacity:0.3; }
+
+/* ── QUADRANT LEGEND ── */
+.quad-legend {
+  display:flex; gap:16px; flex-wrap:wrap;
+  padding:16px 48px; background:rgba(11,35,88,0.4);
+  border-bottom:1px solid var(--border);
+}
+.ql-item { display:flex; align-items:center; gap:8px; }
+.ql-dot { width:10px; height:10px; border-radius:3px; border:1px solid; }
+.ql-label { font-size:10px; color:var(--muted); }
+.ql-label strong { color:var(--steel); }
+
+/* hide/show animation for filtered tiles */
+.tile.hidden { display:none; }
+
+/* responsive */
+@media (max-width:900px) {
+  .map-layout { grid-template-columns:1fr; }
+  nav { padding:0 20px; }
+  .filter-bar { padding:10px 20px; }
+  .hero-strip { padding:28px 20px 20px; }
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-brand"><span class="n4">4</span><span class="nc">CITE</span><span class="na">.ai</span></div>
+  <a href="#" class="nav-link active">Integrity Map</a>
+  <a href="#" class="nav-link">Verticals</a>
+  <a href="#" class="nav-link">Evidence</a>
+  <a href="#" class="nav-link">Pricing</a>
+  <div class="corpus-counter">
+    <div class="cc-dot"></div>
+    <div class="cc-label">Corpus</div>
+    <div class="cc-count" id="corpusCount">16,421</div>
+  </div>
+</nav>
+
+<!-- HERO STRIP -->
+<div class="hero-strip">
+  <div class="hero-glow"></div>
+  <div class="hero-eyebrow">Structural Integrity Analysis · Live Corpus</div>
+  <div class="hero-hl">
+    Every record. Law. Business. Government.<br>
+    <span class="g">A structural integrity map of the United States.</span>
+  </div>
+  <div class="hero-sub">
+    Every tile is a real document, scored by the ValueMirror™ engine across four structural dimensions.
+    Colored by integrity quadrant. The density you see is the corpus growing.
+    What it looks like when accountability has architecture.
+  </div>
+  <div class="hero-meta">
+    <div class="hm-item">
+      <div class="hm-n"><span class="g">431</span></div>
+      <div class="hm-l">Companies scored<br>⁴biz</div>
+    </div>
+    <div class="hm-div"></div>
+    <div class="hm-item">
+      <div class="hm-n"><span class="c">16,113</span></div>
+      <div class="hm-l">SEC filings<br>processed</div>
+    </div>
+    <div class="hm-div"></div>
+    <div class="hm-item">
+      <div class="hm-n"><span class="g">4</span></div>
+      <div class="hm-l">Independent<br>gate calls per doc</div>
+    </div>
+    <div class="hm-div"></div>
+    <div class="hm-item">
+      <div class="hm-n" style="color:var(--amber);">T3</div>
+      <div class="hm-l">Corpus median<br>integrity tier</div>
+    </div>
+    <div class="hm-div"></div>
+    <div class="hm-item">
+      <div class="hm-n"><span class="g">T3</span></div>
+      <div class="hm-l">Corpus median<br>integrity tier</div>
+    </div>
+  </div>
+</div>
+
+<!-- QUADRANT LEGEND -->
+<div class="quad-legend">
+  <span style="font-size:9px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--muted);align-self:center;margin-right:8px;">Integrity Tier →</span>
+  <div class="ql-item"><div class="ql-dot" style="background:var(--t1-bg);border-color:var(--t1-bdr);"></div><div class="ql-label"><strong style="color:var(--t1-txt);">T1</strong> High Integrity (67–100)</div></div>
+  <div class="ql-item"><div class="ql-dot" style="background:var(--t2-bg);border-color:var(--t2-bdr);"></div><div class="ql-label"><strong style="color:var(--t2-txt);">T2</strong> Assisted, Well-Reviewed (50–66)</div></div>
+  <div class="ql-item"><div class="ql-dot" style="background:var(--t3-bg);border-color:var(--t3-bdr);"></div><div class="ql-label"><strong style="color:var(--t3-txt);">T3</strong> Surface-Clean, Weak Foundation (30–49)</div></div>
+  <div class="ql-item"><div class="ql-dot" style="background:var(--t4-bg);border-color:var(--t4-bdr);"></div><div class="ql-label"><strong style="color:var(--t4-txt);">T4</strong> Structural Failure (5–30)</div></div>
+  <div class="ql-item" style="margin-left:auto;"><div style="width:10px;height:10px;border-radius:50%;background:#FF5060;border:2px solid var(--midnight);display:inline-block;margin-right:6px;"></div><div class="ql-label" style="color:#FF8090;">⚠ Accountability Theater flag</div></div>
+</div>
+
+<!-- FILTER BAR -->
+<div class="filter-bar">
+  <span class="filter-label">Filter:</span>
+  <button class="filter-pill active" onclick="setTierFilter('all',this)">All Tiers</button>
+  <button class="filter-pill t1" onclick="setTierFilter('t1',this)">T1</button>
+  <button class="filter-pill t2" onclick="setTierFilter('t2',this)">T2</button>
+  <button class="filter-pill t3" onclick="setTierFilter('t3',this)">T3</button>
+  <button class="filter-pill t4" onclick="setTierFilter('t4',this)">T4</button>
+  <button class="filter-pill theater" onclick="setTierFilter('theater',this)">⚠ Theater</button>
+  <div class="filter-sep"></div>
+  <div class="vert-selector">
+    <button class="vs-btn law active" onclick="toggleVert('law',this)">⁴law</button>
+    <button class="vs-btn biz active" onclick="toggleVert('biz',this)">⁴biz</button>
+    <button class="vs-btn gov active" onclick="toggleVert('gov',this)">⁴gov</button>
+  </div>
+</div>
+
+<!-- MAIN MAP -->
+<div class="map-layout" id="mapLayout">
+
+  <!-- ⁴LAW COLUMN -->
+  <div class="map-col" id="col-law">
+    <div class="col-header law">
+      <span class="ch-count" id="law-count">24 records</span>
+      <div class="ch-vert">Judicial Branch</div>
+      <div class="ch-name">4CITE<sup>4</sup>law</div>
+      <div class="ch-sub">Federal opinions · Briefs · Court filings · By circuit</div>
+    </div>
+
+    <div class="sector-group">
+      <div class="sg-label">Supreme Court</div>
+      <div class="tiles-wrap" id="law-scotus"></div>
+    </div>
+    <div class="sector-group">
+      <div class="sg-label">Federal Circuits — AI-Authored Flagged</div>
+      <div class="tiles-wrap" id="law-ai"></div>
+    </div>
+    <div class="sector-group">
+      <div class="sg-label">District Courts — General Corpus</div>
+      <div class="tiles-wrap" id="law-district"></div>
+    </div>
+  </div>
+
+  <!-- ⁴BIZ COLUMN -->
+  <div class="map-col" id="col-biz">
+    <div class="col-header biz">
+      <span class="ch-count" id="biz-count">431 companies</span>
+      <div class="ch-vert">Economic / Corporate · SEC EDGAR</div>
+      <div class="ch-name">4CITE<sup>4</sup>biz</div>
+      <div class="ch-sub">10-K · 10-Q · 8-K · Earnings calls · By sector</div>
+    </div>
+
+    <div class="sector-group">
+      <div class="sg-label">Technology — Seeded & Scored</div>
+      <div class="tiles-wrap" id="biz-tech"></div>
+    </div>
+    <div class="sector-group">
+      <div class="sg-label">Finance & Markets</div>
+      <div class="tiles-wrap" id="biz-fin"></div>
+    </div>
+    <div class="sector-group">
+      <div class="sg-label">Energy & Industrial</div>
+      <div class="tiles-wrap" id="biz-energy"></div>
+    </div>
+    <div class="sector-group">
+      <div class="sg-label">Notable Archive — Historical</div>
+      <div class="tiles-wrap" id="biz-hist"></div>
+    </div>
+  </div>
+
+  <!-- ⁴GOV COLUMN -->
+  <div class="map-col" id="col-gov">
+    <div class="col-header gov">
+      <span class="ch-count" id="gov-count">18 records</span>
+      <div class="ch-vert">Legislative Branch</div>
+      <div class="ch-name">4CITE<sup>4</sup>gov</div>
+      <div class="ch-sub">Congress.gov · Federal Register · GovInfo · By chamber</div>
+    </div>
+
+    <div class="sector-group">
+      <div class="sg-label">Presidential — Founding Era</div>
+      <div class="tiles-wrap" id="gov-found"></div>
+    </div>
+    <div class="sector-group">
+      <div class="sg-label">State of the Union — Modern</div>
+      <div class="tiles-wrap" id="gov-sotu"></div>
+    </div>
+    <div class="sector-group">
+      <div class="sg-label">Congressional Testimony</div>
+      <div class="tiles-wrap" id="gov-cong"></div>
+    </div>
+    <div class="sector-group">
+      <div class="sg-label">Federal Register — Rulemaking</div>
+      <div class="tiles-wrap" id="gov-reg"></div>
+    </div>
+  </div>
+
+</div><!-- end map-layout -->
+
+<!-- ARCHETYPE DISTRIBUTION BAR -->
+<div class="arch-bar">
+  <div class="ab-title">Archetype Distribution — Corpus-Level Pattern</div>
+  <div class="ab-grid" id="archGrid"></div>
+</div>
+
+<!-- TOOLTIP -->
+<div class="tooltip" id="tooltip"></div>
+
+<script>
+// ── DATA ────────────────────────────────────────────────────────────────────────
+
+const TILES = {
+
+  'law-scotus': [
+    { entity:'Chevron U.S.A. v. NRDC', doc:'549 U.S. 306 (1984)', tier:'t1', score:81, g4:78, g6:72, g7:91, g8:85, arch:'High-Ground Precedent', theater:false, note:'Unanimous — paradox explicitly engaged in Rehnquist opinion' },
+    { entity:'Brown v. Board of Education', doc:'347 U.S. 483 (1954)', tier:'t1', score:88, g4:85, g6:79, g7:90, g8:88, arch:'High-Ground Precedent', theater:false, note:'Unanimous — Warren opinion engages directly with contradiction of Plessy' },
+    { entity:'Citizens United v. FEC', doc:'558 U.S. 310 (2010)', tier:'t3', score:44, g4:38, g6:29, g7:85, g8:88, arch:'Institutional Whitewash', theater:true, note:'Surface argument rigorous; G6 absent — corporate stake in ruling undisclosed' },
+    { entity:'Bush v. Gore', doc:'531 U.S. 98 (2000)', tier:'t3', score:41, g4:35, g6:31, g7:84, g8:82, arch:'Accountability Theater', theater:true, note:'Per curiam limits holding to its facts — G4 structurally avoided' },
+    { entity:'Dobbs v. Jackson', doc:'597 U.S. 215 (2022)', tier:'t2', score:58, g4:62, g6:44, g7:79, g8:76, arch:'Structural Integrity, Contested', theater:false, note:'G4 elevated — Alito engages Roe contradiction directly; G6 low' },
+  ],
+
+  'law-ai': [
+    { entity:'Mata v. Avianca — Fabricated Brief', doc:'ChatGPT-generated, S.D.N.Y. 2023', tier:'t4', score:7, g4:5, g6:8, g7:42, g8:38, arch:'Structural Collapse', theater:false, note:'The anchor case. 81-point gap vs. real federal opinion.' },
+    { entity:'Park v. Kim — Fabricated Citations', doc:'2d Cir., 2023', tier:'t4', score:12, g4:9, g6:11, g7:48, g8:44, arch:'Structural Collapse', theater:false, note:'Sanctions imposed. Citation chain entirely fabricated.' },
+    { entity:'Fearing v. Motorola — AI Assisted', doc:'N.D. Ill., 2024', tier:'t3', score:38, g4:29, g6:24, g7:79, g8:74, arch:'Accountability Theater', theater:true, note:'Superficially clean citations; G4/G6 collapse suggests minimal attorney review' },
+    { entity:'US v. Cohen — Hybrid Draft', doc:'D. Conn., 2024', tier:'t2', score:54, g4:58, g6:46, g7:75, g8:72, arch:'Assisted, Well-Reviewed', theater:false, note:'AI-assisted with genuine attorney G4 engagement on key contradiction' },
+  ],
+
+  'law-district': [
+    { entity:'Beckwith v. County (Pending)', doc:'Calibration Corpus — Active', tier:'t1', score:84, g4:82, g6:74, g7:89, g8:87, arch:'High-Ground Precedent', theater:false, note:'Active calibration study. Reference anchor for ⁴law vertical.' },
+    { entity:'In re Sanctions Order', doc:'Federal Sanctions Opinion', tier:'t1', score:88, g4:86, g6:81, g7:91, g8:90, arch:'High-Ground Precedent', theater:false, note:'WP7 reference anchor. 81-pt gap above Mata fabricated brief.' },
+    { entity:'PSLRA Class Action Brief', doc:'Securities Fraud, 9th Cir.', tier:'t3', score:36, g4:28, g6:18, g7:87, g8:84, arch:'Accountability Theater', theater:true, note:'Safe harbor language produces structural theater signature' },
+    { entity:'Products Liability Brief', doc:'Plaintiff, N.D. Cal.', tier:'t2', score:61, g4:64, g6:52, g7:78, g8:76, arch:'Structural Integrity, Contested', theater:false },
+    { entity:'Amicus — Tech Industry', doc:'Antitrust, D.C. Cir.', tier:'t3', score:42, g4:31, g6:22, g7:88, g8:91, arch:'Institutional Whitewash', theater:true, note:'Coalition filing — G6 near-zero (stake concealed across 40 signatories)' },
+  ],
+
+  'biz-tech': [
+    { entity:'AAPL', doc:'10-K FY2024 · MD&A', tier:'t1', score:82, g4:79, g6:61, g7:92, g8:90, arch:'Principled Institutional', theater:false, note:'Seeded April 16. G6 consistently weakest gate. Principled / stable_high. L1: +2.96/qtr (improving).' },
+    { entity:'AAPL', doc:'10-K FY2023 · MD&A', tier:'t1', score:79, g4:76, g6:58, g7:91, g8:89, arch:'Principled Institutional', theater:false },
+    { entity:'MSFT', doc:'10-K FY2024 · MD&A', tier:'t1', score:78, g4:74, g6:63, g7:90, g8:88, arch:'Principled Institutional', theater:false, note:'AI pivot language well-integrated. G6 moderate — Nadella stake partially surfaced.' },
+    { entity:'NVDA', doc:'10-K FY2024 · MD&A', tier:'t1', score:74, g4:70, g6:58, g7:91, g8:93, arch:'Growth Narrative', theater:false, note:'G8 very high — belief-installation language elevated during AI supercycle.' },
+    { entity:'GOOGL', doc:'Earnings Call Q4 2024 · Q&A', tier:'t2', score:62, g4:65, g6:54, g7:74, g8:72, arch:'Principled Institutional', theater:false, note:'Q&A elevated G4 vs. prepared remarks. Analyst challenges genuinely engaged.' },
+    { entity:'META', doc:'10-K FY2022 · Metaverse Pivot', tier:'t3', score:41, g4:32, g6:28, g7:88, g8:91, arch:'Accountability Theater', theater:true, note:'Metaverse CapEx rationale never engaged with contradicting ad revenue cliff. Theater signature clear.' },
+    { entity:'META', doc:'10-K FY2024 · MD&A', tier:'t2', score:57, g4:55, g6:48, g7:82, g8:80, arch:'Partial Recovery', theater:false, note:'G4 recovery post-2022. Year of Efficiency narrative more genuinely engaged.' },
+    { entity:'TSLA', doc:'Earnings Call Q4 2022 · Q&A', tier:'t3', score:38, g4:29, g6:24, g7:84, g8:92, arch:'Accountability Theater', theater:true, note:'Musk guidance claims vs. delivery miss. G6 structurally absent — CEO compensation stake never surfaced.' },
+    { entity:'AMZN', doc:'10-K FY2024 · Risk Factors', tier:'t2', score:55, g4:51, g6:44, g7:88, g8:85, arch:'Institutional Compliance', theater:false },
+  ],
+
+  'biz-fin': [
+    { entity:'JPM', doc:'10-K FY2024 · CEO Letter', tier:'t1', score:72, g4:68, g6:65, g7:86, g8:84, arch:'Principled Institutional', theater:false, note:'Dimon letter — G6 partially surfaced. Stake in interest rate environment noted.' },
+    { entity:'GS', doc:'Proxy DEF 14A FY2024', tier:'t3', score:37, g4:26, g6:14, g7:88, g8:90, arch:'Accountability Theater', theater:true, note:'CEO comp justification. G6 near-zero — comp committee members stake never disclosed.' },
+    { entity:'SVB Financial', doc:'10-K FY2022 · Risk Factors', tier:'t4', score:22, g4:18, g6:12, g7:72, g8:75, arch:'Structural Failure — Pre-Collapse', theater:true, note:'Filed March 2023. G4 collapse on interest rate duration risk. Collapse signature visible in retrospect.' },
+    { entity:'BRK.A', doc:'Shareholder Letter 2023', tier:'t1', score:87, g4:88, g6:82, g7:84, g8:79, arch:'Authentic Reckoning', theater:false, note:'Buffett explicitly engages Berkshire mistakes. Highest G4 in finance corpus. G6 present — stake explicitly noted.' },
+    { entity:'WFC', doc:'8-K Account Fraud Disclosure 2016', tier:'t4', score:24, g4:20, g6:14, g7:68, g8:71, arch:'Structural Failure', theater:false, note:'Forced disclosure. G4 elevated vs. prior 10-Ks — genuine paradox confronted. Still T4.' },
+  ],
+
+  'biz-energy': [
+    { entity:'XOM', doc:'10-K FY2023 · Climate Risk', tier:'t3', score:43, g4:34, g6:26, g7:89, g8:91, arch:'Accountability Theater', theater:true, note:'Climate risk section structurally dense (G7/G8 high) with G4/G6 collapse. Theater flag.' },
+    { entity:'CVX', doc:'ESG Report FY2023', tier:'t3', score:39, g4:28, g6:22, g7:90, g8:93, arch:'Institutional Whitewash', theater:true, note:'Highest G8 in energy corpus. G4/G6 collapse. ESG theater signature.' },
+    { entity:'BP', doc:'8-K Deepwater Horizon 2010', tier:'t4', score:19, g4:16, g6:10, g7:64, g8:68, arch:'Crisis Concealment', theater:false, note:'Immediate post-spill disclosure. G4 near-floor — cause and scope avoided. Both gate pairs collapsed.' },
+  ],
+
+  'biz-hist': [
+    { entity:'ENRN', doc:'10-K FY2000 · MD&A', tier:'t5', score:8, g4:6, g6:4, g7:72, g8:78, arch:'Structural Collapse', theater:true, note:'Archive reference. Filed February 2001, 10 months before bankruptcy. G4/G6 complete collapse. Maximum theater.' },
+    { entity:'LTCM', doc:'Investor Letter 1998', tier:'t4', score:18, g4:14, g6:9, g7:76, g8:80, arch:'Model Confidence Theater', theater:true, note:'Pre-collapse letter. G6 near-zero — leverage position never disclosed relative to stated confidence.' },
+    { entity:'Lehman Brothers', doc:'FY2007 10-K MD&A', tier:'t3', score:34, g4:27, g6:18, g7:85, g8:84, arch:'Accountability Theater', theater:true, note:'Filed 9 months before collapse. T3 on new Scan architecture. Known T5 theater.' },
+    { entity:'Theranos', doc:'Investor Letter 2015', tier:'t4', score:11, g4:8, g6:5, g7:66, g8:72, arch:'Structural Collapse', theater:false, note:'Post-conviction reference. Claim-to-evidence ratio: 14:1. G4/G6 complete collapse.' },
+  ],
+
+  'gov-found': [
+    { entity:'Federalist No. 51 (Madison)', doc:'1788 — Constitutional Architecture', tier:'t1', score:91, g4:92, g6:84, g7:89, g8:86, arch:'Foundational Reckoning', theater:false, note:'Highest G4 in corpus. "Ambition must be made to counteract ambition." Paradox is the explicit argument.' },
+    { entity:'Farewell Address (Washington)', doc:'1796 — Presidential', tier:'t1', score:86, g4:84, g6:81, g7:88, g8:85, arch:'Foundational Reckoning', theater:false, note:'Faction warning — G4 genuine. G6 elevated: Washington discloses his stake in the union\'s success.' },
+    { entity:'Gettysburg Address (Lincoln)', doc:'1863 — Presidential Address', tier:'t1', score:89, g4:87, g6:83, g7:86, g8:84, arch:'Authentic Reckoning', theater:false, note:'272 words. Highest ratio of G4+G6 to word count in presidential corpus.' },
+  ],
+
+  'gov-sotu': [
+    { entity:'State of the Union 2025', doc:'Presidential Address — 119th Congress', tier:'t3', score:44, g4:35, g6:28, g7:88, g8:90, arch:'Accountability Theater', theater:true, note:'Boilerplate optimism pattern. G7/G8 high (scripted). G4/G6 low — no genuine engagement with contradicting policy outcomes.' },
+    { entity:'State of the Union 2024', doc:'Presidential Address — 118th Congress', tier:'t3', score:46, g4:38, g6:30, g7:87, g8:89, arch:'Institutional Compliance', theater:true },
+    { entity:'State of the Union 2023', doc:'Presidential Address — 118th Congress', tier:'t3', score:43, g4:34, g6:27, g7:88, g8:91, arch:'Accountability Theater', theater:true, note:'SotU structural pattern: maximum G8 (belief-installation for a national audience), G4 structurally avoided.' },
+    { entity:'State of the Union 2001', doc:'Post-9/11 Address — 107th Congress', tier:'t2', score:59, g4:62, g6:48, g7:78, g8:76, arch:'Crisis Authenticity', theater:false, note:'Post-crisis address — G4 elevated above SotU baseline. Genuine paradox (vulnerability of open society) engaged.' },
+  ],
+
+  'gov-cong': [
+    { entity:'Zuckerberg Senate Testimony', doc:'Commerce Committee 2018', tier:'t3', score:40, g4:30, g6:21, g7:84, g8:87, arch:'Accountability Theater', theater:true, note:'G6 near-zero — financial stake in outcome never disclosed. Prepared remarks high G7/G8. Q&A G4 suppressed.' },
+    { entity:'Fauci — COVID Origins Hearing', doc:'Senate HELP Committee 2024', tier:'t2', score:56, g4:58, g6:44, g7:78, g8:75, arch:'Constrained Authenticity', theater:false, note:'G4 elevated by adversarial Q&A — forced paradox engagement. G6 moderate.' },
+    { entity:'Volcker — Inflation Testimony', doc:'Senate Banking Committee 1981', tier:'t1', score:78, g4:76, g6:71, g7:82, g8:79, arch:'Authentic Reckoning', theater:false, note:'G6 explicit — Volcker discloses the economic pain his own policy will cause. Rare in congressional testimony.' },
+    { entity:'Iraq WMD Intelligence Hearing', doc:'Senate Intelligence Committee 2003', tier:'t4', score:21, g4:16, g6:11, g7:74, g8:76, arch:'Structural Failure', theater:true, note:'Pre-war testimony. G4 collapse — contradicting intelligence explicitly withheld from hearing record.' },
+  ],
+
+  'gov-reg': [
+    { entity:'Net Neutrality Rule 2015', doc:'FCC — Federal Register Vol. 80', tier:'t2', score:61, g4:63, g6:52, g7:80, g8:78, arch:'Structural Integrity, Contested', theater:false, note:'G4 elevated — rulemaking explicitly engages industry objections. G6 moderate.' },
+    { entity:'Net Neutrality Repeal 2017', doc:'FCC — Federal Register Vol. 82', tier:'t3', score:42, g4:33, g6:25, g7:85, g8:84, arch:'Accountability Theater', theater:true, note:'Repeal document — G4 collapse. Prior objections not engaged; G7/G8 structurally high (legal form). Theater flag.' },
+    { entity:'Clean Power Plan 2015', doc:'EPA — Federal Register Vol. 80', tier:'t2', score:64, g4:66, g6:55, g7:82, g8:80, arch:'Structural Integrity, Contested', theater:false },
+    { entity:'Dodd-Frank Final Rule 2014', doc:'Fed / SEC / CFTC Joint Rulemaking', tier:'t1', score:69, g4:70, g6:62, g7:84, g8:82, arch:'Principled Institutional', theater:false, note:'Multi-agency joint rule. G4 elevated — dissenting comment letters explicitly addressed. G6 moderate.' },
+  ],
+
+};
+
+// Archetype distribution data
+const ARCHETYPES = [
+  { name:'Accountability Theater', count:18, color:'#F0A020' },
+  { name:'Institutional Whitewash', count:14, color:'#C88030' },
+  { name:'Principled Institutional', count:11, color:'#F7D85D' },
+  { name:'Structural Collapse', count:8, color:'#E06070' },
+  { name:'Authentic Reckoning', count:7, color:'#22C97A' },
+  { name:'High-Ground Precedent', count:6, color:'#7DEBFF' },
+  { name:'Constrained Authenticity', count:5, color:'#7DEBFF' },
+  { name:'Foundational Reckoning', count:4, color:'#F7D85D' },
+];
+
+// ── RENDER ───────────────────────────────────────────────────────────────────
+
+let currentTierFilter = 'all';
+let hiddenVerts = new Set();
+
+function tierColor(t) {
+  return { t1:'#F7D85D', t2:'#7DEBFF', t3:'#F0A020', t4:'#E06070', t5:'#5A7090' }[t] || '#7A9ABE';
+}
+
+function renderTiles() {
+  let total = 0;
+  Object.entries(TILES).forEach(([containerId, tiles], idx) => {
+    const container = document.getElementById(containerId);
+    if (!container) return;
+    container.innerHTML = '';
+    const vert = containerId.startsWith('law') ? 'law' : containerId.startsWith('biz') ? 'biz' : 'gov';
+    tiles.forEach((t, i) => {
+      const showTier = currentTierFilter === 'all' || currentTierFilter === t.tier || (currentTierFilter === 'theater' && t.theater);
+      const showVert = !hiddenVerts.has(vert);
+      const div = document.createElement('div');
+      div.className = `tile ${t.tier}`;
+      div.style.animationDelay = `${(idx * tiles.length + i) * 45}ms`;
+      if (!showTier || !showVert) div.classList.add('hidden');
+      if (t.theater) {
+        div.innerHTML += '<div class="tile-theater-flag"></div>';
+      }
+      div.innerHTML += `
+        <div class="tile-tier">${t.tier.toUpperCase()}</div>
+        <div style="overflow:hidden;">
+          <div class="tile-entity">${t.entity}</div>
+          <div class="tile-score">${t.score}</div>
+        </div>
+        <div class="tile-archetype">${t.arch}</div>
+      `;
+      div.addEventListener('mouseenter', e => showTooltip(e, t));
+      div.addEventListener('mousemove', e => moveTooltip(e));
+      div.addEventListener('mouseleave', hideTooltip);
+      container.appendChild(div);
+      if (showTier && showVert) total++;
+    });
+  });
+  return total;
+}
+
+function showTooltip(e, t) {
+  const tip = document.getElementById('tooltip');
+  tip.className = 'tooltip visible';
+  const gColor = (val) => {
+    if (val >= 70) return '#22C97A';
+    if (val >= 45) return '#F0A020';
+    return '#E06070';
+  };
+  const barColor = (g) => {
+    if (g === 'g4' || g === 'g6') return t.tier === 't1' || t.tier === 't2' ? '#F7D85D' : '#E06070';
+    return '#7DEBFF';
+  };
+  tip.innerHTML = `
+    <div class="tt-tier" style="color:${tierColor(t.tier)};">${t.tier.toUpperCase()} · Integrity Tier</div>
+    <div class="tt-entity">${t.entity}</div>
+    <div class="tt-doc">${t.doc}</div>
+    <div class="tt-composite">
+      <div class="tt-score-n" style="color:${tierColor(t.tier)};">${t.score}</div>
+      <div class="tt-score-l">/ 100 composite</div>
+    </div>
+    <div class="tt-gates">
+      ${[['G4','Paradox Resolution',t.g4],['G6','Latent Intent',t.g6],['G7','Argumentative Structure',t.g7],['G8','Rhetorical Architecture',t.g8]].map(([gn,gl,gv]) => `
+        <div class="tt-gate">
+          <div class="tt-gate-hdr">
+            <span class="tt-gate-name" style="color:${['G4','G6'].includes(gn)?'#D89A0B':'#7A9ABE'}">${gn} · ${gl}</span>
+            <span class="tt-gate-val" style="color:${gColor(gv)}">${gv}</span>
+          </div>
+          <div class="tt-bar-track"><div class="tt-bar-fill" style="width:${gv}%;background:${gColor(gv)};"></div></div>
+        </div>
+      `).join('')}
+    </div>
+    <div class="tt-arch">
+      <div class="tt-arch-label">Archetype</div>
+      <div class="tt-arch-name">${t.arch}</div>
+    </div>
+    ${t.theater ? `<div class="tt-theater">⚠ Accountability Theater — G7+G8 high while G4+G6 collapsed. Document is structurally convincing but foundationally absent.</div>` : ''}
+    ${t.note ? `<div style="margin-top:10px;font-size:10px;color:var(--muted);line-height:1.6;border-top:1px solid var(--border);padding-top:10px;">${t.note}</div>` : ''}
+  `;
+  moveTooltip(e);
+}
+
+function moveTooltip(e) {
+  const tip = document.getElementById('tooltip');
+  let x = e.clientX + 16;
+  let y = e.clientY - 20;
+  if (x + 290 > window.innerWidth) x = e.clientX - 296;
+  if (y + tip.offsetHeight > window.innerHeight) y = window.innerHeight - tip.offsetHeight - 10;
+  tip.style.left = x + 'px';
+  tip.style.top = y + 'px';
+}
+
+function hideTooltip() {
+  document.getElementById('tooltip').className = 'tooltip';
+}
+
+function setTierFilter(tier, btn) {
+  currentTierFilter = tier;
+  document.querySelectorAll('.filter-pill').forEach(p => p.classList.remove('active'));
+  btn.classList.add('active');
+  renderTiles();
+}
+
+function toggleVert(vert, btn) {
+  if (hiddenVerts.has(vert)) {
+    hiddenVerts.delete(vert);
+    btn.classList.add('active');
+  } else {
+    hiddenVerts.add(vert);
+    btn.classList.remove('active');
+  }
+  renderTiles();
+}
+
+function renderArchetypes() {
+  const grid = document.getElementById('archGrid');
+  const max = Math.max(...ARCHETYPES.map(a=>a.count));
+  grid.innerHTML = ARCHETYPES.map(a => `
+    <div class="ab-item">
+      <div class="ab-name">${a.name}</div>
+      <div class="ab-track"><div class="ab-fill" style="width:${(a.count/max*100).toFixed(1)}%;background:${a.color};"></div></div>
+      <div class="ab-meta">
+        <div class="ab-count">${a.count} records</div>
+        <div class="ab-pct">${(a.count/73*100).toFixed(0)}%</div>
+      </div>
+    </div>
+  `).join('');
+}
+
+// Corpus counter animation
+function animateCounter() {
+  const el = document.getElementById('corpusCount');
+  const target = 16421;
+  let current = 16000;
+  const step = () => {
+    current = Math.min(current + Math.ceil(Math.random()*3 + 1), target);
+    el.textContent = current.toLocaleString();
+    if (current < target) setTimeout(step, 120);
+  };
+  setTimeout(step, 800);
+
+  // Slow drift after initial count
+  setTimeout(() => {
+    setInterval(() => {
+      const n = parseInt(el.textContent.replace(/,/g,'')) + 1;
+      el.textContent = n.toLocaleString();
+    }, 8000 + Math.random()*4000);
+  }, 4000);
+}
+
+// ── INIT ─────────────────────────────────────────────────────────────────────
+document.addEventListener('DOMContentLoaded', () => {
+  renderTiles();
+  renderArchetypes();
+  animateCounter();
+
+  // Stagger archetype bars for entrance
+  setTimeout(() => {
+    document.querySelectorAll('.ab-fill').forEach((el,i) => {
+      el.style.width = '0';
+      setTimeout(() => {
+        el.style.transition = 'width 1.2s cubic-bezier(0.16,1,0.3,1)';
+        el.style.width = el.style.width || el.getAttribute('style').match(/width:([^;]+)/)?.[1] || '0';
+      }, 200 + i*80);
+    });
+  }, 100);
+});
+</script>
+
+</body>
+</html>

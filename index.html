@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>4CITE.ai — Structural Integrity Analysis Platform</title>
-<meta name="description" content="4CITE analyzes the structural integrity of any document — not just whether citations exist, but whether the reasoning holds. Domain-agnostic. Measurable. Reproducible.">
+<meta name="description" content="4CITE analyzes the structural integrity of any document — not just whether citations exist, but whether the reasoning holds. Law, business, government. Now in closed beta.">
 <meta name="theme-color" content="#07152E">
 <link rel="apple-touch-icon" href="icons/icon-192.png">
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -33,7 +33,7 @@
 html { scroll-behavior:smooth; }
 body { background:var(--midnight); color:var(--text); font-family:'Space Grotesk',-apple-system,sans-serif; line-height:1.65; font-size:16px; overflow-x:hidden; }
 
-/* ── MODAL ──────────────────────────────────────────────── */
+/* ── MODAL ── */
 .modal-overlay { display:none; position:fixed; inset:0; z-index:1000; background:rgba(7,21,46,0.88); backdrop-filter:blur(12px); align-items:center; justify-content:center; }
 .modal-overlay.visible { display:flex; }
 .modal-box { background:var(--card); border:1px solid var(--border); border-radius:16px; padding:48px 44px; max-width:480px; width:90%; box-shadow:0 32px 80px rgba(0,0,0,0.5); }
@@ -55,18 +55,7 @@ body { background:var(--midnight); color:var(--text); font-family:'Space Grotesk
 .modal-success-title { font-size:20px; font-weight:700; color:var(--green); margin-bottom:10px; }
 .modal-success-sub { font-size:14px; color:var(--steel); line-height:1.7; }
 
-/* ── TOAST ──────────────────────────────────────────────── */
-.toast { display:none; position:fixed; bottom:32px; right:32px; z-index:900; background:var(--card); border:1px solid var(--gold); border-radius:12px; padding:20px 24px; max-width:340px; box-shadow:0 12px 40px rgba(0,0,0,0.4); }
-.toast.visible { display:block; animation:slideUp 0.4s ease; }
-@keyframes slideUp { from{opacity:0;transform:translateY(20px);} to{opacity:1;transform:translateY(0);} }
-.toast-label { font-size:10px; font-weight:700; letter-spacing:3px; text-transform:uppercase; color:var(--goldf); margin-bottom:8px; }
-.toast-text { font-size:13px; color:var(--text); line-height:1.6; margin-bottom:14px; }
-.toast-row { display:flex; gap:12px; align-items:center; }
-.toast-btn { background:linear-gradient(135deg,#2B63D9,#0A2E80); border:none; color:var(--white); font-family:'Space Grotesk',sans-serif; font-size:11px; font-weight:600; letter-spacing:1.5px; text-transform:uppercase; padding:9px 18px; border-radius:6px; cursor:pointer; text-decoration:none; }
-.toast-dismiss { font-size:11px; color:var(--muted); cursor:pointer; }
-.toast-dismiss:hover { color:var(--steel); }
-
-/* ── NAV ────────────────────────────────────────────────── */
+/* ── NAV ── */
 nav { position:fixed; top:0; left:0; right:0; z-index:200; background:rgba(7,21,46,0.95); backdrop-filter:blur(16px); border-bottom:1px solid var(--border); padding:0 60px; height:62px; display:flex; align-items:center; gap:40px; }
 .nav-brand { font-size:22px; font-weight:700; margin-right:auto; letter-spacing:-0.5px; }
 .nav-brand .n4 { color:var(--goldf); }
@@ -74,11 +63,11 @@ nav { position:fixed; top:0; left:0; right:0; z-index:200; background:rgba(7,21,
 .nav-brand .na { color:var(--cyan); font-weight:300; }
 nav a { color:var(--steel); text-decoration:none; font-size:12px; font-weight:500; letter-spacing:2.5px; text-transform:uppercase; transition:color 0.2s; }
 nav a:hover { color:var(--goldf); }
-.nav-free { color:var(--goldf) !important; }
+.nav-beta { color:var(--goldf) !important; }
 .nav-cta { background:linear-gradient(135deg,#2B63D9,#0A2E80); border:1px solid rgba(43,99,217,0.6); color:var(--white) !important; padding:9px 22px; border-radius:6px; letter-spacing:1.5px !important; }
 .nav-cta:hover { background:linear-gradient(135deg,#3570E8,#1035A0) !important; box-shadow:0 4px 20px rgba(43,99,217,0.35); }
 
-/* ── HERO ───────────────────────────────────────────────── */
+/* ── HERO ── */
 .hero { min-height:100vh; display:flex; flex-direction:column; justify-content:center; padding:140px 80px 100px; position:relative; overflow:hidden; }
 .hero-glow1 { position:absolute; top:-200px; right:-300px; width:900px; height:900px; background:radial-gradient(circle,rgba(43,99,217,0.10) 0%,transparent 65%); pointer-events:none; }
 .hero-glow2 { position:absolute; bottom:-300px; left:-200px; width:700px; height:700px; background:radial-gradient(circle,rgba(216,154,11,0.05) 0%,transparent 65%); pointer-events:none; }
@@ -102,148 +91,86 @@ nav a:hover { color:var(--goldf); }
 .stat-l { font-size:11px; color:var(--muted); letter-spacing:2px; text-transform:uppercase; margin-top:6px; }
 .stat-div { width:1px; height:48px; background:var(--border); align-self:center; }
 
-/* ── DEMO SECTION ───────────────────────────────────────── */
-.demo-wrap { background:#060D1E; border-top:1px solid var(--border); border-bottom:1px solid var(--border); padding:80px; }
-.demo-inner { max-width:1200px; margin:0 auto; }
-.demo-head { text-align:center; margin-bottom:36px; }
-.demo-ey { font-size:10px; font-weight:600; letter-spacing:6px; color:var(--goldf); text-transform:uppercase; margin-bottom:12px; }
-.demo-t { font-size:clamp(24px,3vw,38px); font-weight:700; color:var(--white); margin-bottom:12px; }
-.demo-s { font-size:15px; color:var(--steel); max-width:520px; margin:0 auto 18px; line-height:1.7; }
-.live-badge { display:inline-flex; align-items:center; gap:8px; background:rgba(34,201,122,0.08); border:1px solid rgba(34,201,122,0.25); border-radius:20px; padding:5px 16px; font-size:11px; font-weight:600; letter-spacing:2px; text-transform:uppercase; color:var(--green); }
-.live-badge::before { content:''; width:6px; height:6px; border-radius:50%; background:var(--green); animation:blink 2s ease infinite; }
-@keyframes blink { 0%,100%{opacity:1;} 50%{opacity:0.3;} }
-
-/* pips */
-.pips { display:flex; justify-content:center; gap:8px; margin:24px 0 6px; }
-.pip { width:36px; height:5px; border-radius:3px; background:var(--border); transition:background 0.4s; }
-.pip.used { background:var(--goldf); }
-.pip.on   { background:var(--green); }
-.pip-lbl  { text-align:center; font-size:11px; color:var(--muted); letter-spacing:2px; text-transform:uppercase; margin-bottom:32px; }
-
-/* two columns */
-.cols { display:grid; grid-template-columns:1fr 1fr; gap:32px; align-items:start; }
-.col  { display:flex; flex-direction:column; gap:14px; }
-.col-lbl { font-size:10px; font-weight:600; letter-spacing:4px; color:var(--muted); text-transform:uppercase; }
-
-/* input side */
-textarea#inputArea {
-  min-height:300px; background:var(--card); border:1px solid var(--border);
-  border-radius:10px; color:var(--text); font-family:'Space Grotesk',monospace;
-  font-size:13px; line-height:1.75; padding:20px; resize:none; outline:none; transition:border-color 0.2s;
+/* ── BETA STRIP ── */
+.beta-strip {
+  background: linear-gradient(135deg, #060A1A 0%, #0B1F3D 50%, #07152E 100%);
+  border-top:1px solid var(--border); border-bottom:1px solid var(--border);
+  padding: 72px 80px;
+  position: relative; overflow:hidden;
 }
-textarea#inputArea:focus { border-color:var(--blue); }
-textarea#inputArea::placeholder { color:var(--muted); }
-.ctrl { display:flex; align-items:center; gap:14px; }
-.btn-run { background:linear-gradient(135deg,#2B63D9,#0A2E80); border:1px solid rgba(43,99,217,0.6); color:var(--white); font-family:'Space Grotesk',sans-serif; font-size:13px; font-weight:600; letter-spacing:1.5px; text-transform:uppercase; padding:12px 28px; border-radius:8px; cursor:pointer; transition:all 0.2s; }
-.btn-run:hover { background:linear-gradient(135deg,#3570E8,#1035A0); transform:translateY(-1px); box-shadow:0 4px 20px rgba(43,99,217,0.3); }
-.btn-run:active { transform:translateY(0); }
-.btn-clr { background:transparent; border:1px solid var(--border); color:var(--muted); font-family:'Space Grotesk',sans-serif; font-size:12px; padding:12px 20px; border-radius:8px; cursor:pointer; transition:all 0.2s; }
-.btn-clr:hover { border-color:var(--steel); color:var(--steel); }
-.cc { margin-left:auto; font-size:11px; color:var(--muted); }
-.input-note { font-size:12px; color:var(--muted); line-height:1.7; border-left:2px solid var(--border); padding-left:14px; }
-.input-note strong { color:var(--steel); }
-
-/* ── READOUT PANEL ──────────────────────────────────────── */
-/* The right column is always an instrument panel — never a blank box */
-.readout {
-  background: linear-gradient(160deg, #0A1830 0%, #060D1E 100%);
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  overflow: hidden;
-  position: relative;
+.beta-strip::before {
+  content:''; position:absolute; inset:0;
+  background-image: linear-gradient(rgba(43,99,217,0.025) 1px, transparent 1px), linear-gradient(90deg, rgba(43,99,217,0.025) 1px, transparent 1px);
+  background-size:48px 48px; pointer-events:none;
 }
-/* subtle circuit grid overlay */
-.readout::before {
-  content: '';
-  position: absolute; inset: 0;
-  background-image:
-    linear-gradient(rgba(43,99,217,0.04) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(43,99,217,0.04) 1px, transparent 1px);
-  background-size: 32px 32px;
-  pointer-events: none;
-}
-.readout-header {
-  display: flex; align-items: center; justify-content: space-between;
-  padding: 14px 20px;
-  background: rgba(11,35,88,0.5);
-  border-bottom: 1px solid var(--border);
-  position: relative;
-}
-.rh-title { font-size:10px; font-weight:700; letter-spacing:4px; text-transform:uppercase; color:var(--muted); }
-.rh-status { display:flex; align-items:center; gap:7px; font-size:10px; letter-spacing:2px; text-transform:uppercase; }
-.rh-dot { width:7px; height:7px; border-radius:50%; }
-.rh-dot.standby { background:var(--muted); }
-.rh-dot.active  { background:var(--green); box-shadow:0 0 8px var(--green); animation:pulse-dot 1.5s ease infinite; }
-@keyframes pulse-dot { 0%,100%{opacity:1;} 50%{opacity:0.4;} }
+.beta-glow { position:absolute; top:-200px; right:-200px; width:600px; height:600px; background:radial-gradient(circle,rgba(247,216,93,0.05) 0%,transparent 65%); pointer-events:none; }
+.beta-inner { max-width:720px; margin:0 auto; text-align:center; position:relative; }
+.beta-badge { display:inline-flex; align-items:center; gap:8px; background:rgba(247,216,93,0.08); border:1px solid rgba(247,216,93,0.3); border-radius:20px; padding:5px 18px; font-size:10px; font-weight:700; letter-spacing:3px; text-transform:uppercase; color:var(--goldf); margin-bottom:24px; }
+.beta-badge::before { content:'◆'; font-size:8px; }
+.beta-hl { font-size:clamp(26px,3.5vw,42px); font-weight:700; color:var(--white); line-height:1.1; margin-bottom:16px; }
+.beta-hl .g { color:var(--goldf); }
+.beta-sub { font-size:16px; color:var(--steel); line-height:1.75; max-width:580px; margin:0 auto 40px; }
+.beta-sub strong { color:var(--text); font-weight:500; }
 
-.readout-body { padding:20px; display:flex; flex-direction:column; gap:16px; position:relative; }
+/* Inline waitlist form */
+.waitlist-form { display:flex; gap:10px; max-width:580px; margin:0 auto 16px; flex-wrap:wrap; }
+.waitlist-email { flex:1; min-width:200px; background:rgba(255,255,255,0.04); border:1px solid var(--border); border-radius:8px; color:var(--text); font-family:'Space Grotesk',sans-serif; font-size:14px; padding:13px 18px; outline:none; transition:border-color 0.2s; }
+.waitlist-email:focus { border-color:var(--blue); }
+.waitlist-email::placeholder { color:var(--muted); }
+.waitlist-select { background:rgba(255,255,255,0.04); border:1px solid var(--border); border-radius:8px; color:var(--text); font-family:'Space Grotesk',sans-serif; font-size:13px; padding:13px 16px; outline:none; cursor:pointer; -webkit-appearance:none; min-width:170px; transition:border-color 0.2s; }
+.waitlist-select:focus { border-color:var(--blue); }
+.waitlist-select option { background:#0C1628; }
+.waitlist-btn { background:linear-gradient(135deg,#D89A0B,#8B5E00); border:1px solid rgba(216,154,11,0.6); color:var(--midnight); font-family:'Space Grotesk',sans-serif; font-size:12px; font-weight:700; letter-spacing:2px; text-transform:uppercase; padding:13px 28px; border-radius:8px; cursor:pointer; transition:all 0.2s; white-space:nowrap; }
+.waitlist-btn:hover { background:linear-gradient(135deg,#F7D85D,#C09010); box-shadow:0 6px 24px rgba(216,154,11,0.3); }
+.waitlist-note { font-size:11px; color:var(--muted); letter-spacing:1px; }
+.waitlist-success { display:none; text-align:center; padding:20px; background:rgba(34,201,122,0.06); border:1px solid rgba(34,201,122,0.2); border-radius:10px; }
+.waitlist-success-icon { font-size:28px; margin-bottom:8px; }
+.waitlist-success-title { font-size:16px; font-weight:700; color:var(--green); margin-bottom:4px; }
+.waitlist-success-sub { font-size:13px; color:var(--steel); }
 
-/* score ring block */
-.ring-block {
-  display: flex; align-items: center; gap: 24px;
-  background: rgba(7,21,46,0.6);
-  border: 1px solid rgba(26,48,96,0.8);
-  border-radius: 10px; padding: 20px 24px;
-}
-.ring-block svg { flex-shrink:0; }
-.ring-data { flex:1; }
-.ring-label { font-size:9px; letter-spacing:4px; color:var(--muted); text-transform:uppercase; margin-bottom:6px; }
-.ring-score { font-size:46px; font-weight:700; color:var(--white); line-height:1; }
-.ring-score.standby { color:rgba(255,255,255,0.15); }
-.ring-verdict { font-size:13px; font-weight:600; margin-top:7px; color:var(--muted); }
-.ring-sub { font-size:11px; color:var(--muted); margin-top:4px; line-height:1.6; }
+/* ── INTEGRITY MAP PREVIEW ── */
+.map-preview { background:#060D1E; border-top:1px solid var(--border); border-bottom:1px solid var(--border); padding:80px 80px 64px; }
+.mp-inner { max-width:1200px; margin:0 auto; }
+.mp-head { text-align:center; margin-bottom:48px; }
+.mp-ey { font-size:10px; font-weight:600; letter-spacing:6px; color:var(--goldf); text-transform:uppercase; margin-bottom:12px; }
+.mp-t { font-size:clamp(22px,3vw,34px); font-weight:700; color:var(--white); margin-bottom:10px; }
+.mp-s { font-size:14px; color:var(--steel); max-width:520px; margin:0 auto 6px; line-height:1.7; }
+.mp-note { font-size:11px; color:var(--muted); letter-spacing:1px; }
+.mp-cols { display:grid; grid-template-columns:1fr 1fr 1fr; gap:16px; margin-bottom:36px; }
+.mp-col-head { font-size:9px; font-weight:700; letter-spacing:3px; text-transform:uppercase; padding:8px 12px; border-radius:6px 6px 0 0; margin-bottom:8px; }
+.mp-col-head.law { color:var(--law); background:rgba(196,40,64,0.08); border-bottom:2px solid var(--law); }
+.mp-col-head.biz { color:var(--biz); background:rgba(26,122,191,0.08); border-bottom:2px solid var(--biz); }
+.mp-col-head.gov { color:var(--gov); background:rgba(58,122,82,0.08); border-bottom:2px solid var(--gov); }
+.mp-tiles { display:flex; flex-wrap:wrap; gap:6px; }
+.mp-tile { border-radius:6px; border:1px solid; padding:8px 10px; min-width:90px; flex:1; position:relative; }
+.mp-tile.t1 { background:rgba(247,216,93,0.08); border-color:rgba(247,216,93,0.35); }
+.mp-tile.t2 { background:rgba(125,235,255,0.07); border-color:rgba(125,235,255,0.30); }
+.mp-tile.t3 { background:rgba(240,160,32,0.08); border-color:rgba(240,160,32,0.35); }
+.mp-tile.t4 { background:rgba(200,48,64,0.08); border-color:rgba(200,48,64,0.30); }
+.mp-tile.t5 { background:rgba(60,80,100,0.08); border-color:rgba(60,80,100,0.25); }
+.mp-tile-tier { font-size:7px; font-weight:700; letter-spacing:2px; text-transform:uppercase; margin-bottom:4px; }
+.mp-tile.t1 .mp-tile-tier { color:rgba(247,216,93,0.8); }
+.mp-tile.t2 .mp-tile-tier { color:rgba(125,235,255,0.8); }
+.mp-tile.t3 .mp-tile-tier { color:rgba(240,160,32,0.8); }
+.mp-tile.t4 .mp-tile-tier { color:rgba(224,96,112,0.8); }
+.mp-tile.t5 .mp-tile-tier { color:rgba(90,112,144,0.7); }
+.mp-tile-name { font-size:10px; font-weight:600; color:var(--white); line-height:1.2; margin-bottom:2px; }
+.mp-tile-score { font-size:11px; font-weight:700; float:right; margin-top:-18px; }
+.mp-tile.t1 .mp-tile-score { color:rgba(247,216,93,0.9); }
+.mp-tile.t2 .mp-tile-score { color:rgba(125,235,255,0.9); }
+.mp-tile.t3 .mp-tile-score { color:rgba(240,160,32,0.9); }
+.mp-tile.t4 .mp-tile-score { color:rgba(224,96,112,0.9); }
+.mp-tile.t5 .mp-tile-score { color:rgba(90,112,144,0.8); }
+.mp-theater { position:absolute; top:-3px; right:-3px; width:8px; height:8px; border-radius:50%; background:#FF5060; border:1.5px solid #060D1E; }
+.mp-coming { display:flex; align-items:center; justify-content:center; height:80px; border-radius:8px; border:1px dashed rgba(26,48,96,0.5); color:var(--muted); font-size:10px; font-weight:600; letter-spacing:3px; text-transform:uppercase; margin-top:6px; }
+.mp-link { display:block; text-align:center; margin-top:8px; }
+.mp-link a { font-size:12px; font-weight:600; letter-spacing:2px; text-transform:uppercase; color:var(--steel); text-decoration:none; border-bottom:1px solid var(--border); padding-bottom:2px; transition:all 0.2s; }
+.mp-link a:hover { color:var(--goldf); border-color:var(--gold); }
+.mp-legend { display:flex; gap:20px; justify-content:center; flex-wrap:wrap; margin-top:28px; }
+.mpl-item { display:flex; align-items:center; gap:7px; font-size:10px; color:var(--muted); }
+.mpl-dot { width:8px; height:8px; border-radius:2px; border:1px solid; }
 
-/* gate bars block */
-.bars-block {
-  background: rgba(7,21,46,0.6);
-  border: 1px solid rgba(26,48,96,0.8);
-  border-radius: 10px; padding: 18px 20px;
-}
-.bars-title { font-size:9px; letter-spacing:4px; color:var(--muted); text-transform:uppercase; margin-bottom:16px; }
-.bar-row { margin-bottom:13px; }
-.bar-row:last-child { margin-bottom:0; }
-.bar-hdr { display:flex; justify-content:space-between; align-items:center; margin-bottom:6px; }
-.bar-name { font-size:11px; font-weight:500; color:var(--steel); }
-.bar-val  { font-size:11px; font-weight:600; color:var(--muted); }
-.bar-track { height:5px; background:rgba(255,255,255,0.05); border-radius:3px; overflow:hidden; }
-.bar-fill  { height:100%; border-radius:3px; width:0; transition:width 0.85s cubic-bezier(0.16,1,0.3,1); }
-
-/* findings block */
-.findings-block {
-  background: rgba(7,21,46,0.6);
-  border: 1px solid rgba(26,48,96,0.8);
-  border-radius: 10px; padding: 18px 20px;
-}
-.findings-hdr { font-size:9px; letter-spacing:4px; color:var(--muted); text-transform:uppercase; margin-bottom:14px; }
-.finding { display:flex; align-items:flex-start; gap:10px; padding:8px 0; border-bottom:1px solid rgba(26,48,96,0.3); font-size:12px; line-height:1.5; }
-.finding:last-child { border-bottom:none; padding-bottom:0; }
-.f-dot { width:7px; height:7px; border-radius:50%; flex-shrink:0; margin-top:4px; }
-.f-text { color:var(--text); }
-.f-tag { margin-left:auto; font-size:9px; font-weight:700; letter-spacing:1.5px; text-transform:uppercase; padding:2px 7px; border-radius:8px; flex-shrink:0; }
-
-/* standby overlay (before first run) */
-.standby-msg {
-  position: absolute; inset: 0;
-  display: flex; flex-direction:column; align-items:center; justify-content:center;
-  gap: 14px;
-  background: rgba(6,13,30,0.75);
-  backdrop-filter: blur(3px);
-  border-radius: 12px;
-  pointer-events: none;
-  transition: opacity 0.5s;
-  z-index: 2;
-}
-.standby-msg.hidden { opacity:0; pointer-events:none; }
-.sb-shield { width:270px; height:338px; opacity:0.6; filter:drop-shadow(0 0 20px rgba(43,99,217,0.35)); }
-.sb-text { font-size:11px; color:var(--muted); letter-spacing:3px; text-transform:uppercase; }
-
-/* deeper prompt */
-.deeper { margin-top:4px; padding:18px 20px; border:1px solid rgba(247,216,93,0.18); border-radius:10px; background:rgba(216,154,11,0.04); display:none; }
-.deeper.on { display:block; }
-.deeper-t { font-size:13px; font-weight:600; color:var(--goldf); margin-bottom:6px; }
-.deeper-s { font-size:12px; color:var(--steel); line-height:1.6; margin-bottom:14px; }
-
-/* ── POS BAR / SECTIONS (unchanged) ────────────────────── */
+/* ── POSITIONING BAR / SECTIONS ── */
 .pos-bar { background:var(--navy); border-top:1px solid var(--border); border-bottom:1px solid var(--border); padding:28px 80px; display:flex; align-items:center; justify-content:center; }
 .pos-item { text-align:center; padding:0 48px; border-right:1px solid var(--border); }
 .pos-item:last-child { border-right:none; }
@@ -252,14 +179,12 @@ textarea#inputArea::placeholder { color:var(--muted); }
 .pos-name.ours { color:var(--goldf); font-size:17px; }
 .pos-desc { font-size:12px; color:var(--muted); }
 .pos-own { font-size:10px; color:var(--goldf); letter-spacing:2px; text-transform:uppercase; margin-top:6px; font-weight:600; }
-
 .sec { padding:110px 80px; max-width:1200px; margin:0 auto; }
 .sec-lbl { font-size:10px; font-weight:600; letter-spacing:6px; text-transform:uppercase; color:var(--muted); margin-bottom:14px; }
 .sec-t { font-size:clamp(30px,4vw,48px); font-weight:700; color:var(--white); margin-bottom:16px; line-height:1.1; }
 .sec-t .g { color:var(--goldf); }
 .sec-s { font-size:17px; color:var(--steel); max-width:560px; line-height:1.75; margin-bottom:56px; }
 .divider { border:none; border-top:1px solid rgba(26,48,96,0.5); }
-
 .gates { display:grid; grid-template-columns:1fr 1fr; gap:20px; margin-top:8px; }
 .gc { background:var(--card); border:1px solid var(--border); border-radius:12px; padding:32px 28px; position:relative; overflow:hidden; transition:border-color 0.25s,transform 0.25s; }
 .gc:hover { border-color:var(--blue); transform:translateY(-3px); }
@@ -282,7 +207,6 @@ textarea#inputArea::placeholder { color:var(--muted); }
 .th-lbl { font-size:10px; letter-spacing:4px; text-transform:uppercase; color:#E05070; margin-bottom:6px; font-weight:700; }
 .th-txt { font-size:14px; color:var(--text); line-height:1.6; }
 .th-code { font-family:monospace; font-size:13px; color:#E05070; background:rgba(200,40,60,0.08); padding:2px 8px; border-radius:4px; margin-top:8px; display:inline-block; }
-
 .t-tbl { width:100%; border-collapse:collapse; margin-top:8px; }
 .t-tbl th { text-align:left; font-size:10px; letter-spacing:4px; text-transform:uppercase; color:var(--muted); border-bottom:1px solid var(--border); padding:12px 16px; }
 .t-tbl td { padding:16px; border-bottom:1px solid rgba(26,48,96,0.4); font-size:14px; line-height:1.5; vertical-align:top; }
@@ -295,7 +219,6 @@ textarea#inputArea::placeholder { color:var(--muted); }
 .t5{background:rgba(100,100,120,0.12);color:#8080A0;border:1px solid rgba(100,100,120,0.3);}
 .t-sc{font-weight:700;color:var(--white);white-space:nowrap;}
 .t-d{color:var(--steel);}
-
 .verts { display:grid; grid-template-columns:repeat(3,1fr); gap:24px; margin-top:8px; }
 .vc { background:var(--card); border:1px solid var(--border); border-radius:12px; padding:36px 28px; transition:border-color 0.25s,transform 0.25s; position:relative; overflow:hidden; }
 .vc::before { content:''; position:absolute; top:0; left:0; right:0; height:4px; }
@@ -309,28 +232,17 @@ textarea#inputArea::placeholder { color:var(--muted); }
 .vd { font-size:14px; color:var(--steel); line-height:1.7; margin-bottom:24px; }
 .vs { font-size:10px; letter-spacing:2px; text-transform:uppercase; padding:5px 14px; border-radius:20px; display:inline-block; font-weight:600; }
 .s-act{background:rgba(34,201,122,0.12);color:var(--green);border:1px solid rgba(34,201,122,0.3);}
-.s-fut{background:rgba(122,154,190,0.08);color:var(--muted);border:1px solid rgba(122,154,190,0.2);}
-
+.s-beta{background:rgba(247,216,93,0.08);color:var(--goldf);border:1px solid rgba(247,216,93,0.25);}
 .evgrid { display:grid; grid-template-columns:1fr 1fr; gap:20px; }
 .ec { background:var(--card); border:1px solid var(--border); border-radius:12px; padding:28px; }
 .en { font-size:44px; font-weight:700; color:var(--goldf); line-height:1; margin-bottom:10px; }
 .el { font-size:13px; color:var(--white); font-weight:600; margin-bottom:8px; }
 .ed { font-size:12px; color:var(--steel); line-height:1.6; }
 .es { font-size:10px; color:var(--muted); letter-spacing:1px; text-transform:uppercase; margin-top:12px; padding-top:12px; border-top:1px solid rgba(26,48,96,0.5); }
-
-.pgrid { display:grid; grid-template-columns:repeat(3,1fr); gap:20px; }
-.pc { background:var(--card); border:1px solid var(--border); border-radius:12px; padding:32px 24px; }
-.pt { font-size:10px; letter-spacing:4px; text-transform:uppercase; color:var(--muted); margin-bottom:14px; }
-.pn { font-size:17px; font-weight:700; color:var(--white); margin-bottom:16px; }
-.pa { font-size:32px; font-weight:700; color:var(--goldf); line-height:1; margin-bottom:6px; }
-.pp { font-size:12px; color:var(--muted); margin-bottom:20px; }
-.pd { font-size:13px; color:var(--steel); line-height:1.7; }
-
 .cta-sec { background:linear-gradient(135deg,#060A1A 0%,#0B1F3D 100%); border-top:1px solid var(--border); padding:110px 80px; text-align:center; position:relative; overflow:hidden; }
 .cta-sec::before { content:''; position:absolute; top:-200px; left:50%; transform:translateX(-50%); width:800px; height:800px; background:radial-gradient(circle,rgba(216,154,11,0.06) 0%,transparent 65%); pointer-events:none; }
 .cta-hl { font-size:clamp(28px,4vw,52px); font-weight:700; color:var(--white); margin-bottom:20px; line-height:1.1; }
 .cta-s { font-size:17px; color:var(--steel); max-width:480px; margin:0 auto 40px; line-height:1.7; }
-
 footer { background:#030710; border-top:1px solid var(--border); padding:40px 80px; display:flex; align-items:center; justify-content:space-between; }
 .fb { font-size:20px; font-weight:700; }
 .fb .n4{color:var(--goldf);} .fb .nc{color:var(--white);} .fb .na{color:var(--cyan);font-weight:300;}
@@ -340,106 +252,38 @@ footer { background:#030710; border-top:1px solid var(--border); padding:40px 80
 .fr { font-size:11px; color:var(--muted); letter-spacing:1px; }
 
 @keyframes fadeUp { from{opacity:0;transform:translateY(24px);} to{opacity:1;transform:translateY(0);} }
-@keyframes analyzing { 0%,100%{opacity:1;} 50%{opacity:0.4;} }
 .hero > * { animation:fadeUp 0.7s ease both; }
 .hero > *:nth-child(1){animation-delay:.1s;} .hero > *:nth-child(2){animation-delay:.2s;}
 .hero > *:nth-child(3){animation-delay:.3s;} .hero > *:nth-child(4){animation-delay:.4s;}
 .hero > *:nth-child(5){animation-delay:.5s;}
-.spin { animation:analyzing 1s ease-in-out infinite; }
+
+@keyframes tileIn { from{opacity:0;transform:translateY(6px);} to{opacity:1;transform:translateY(0);} }
+.mp-tile { animation:tileIn 0.5s ease both; }
 
 @media (max-width:960px) {
   nav{padding:0 24px;gap:24px;} nav a:not(.nav-cta){display:none;}
-  .hero{padding:120px 32px 80px;} .sec{padding:70px 32px;} .demo-wrap{padding:60px 32px;}
-  .cols{grid-template-columns:1fr;} .pos-bar{padding:24px 32px;flex-direction:column;gap:24px;}
+  .hero{padding:120px 32px 80px;} .sec{padding:70px 32px;} .beta-strip{padding:60px 32px;} .map-preview{padding:60px 32px;}
+  .pos-bar{padding:24px 32px;flex-direction:column;gap:24px;}
   .pos-item{border-right:none;border-bottom:1px solid var(--border);padding-bottom:24px;}
   .pos-item:last-child{border-bottom:none;}
   .gates{grid-template-columns:1fr;} .verts{grid-template-columns:1fr;}
-  .evgrid{grid-template-columns:1fr;} .pgrid{grid-template-columns:1fr;}
+  .evgrid{grid-template-columns:1fr;}
+  .mp-cols{grid-template-columns:1fr;}
+  .waitlist-form{flex-direction:column;}
   footer{flex-direction:column;gap:24px;text-align:center;}
-  .toast{left:16px;right:16px;bottom:16px;max-width:none;}
 }
 </style>
 </head>
 <body>
 
-<!-- MODAL -->
-<div class="modal-overlay" id="emailModal">
-  <div class="modal-box">
-    <div id="mForm">
-      <div class="modal-shield">🛡</div>
-      <div class="modal-title">Unlock Unlimited Free Checks</div>
-      <div class="modal-sub">You've used your 3 free analyses.<br><strong>Enter your email to continue — free, always.</strong><br>No card. No trial.</div>
-      <div class="modal-field"><label>Email Address</label><input type="email" id="gEmail" placeholder="you@yourfirm.com" autocomplete="email"></div>
-      <div class="modal-field">
-        <label>I work in</label>
-        <select id="gVertical">
-          <option value="">Select your domain…</option>
-          <option value="law">Legal — law firm, court, compliance</option>
-          <option value="biz">Business — SEC filings, public company comms</option>
-          <option value="gov">Government — legislative, regulatory, federal agency</option>
-          <option value="other">Other</option>
-        </select>
-      </div>
-      <button class="modal-btn" onclick="submitGate()">Continue Free →</button>
-      <span class="modal-skip" onclick="skipGate()">Not now — use my remaining checks</span>
-    </div>
-    <div class="modal-success" id="mSuccess">
-      <div class="modal-success-icon">✓</div>
-      <div class="modal-success-title">You're in.</div>
-      <div class="modal-success-sub">Unlimited free checks unlocked.<br>We'll be in touch as 4CITE grows.</div>
-    </div>
-  </div>
-</div>
-
-<!-- REQUEST ACCESS MODAL -->
-<div class="modal-overlay" id="accessModal">
-  <div class="modal-box">
-    <div id="aForm">
-      <div class="modal-shield">🛡</div>
-      <div class="modal-title">Request Access</div>
-      <div class="modal-sub">Tell us about your organization and we'll follow up within one business day.<br><strong>No sales pressure. Just a conversation.</strong></div>
-      <div class="modal-field"><label>Your Name</label><input type="text" id="aName" placeholder="First Last" autocomplete="name"></div>
-      <div class="modal-field"><label>Email Address</label><input type="email" id="aEmail" placeholder="you@yourfirm.com" autocomplete="email"></div>
-      <div class="modal-field"><label>Organization / Firm</label><input type="text" id="aOrg" placeholder="Firm name, agency, or institution"></div>
-      <div class="modal-field">
-        <label>Domain of Interest</label>
-        <select id="aVertical">
-          <option value="">Select vertical…</option>
-          <option value="law">4CITE for Law — legal, court, compliance</option>
-          <option value="biz">4CITE for Business — SEC filings, public company comms</option>
-          <option value="gov">4CITE for Government — legislative, regulatory, federal agency</option>
-          <option value="other">Other</option>
-        </select>
-      </div>
-      <button class="modal-btn" onclick="submitAccess()">Send Request →</button>
-      <span class="modal-skip" onclick="document.getElementById('accessModal').classList.remove('visible')">Cancel</span>
-    </div>
-    <div class="modal-success" id="aSuccess">
-      <div class="modal-success-icon">✓</div>
-      <div class="modal-success-title">Request sent.</div>
-      <div class="modal-success-sub">We'll follow up within one business day.</div>
-    </div>
-  </div>
-</div>
-
-<!-- TOAST -->
-<div class="toast" id="toast">
-  <div class="toast-label">◆ Power User Detected</div>
-  <div class="toast-text">You've run 33 analyses. Want to see what the full 4CITE structural integrity engine does?</div>
-  <div class="toast-row">
-    <a href="mailto:web@4cite.ai?subject=4CITE Full Demo Request" class="toast-btn">Schedule a Call</a>
-    <span class="toast-dismiss" onclick="document.getElementById('toast').classList.remove('visible')">Dismiss</span>
-  </div>
-</div>
-
 <!-- NAV -->
 <nav>
   <div class="nav-brand"><span class="n4">4</span><span class="nc">CITE</span><span class="na">.ai</span></div>
-  <a href="/app" class="nav-free">Try Free</a>
+  <a href="#waitlist" class="nav-beta">Join Beta</a>
   <a href="#how">How It Works</a>
   <a href="#verticals">Verticals</a>
   <a href="#evidence">Evidence</a>
-  <button onclick="showAccessModal()" class="nav-cta" style="background:linear-gradient(135deg,#2B63D9,#0A2E80);border:1px solid rgba(43,99,217,0.6);color:var(--white);font-family:'Space Grotesk',sans-serif;font-size:12px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;padding:9px 22px;border-radius:6px;cursor:pointer;">Request Access</button>
+  <a href="#waitlist" class="nav-cta">Join the Waitlist</a>
 </nav>
 
 <!-- HERO -->
@@ -457,8 +301,7 @@ footer { background:#030710; border-top:1px solid var(--border); padding:40px 80
     one measurable standard for whether the <strong>reasoning actually holds</strong>.
   </p>
   <div class="hero-ctas">
-    <a href="/app" class="btn-g">Try It Free →</a>
-    <button onclick="showAccessModal()" class="btn-p">Request Full Access</button>
+    <a href="#waitlist" class="btn-g">Join the Beta Waitlist →</a>
     <a href="#how" class="btn-s">See how it works →</a>
   </div>
   <div class="stats">
@@ -466,17 +309,113 @@ footer { background:#030710; border-top:1px solid var(--border); padding:40px 80
     <div class="stat-div"></div>
     <div><div class="stat-n"><span class="g">13</span>/13</div><div class="stat-l">Archetype clusters<br>correctly classified</div></div>
     <div class="stat-div"></div>
-    <div><div class="stat-n"><span class="g">71</span> pt</div><div class="stat-l">Hallucination delta<br>20-document batch</div></div>
+    <div><div class="stat-n"><span class="g">431</span></div><div class="stat-l">Companies scored<br>SEC EDGAR corpus</div></div>
   </div>
 </section>
 
-<!-- TRY FREE CALLOUT -->
-<div style="background:#060D1E;border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:72px 80px;text-align:center;">
-  <div style="font-size:10px;font-weight:600;letter-spacing:6px;color:var(--goldf);text-transform:uppercase;margin-bottom:16px;">Free · No Account Required</div>
-  <div style="font-size:clamp(22px,3vw,36px);font-weight:700;color:var(--white);margin-bottom:14px;line-height:1.2;">Run a citation analysis in 30 seconds.</div>
-  <div style="font-size:16px;color:var(--steel);max-width:480px;margin:0 auto 36px;line-height:1.7;">Paste any legal brief excerpt. Get instant citation pattern detection, structural density scoring, and anomaly flags. Runs entirely in your browser — no data stored or transmitted.</div>
-  <a href="/app" class="btn-g" style="font-size:13px;letter-spacing:2px;">Try It Free →</a>
-  <div style="margin-top:20px;font-size:11px;color:var(--muted);letter-spacing:1px;">3 free analyses · Unlock unlimited with your email</div>
+<!-- BETA STRIP -->
+<div class="beta-strip" id="waitlist">
+  <div class="beta-glow"></div>
+  <div class="beta-inner">
+    <div class="beta-badge">Closed Beta</div>
+    <div class="beta-hl">The engine is built.<br><span class="g">The corpus is growing.</span></div>
+    <div class="beta-sub">
+      4CITE is in closed beta across all three verticals. The backend is live, the scoring pipeline is running,
+      and the first documents are already scored. <strong>Early access is limited.</strong>
+      Join the waitlist to get priority access when we open the doors.
+    </div>
+    <div class="waitlist-form" id="waitlistForm">
+      <input class="waitlist-email" type="email" id="wEmail" placeholder="you@yourfirm.com" autocomplete="email">
+      <select class="waitlist-select" id="wVertical">
+        <option value="">I work in…</option>
+        <option value="law">Law — firm, court, compliance</option>
+        <option value="biz">Business — public company, finance</option>
+        <option value="gov">Government — agency, legislative</option>
+        <option value="other">Other</option>
+      </select>
+      <button class="waitlist-btn" onclick="submitWaitlist()">Join Waitlist →</button>
+    </div>
+    <div class="waitlist-success" id="waitlistSuccess">
+      <div class="waitlist-success-icon">✓</div>
+      <div class="waitlist-success-title">You're on the list.</div>
+      <div class="waitlist-success-sub">We'll reach out when beta access opens in your vertical.</div>
+    </div>
+    <div class="waitlist-note">No card required · No spam · Unsubscribe anytime</div>
+  </div>
+</div>
+
+<!-- INTEGRITY MAP PREVIEW -->
+<div class="map-preview">
+  <div class="mp-inner">
+    <div class="mp-head">
+      <div class="mp-ey">Live Corpus · Beta Preview</div>
+      <div class="mp-t">The Integrity Map</div>
+      <div class="mp-s">Every tile is a real document, already scored by the 4CITE engine. Colored by integrity tier. The full interactive map launches with the beta.</div>
+      <div class="mp-note">Hover a tile in the full demo to see gate scores, archetype, and analytical notes →
+        <a href="integrity-map-demo.html" style="color:var(--goldf);text-decoration:none;margin-left:6px;border-bottom:1px solid rgba(247,216,93,0.3);padding-bottom:1px;">View Full Demo</a>
+      </div>
+    </div>
+
+    <div class="mp-cols">
+      <!-- LAW -->
+      <div>
+        <div class="mp-col-head law">⁴law · Judicial Branch</div>
+        <div class="mp-tiles">
+          <div class="mp-tile t1" style="animation-delay:0ms"><div class="mp-tile-tier">T1</div><div class="mp-tile-name">Brown v. Board</div><div class="mp-tile-score">88</div></div>
+          <div class="mp-tile t1" style="animation-delay:60ms"><div class="mp-tile-tier">T1</div><div class="mp-tile-name">Sanctions Opinion</div><div class="mp-tile-score">88</div></div>
+          <div class="mp-tile t1" style="animation-delay:120ms"><div class="mp-tile-tier">T1</div><div class="mp-tile-name">Dobbs v. Jackson</div><div class="mp-tile-score">58</div></div>
+          <div class="mp-tile t3" style="animation-delay:180ms"><div class="mp-tile-tier">T3</div><div class="mp-tile-name">Citizens United<div class="mp-theater"></div></div><div class="mp-tile-score">44</div></div>
+          <div class="mp-tile t3" style="animation-delay:240ms"><div class="mp-tile-tier">T3</div><div class="mp-tile-name">Bush v. Gore<div class="mp-theater"></div></div><div class="mp-tile-score">41</div></div>
+          <div class="mp-tile t4" style="animation-delay:300ms"><div class="mp-tile-tier">T4</div><div class="mp-tile-name">Mata v. Avianca<br><span style="font-size:8px;color:rgba(224,96,112,0.7);">ChatGPT-fabricated</span></div><div class="mp-tile-score">7</div></div>
+          <div class="mp-tile t4" style="animation-delay:360ms"><div class="mp-tile-tier">T4</div><div class="mp-tile-name">Park v. Kim<br><span style="font-size:8px;color:rgba(224,96,112,0.7);">Fabricated citations</span></div><div class="mp-tile-score">12</div></div>
+          <div class="mp-tile t3" style="animation-delay:420ms"><div class="mp-tile-tier">T3</div><div class="mp-tile-name">PSLRA Class Action<div class="mp-theater"></div></div><div class="mp-tile-score">36</div></div>
+        </div>
+        <div class="mp-coming">⁴law corpus expanding · beta</div>
+      </div>
+
+      <!-- BIZ -->
+      <div>
+        <div class="mp-col-head biz">⁴biz · SEC EDGAR · 431 companies</div>
+        <div class="mp-tiles">
+          <div class="mp-tile t1" style="animation-delay:30ms"><div class="mp-tile-tier">T1</div><div class="mp-tile-name">AAPL 10-K FY24</div><div class="mp-tile-score">82</div></div>
+          <div class="mp-tile t1" style="animation-delay:90ms"><div class="mp-tile-tier">T1</div><div class="mp-tile-name">MSFT 10-K FY24</div><div class="mp-tile-score">78</div></div>
+          <div class="mp-tile t1" style="animation-delay:150ms"><div class="mp-tile-tier">T1</div><div class="mp-tile-name">BRK.A Letter 2023</div><div class="mp-tile-score">87</div></div>
+          <div class="mp-tile t1" style="animation-delay:210ms"><div class="mp-tile-tier">T1</div><div class="mp-tile-name">JPM 10-K FY24</div><div class="mp-tile-score">72</div></div>
+          <div class="mp-tile t2" style="animation-delay:270ms"><div class="mp-tile-tier">T2</div><div class="mp-tile-name">GOOGL Q4 Q&amp;A</div><div class="mp-tile-score">62</div></div>
+          <div class="mp-tile t3" style="animation-delay:330ms"><div class="mp-tile-tier">T3</div><div class="mp-tile-name">META FY22 10-K<div class="mp-theater"></div></div><div class="mp-tile-score">41</div></div>
+          <div class="mp-tile t3" style="animation-delay:390ms"><div class="mp-tile-tier">T3</div><div class="mp-tile-name">XOM Climate Risk<div class="mp-theater"></div></div><div class="mp-tile-score">43</div></div>
+          <div class="mp-tile t3" style="animation-delay:450ms"><div class="mp-tile-tier">T3</div><div class="mp-tile-name">GS Proxy DEF 14A<div class="mp-theater"></div></div><div class="mp-tile-score">37</div></div>
+          <div class="mp-tile t4" style="animation-delay:510ms"><div class="mp-tile-tier">T4</div><div class="mp-tile-name">SVB FY22 Risk<div class="mp-theater"></div></div><div class="mp-tile-score">22</div></div>
+          <div class="mp-tile t5" style="animation-delay:570ms"><div class="mp-tile-tier">T5</div><div class="mp-tile-name">ENRN FY00 10-K<div class="mp-theater"></div></div><div class="mp-tile-score">8</div></div>
+        </div>
+      </div>
+
+      <!-- GOV -->
+      <div>
+        <div class="mp-col-head gov">⁴gov · Legislative Branch</div>
+        <div class="mp-tiles">
+          <div class="mp-tile t1" style="animation-delay:15ms"><div class="mp-tile-tier">T1</div><div class="mp-tile-name">Federalist No. 51</div><div class="mp-tile-score">91</div></div>
+          <div class="mp-tile t1" style="animation-delay:75ms"><div class="mp-tile-tier">T1</div><div class="mp-tile-name">Gettysburg Address</div><div class="mp-tile-score">89</div></div>
+          <div class="mp-tile t1" style="animation-delay:135ms"><div class="mp-tile-tier">T1</div><div class="mp-tile-name">Washington Farewell</div><div class="mp-tile-score">86</div></div>
+          <div class="mp-tile t2" style="animation-delay:195ms"><div class="mp-tile-tier">T2</div><div class="mp-tile-name">SotU 2001</div><div class="mp-tile-score">59</div></div>
+          <div class="mp-tile t1" style="animation-delay:255ms"><div class="mp-tile-tier">T1</div><div class="mp-tile-name">Volcker Testimony<br><span style="font-size:8px;color:rgba(247,216,93,0.6);">Senate 1981</span></div><div class="mp-tile-score">78</div></div>
+          <div class="mp-tile t3" style="animation-delay:315ms"><div class="mp-tile-tier">T3</div><div class="mp-tile-name">SotU 2025<div class="mp-theater"></div></div><div class="mp-tile-score">44</div></div>
+          <div class="mp-tile t3" style="animation-delay:375ms"><div class="mp-tile-tier">T3</div><div class="mp-tile-name">Zuckerberg Senate<div class="mp-theater"></div></div><div class="mp-tile-score">40</div></div>
+          <div class="mp-tile t4" style="animation-delay:435ms"><div class="mp-tile-tier">T4</div><div class="mp-tile-name">Iraq WMD Hearing<div class="mp-theater"></div></div><div class="mp-tile-score">21</div></div>
+        </div>
+        <div class="mp-coming">⁴gov corpus expanding · beta</div>
+      </div>
+    </div>
+
+    <div class="mp-legend">
+      <div class="mpl-item"><div class="mpl-dot" style="background:rgba(247,216,93,0.15);border-color:rgba(247,216,93,0.4);"></div>T1 High Integrity</div>
+      <div class="mpl-item"><div class="mpl-dot" style="background:rgba(125,235,255,0.12);border-color:rgba(125,235,255,0.35);"></div>T2 Assisted, Well-Reviewed</div>
+      <div class="mpl-item"><div class="mpl-dot" style="background:rgba(240,160,32,0.12);border-color:rgba(240,160,32,0.4);"></div>T3 Surface-Clean, Weak Foundation</div>
+      <div class="mpl-item"><div class="mpl-dot" style="background:rgba(200,48,64,0.12);border-color:rgba(200,48,64,0.35);"></div>T4 Structural Failure</div>
+      <div class="mpl-item"><div style="width:8px;height:8px;border-radius:50%;background:#FF5060;display:inline-block;margin-right:7px;"></div>Accountability Theater flag</div>
+    </div>
+    <div class="mp-link"><a href="integrity-map-demo.html">View full interactive demo →</a></div>
+  </div>
 </div>
 
 <!-- POSITIONING BAR -->
@@ -558,8 +497,8 @@ footer { background:#030710; border-top:1px solid var(--border); padding:40px 80
     <tbody>
       <tr><td><span class="tb t1">T1</span></td><td class="t-sc">67 – 100</td><td class="t-d">High Integrity</td><td class="t-d">Genuine human authorship or AI-assisted with full human review and accountability architecture intact.</td></tr>
       <tr><td><span class="tb t2">T2</span></td><td class="t-sc">50 – 66</td><td class="t-d">Assisted, Well-Reviewed</td><td class="t-d">AI-assisted with substantive human review. Surface clarity present; foundational signals show engagement.</td></tr>
-      <tr><td><span class="tb t3">T3</span></td><td class="t-sc">30 – 49</td><td class="t-d">Surface-Clean, Structurally Weak</td><td class="t-d">AI-generated with minimal review. Citation format may be correct; argument structure is hollow. Do not file without review.</td></tr>
-      <tr><td><span class="tb t4">T4</span></td><td class="t-sc">5 – 30</td><td class="t-d">Hallucinated / Fabricated</td><td class="t-d">Near-total absence of structural integrity signals. Subtype T4E: all three absence gates collapse simultaneously — fabricated citations, hollow reasoning, concealed intent.</td></tr>
+      <tr><td><span class="tb t3">T3</span></td><td class="t-sc">30 – 49</td><td class="t-d">Surface-Clean, Structurally Weak</td><td class="t-d">AI-generated with minimal review. Citation format may be correct; argument structure is hollow.</td></tr>
+      <tr><td><span class="tb t4">T4</span></td><td class="t-sc">5 – 30</td><td class="t-d">Hallucinated / Fabricated</td><td class="t-d">Near-total absence of structural integrity signals. Subtype T4E: all three absence gates collapse simultaneously.</td></tr>
       <tr><td><span class="tb t5">T5</span></td><td class="t-sc">0 – 15</td><td class="t-d">Formulaic / Boilerplate</td><td class="t-d">No genuine engagement detected across any gate. Template text with accountability structure completely absent.</td></tr>
     </tbody>
   </table>
@@ -574,22 +513,22 @@ footer { background:#030710; border-top:1px solid var(--border); padding:40px 80
   <p class="sec-s">4CITE is a domain-agnostic structural integrity engine that deploys into domain-specific verticals. Law, business, and government — the three institutional pillars where document integrity carries the highest public consequence.</p>
   <div class="verts">
     <div class="vc law">
-      <div class="vp">Phase 1 · Active</div>
+      <div class="vp">Phase 1 · Closed Beta</div>
       <div class="vn">4CITE<sup>4</sup>law</div>
       <div class="vd">Structural integrity analysis for legal professionals, law firms, and courts. Detects AI-hallucinated filings, structural weakness in briefs, and accountability theater before a document reaches the bench. Rule 11 defense, not just citation verification.</div>
-      <span class="vs s-act">Active · Go-to-Market</span>
+      <span class="vs s-beta">Beta · Priority Access</span>
     </div>
     <div class="vc biz">
-      <div class="vp">Phase 1 · Active</div>
+      <div class="vp">Phase 1 · Closed Beta</div>
       <div class="vn">4CITE<sup>4</sup>biz</div>
       <div class="vd">Structural integrity for public company communications. Scores SEC filings, earnings calls, and shareholder letters against a longitudinal baseline — detecting accountability drift before it becomes a disclosure liability.</div>
-      <span class="vs s-act">Active · Build Phase</span>
+      <span class="vs s-beta">Beta · 431 Companies Scored</span>
     </div>
     <div class="vc gov">
-      <div class="vp">Phase 2 · Active</div>
+      <div class="vp">Phase 2 · Closed Beta</div>
       <div class="vn">4CITE<sup>4</sup>gov</div>
-      <div class="vd">Structural integrity for the legislative branch. Scores congressional testimony, regulatory filings, and government communications against an institutional baseline — detecting accountability drift in the public record. Congress.gov · Federal Register · GovInfo.</div>
-      <span class="vs s-act">Active · Phase 2</span>
+      <div class="vd">Structural integrity for the legislative branch. Scores congressional testimony, regulatory filings, and government communications against an institutional baseline. Congress.gov · Federal Register · GovInfo.</div>
+      <span class="vs s-beta">Beta · Phase 2</span>
     </div>
   </div>
 </div>
@@ -605,15 +544,15 @@ footer { background:#030710; border-top:1px solid var(--border); padding:40px 80
     <div class="ec"><div class="en">81</div><div class="el">Point integrity gap — real vs. fabricated legal opinion</div><div class="ed">A genuine federal sanctions opinion scored 88. The fabricated ChatGPT brief at the center of <em>Mata v. Avianca</em> scored 7. The 81-point gap is the structural fingerprint of hallucinated accountability.</div><div class="es">WP7 — The Absence Detector</div></div>
     <div class="ec"><div class="en">71 pt</div><div class="el">Hallucination discrimination delta — 20-document batch</div><div class="ed">Across a blinded batch of 20 documents, the 4CITE structural integrity engine discriminated hallucinated from genuine content with a 71-point average delta. Consistent and reproducible.</div><div class="es">WP5 — Hallucination as Structural Extraction</div></div>
     <div class="ec"><div class="en">13/13</div><div class="el">Archetype clusters correctly classified</div><div class="ed">The accountability architecture audit classified all 13 document archetypes correctly in R35 validation (April 3, 2026). The gate framework generalizes across document types without domain-specific tuning.</div><div class="es">R35 — Archetype Validation Study</div></div>
-    <div class="ec"><div class="en">2×</div><div class="el">Win rate — structurally clear vs. structurally weak briefs</div><div class="ed">Brief structural clarity doubles win rate in federal court (42% → 85%). Structural integrity is not aesthetic — it is predictive. Judges respond to accountability architecture whether or not they name it.</div><div class="es">Spencer & Feldman, 22 Legal Writing 61 (2018)</div></div>
+    <div class="ec"><div class="en">2×</div><div class="el">Win rate — structurally clear vs. structurally weak briefs</div><div class="ed">Brief structural clarity doubles win rate in federal court (42% → 85%). Structural integrity is not aesthetic — it is predictive. Judges respond to accountability architecture whether or not they name it.</div><div class="es">Spencer &amp; Feldman, 22 Legal Writing 61 (2018)</div></div>
   </div>
 </div>
 
 <!-- CTA -->
 <div class="cta-sec" id="contact">
   <h2 class="cta-hl">Three branches.<br><span style="color:var(--goldf);">One integrity standard.</span></h2>
-  <p class="cta-s">4CITE for Law is in active go-to-market. 4CITE for Business and Government are in build. Reach out to discuss early access or institutional licensing.</p>
-  <button onclick="showAccessModal()" class="btn-p" style="font-size:12px;letter-spacing:3px;">Request a Briefing</button>
+  <p class="cta-s">4CITE is in closed beta. The engine is built and scoring. Join the waitlist for priority access when we open the doors.</p>
+  <a href="#waitlist" class="btn-g" style="font-size:12px;letter-spacing:2px;">Join the Waitlist →</a>
   <p style="margin-top:28px;font-size:12px;color:var(--muted);letter-spacing:1px;">A product of 4 SHIELD LLC · 4CITE.ai · Wyoming Benefit LLC</p>
 </div>
 
@@ -621,216 +560,37 @@ footer { background:#030710; border-top:1px solid var(--border); padding:40px 80
 <footer>
   <div class="fb"><span class="n4">4</span><span class="nc">CITE</span><span class="na">.ai</span></div>
   <div class="fl">
-    <a href="/app">Try Free</a>
+    <a href="#waitlist">Join Beta</a>
     <a href="#how">How It Works</a>
     <a href="#verticals">Verticals</a>
     <a href="#evidence">Evidence</a>
+    <a href="integrity-map-demo.html">Integrity Map</a>
   </div>
   <div class="fr">© 2026 4 SHIELD LLC · All Rights Reserved</div>
 </footer>
 
 <script>
-// ── State ─────────────────────────────────────────────────
-const FREE  = 3, MILE = 33;
-// Stable session ID — persists across page loads, one per browser
-function getSessionId() {
-  let sid = localStorage.getItem('4c_sid');
-  if (!sid) { sid = crypto.randomUUID(); localStorage.setItem('4c_sid', sid); }
-  return sid;
-}
-// localStorage cache — used as fallback if API is unavailable
-const gs = () => {
-  try { return { n:+localStorage.getItem('4c_n')||0, u:localStorage.getItem('4c_u')==='true', sk:+localStorage.getItem('4c_sk')||0, m1:localStorage.getItem('4c_m1')==='true' }; }
-  catch(e){ return {n:0,u:false,sk:0,m1:false}; }
-};
-const ss = p => {
-  const s=Object.assign(gs(),p);
-  try{ localStorage.setItem('4c_n',s.n); localStorage.setItem('4c_u',s.u); localStorage.setItem('4c_sk',s.sk); localStorage.setItem('4c_m1',s.m1); } catch(e){}
-  return s;
-};
-// ── API helpers ────────────────────────────────────────────
-async function apiCheck() {
-  try {
-    const r = await fetch('/api/usage/check', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({session_id:getSessionId()}) });
-    if (!r.ok) return null;
-    return await r.json();
-  } catch(e) { return null; }
-}
-async function apiStatus() {
-  try {
-    const r = await fetch('/api/usage/status?session_id='+encodeURIComponent(getSessionId()));
-    if (!r.ok) return null;
-    return await r.json();
-  } catch(e) { return null; }
-}
-async function apiGateEmail(email, vertical) {
-  try {
-    const r = await fetch('/api/gate/email', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({session_id:getSessionId(), email, vertical}) });
-    if (!r.ok) return null;
-    return await r.json();
-  } catch(e) { return null; }
-}
-
-// ── Pips ──────────────────────────────────────────────────
-function refreshPips() {
-  const {n,u} = gs();
-  const lbl = document.getElementById('pipLbl');
-  ['p0','p1','p2'].forEach((id,i)=>{ const el=document.getElementById(id); el.className='pip'; if(u) el.classList.add('on'); else if(i<n) el.classList.add('used'); });
-  if(u){ lbl.textContent='✓ Unlimited analyses unlocked'; lbl.style.color='var(--green)'; document.getElementById('deeperPrompt').classList.add('on'); }
-  else { const r=Math.max(0,FREE-n); lbl.textContent=r>0?`${r} free ${r===1?'analysis':'analyses'} remaining`:'Free analyses used — enter email to continue free'; lbl.style.color=r>0?'var(--muted)':'var(--amber)'; }
-}
-
-// ── Char count ────────────────────────────────────────────
-document.getElementById('inputArea').addEventListener('input',function(){ const n=this.value.length; document.getElementById('cc').textContent=n.toLocaleString()+' character'+(n===1?'':'s'); });
-
-// ── Run ───────────────────────────────────────────────────
-async function runAnalysis() {
-  const text = document.getElementById('inputArea').value.trim();
-  if(!text||text.length<20){ const t=document.getElementById('inputArea'); t.style.borderColor='#E05050'; setTimeout(()=>t.style.borderColor='',1200); return; }
-
-  // Call API to record check and get gate status; fall back to local state if API unavailable
-  const api = await apiCheck();
-  let {n, u, sk, m1} = gs();
-  if (api) {
-    n = api.check_count; u = api.unlocked;
-    ss({n, u});
-  } else {
-    ss({n: n+1}); n = n+1;
+// ── Waitlist form ──────────────────────────────────────────
+async function submitWaitlist(){
+  const email=document.getElementById('wEmail').value.trim();
+  const vert=document.getElementById('wVertical').value;
+  if(!email||!email.includes('@')){
+    document.getElementById('wEmail').style.borderColor='#E05050';
+    setTimeout(()=>document.getElementById('wEmail').style.borderColor='',1200);
+    return;
   }
-
-  // Gate check
-  const gateRequired = api ? api.gate_required : (!u && n > FREE);
-  if (gateRequired && sk < 2) { showModal(); return; }
-  if (!u && n >= FREE + 3)    { showModal(); return; }
-
-  const btn=document.getElementById('runBtn');
-  btn.textContent='Analyzing…'; btn.classList.add('spin'); btn.disabled=true;
-  setStatus('active','Analyzing');
-  setTimeout(()=>{
-    render(compute(text));
-    btn.textContent='↗ Analyze'; btn.classList.remove('spin'); btn.disabled=false;
-    setStatus('active','Complete');
-    refreshPips();
-    if(n===MILE&&!m1){ ss({m1:true}); setTimeout(()=>document.getElementById('toast').classList.add('visible'),1800); }
-  },1400);
+  const btn=document.querySelector('.waitlist-btn');
+  btn.textContent='Joining…'; btn.disabled=true;
+  try {
+    await fetch('/api/gate/email',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({session_id:'waitlist-'+Date.now(),email,vertical:vert||'other'})
+    });
+  } catch(e){}
+  document.getElementById('waitlistForm').style.display='none';
+  document.getElementById('waitlistSuccess').style.display='block';
 }
-
-function setStatus(cls, txt) {
-  document.getElementById('statusDot').className='rh-dot '+cls;
-  document.getElementById('statusTxt').textContent=txt;
-  document.getElementById('statusTxt').style.color=cls==='active'?'var(--green)':'var(--muted)';
-  // fade out standby overlay on first activation
-  document.getElementById('standbyMsg').classList.add('hidden');
-}
-
-// ── Analysis ──────────────────────────────────────────────
-function compute(text) {
-  const l=text.toLowerCase();
-  const cp=/\b\d{1,3}\s+[A-Z][a-z]+\.?\s*\d+|\bU\.S\.\s+\d+|\bF\.\d[a-z]*\s+\d+|\bS\.Ct\.\s+\d+|\b§+\s*\d[\d.]*|\bId\b\.?|\bsupra\b|\binfra\b|\bibid\.?/gi;
-  const cites=(text.match(cp)||[]).length;
-  const years=(text.match(/\(\d{4}\)/g)||[]).map(y=>+y.replace(/[()]/g,''));
-  const quotes=(text.match(/[""][^""]{5,}[""]/g)||[]).length;
-  const lt=['plaintiff','defendant','court','held','pursuant','statute','thereof','herein','affirmed','reversed','remanded','appellant','appellee','petitioner','respondent'];
-  const lh=lt.filter(t=>l.includes(t)).length;
-  const future=years.filter(y=>y>2026);
-  const id=(text.match(/\bId\b\.?/gi)||[]).length;
-  const fi=[];
-  if(future.length) fi.push({t:'FLAG',c:'#E05050',m:`${future.length} citation(s) reference future dates — possible fabrication.`});
-  if(!cites)        fi.push({t:'WARN',c:'#F0A020',m:'No recognized citation format detected in excerpt.'});
-  if(cites)         fi.push({t:'OK',  c:'#22C97A',m:`${cites} citation reference(s) identified.`});
-  if(quotes)        fi.push({t:'OK',  c:'#7DEBFF',m:`${quotes} direct quote(s) present — verify against source.`});
-  if(lh>=3)         fi.push({t:'OK',  c:'#22C97A',m:`Strong legal structure detected (${lh} legal anchors).`});
-  if(lh<2)          fi.push({t:'WARN',c:'#F0A020',m:'Low legal structural density — consider document context.'});
-  if(id&&cites)     fi.push({t:'NOTE',c:'#7A9ABE',m:`${id} short-form "Id." reference(s) — verify prior citation chain.`});
-  const seed=text.split('').reduce((a,c)=>a+c.charCodeAt(0),0);
-  const rng=(lo,hi,o=0)=>{const s=((seed+o)*2654435761)>>>0;return Math.round(lo+(s%(hi-lo)));};
-  const sc=[
-    Math.min(99,cites?Math.min(98,55+cites*8):rng(20,48,0)),
-    Math.min(99,lh>2?rng(68,95,1):rng(40,70,1)),
-    Math.min(99,cites?rng(60,90,2):rng(30,60,2)),
-    Math.min(99,(lh>=3&&cites)?rng(72,97,3):rng(45,72,3))
-  ];
-  return {sc, ov:Math.round(sc.reduce((a,b)=>a+b,0)/4), fi:fi.slice(0,5)};
-}
-
-function verd(s){ return s>=85?{t:'High Integrity',c:'#22C97A',sub:'Citation structure is strong. Spot-verify quoted passages.'}: s>=70?{t:'Moderate Integrity',c:'#F0C848',sub:'Several elements verified. Manual review recommended for flags.'}: s>=50?{t:'Integrity Concerns',c:'#F0A020',sub:'Structural gaps detected. Do not file without additional review.'}: {t:'High Risk',c:'#E05050',sub:'Significant anomalies found. Full manual review required.'}; }
-
-// ── Render ────────────────────────────────────────────────
-function render(data) {
-  const {sc,ov,fi}=data, v=verd(ov);
-
-  // animate ring
-  const arc=document.getElementById('ringArc'), num=document.getElementById('ringNum'), score=document.getElementById('ringScore');
-  const t0=performance.now();
-  function tick(now){ const p=Math.min((now-t0)/1000,1),e=1-Math.pow(1-p,3),c=Math.round(e*ov); score.textContent=c; num.textContent=c; arc.style.strokeDashoffset=232-(232*c/100); arc.style.stroke=v.c; if(p<1)requestAnimationFrame(tick); }
-  score.classList.remove('standby'); requestAnimationFrame(tick);
-  document.getElementById('ringVerdict').textContent=v.t; document.getElementById('ringVerdict').style.color=v.c;
-  document.getElementById('ringSub').textContent=v.sub; document.getElementById('ringSub').style.color='var(--steel)';
-  num.style.fill='white';
-
-  // bars
-  const bc=['#22C97A','#7DEBFF','#D89A0B','#2B63D9'];
-  sc.forEach((s,i)=>{
-    const bv=document.getElementById('bv'+i), bf=document.getElementById('bf'+i);
-    bv.textContent=s+'%'; bv.style.color=bc[i];
-    bf.style.opacity='1';
-    setTimeout(()=>{bf.style.width=s+'%';},200+i*100);
-  });
-
-  // findings
-  const list=document.getElementById('findingsList'); list.innerHTML='';
-  fi.forEach(f=>{ const r=document.createElement('div'); r.className='finding'; r.innerHTML=`<div class="f-dot" style="background:${f.c};box-shadow:0 0 6px ${f.c}77;"></div><div class="f-text">${f.m}</div><div class="f-tag" style="color:${f.c};background:${f.c}18;border:1px solid ${f.c}44;">${f.t}</div>`; list.appendChild(r); });
-}
-
-function clearAll() {
-  document.getElementById('inputArea').value=''; document.getElementById('cc').textContent='0 characters';
-  document.getElementById('ringScore').textContent='—'; document.getElementById('ringScore').className='ring-score standby';
-  document.getElementById('ringVerdict').textContent='Awaiting input'; document.getElementById('ringVerdict').style.color='var(--muted)';
-  document.getElementById('ringSub').textContent='Paste a brief excerpt and click Analyze.'; document.getElementById('ringSub').style.color='var(--muted)';
-  document.getElementById('ringArc').style.strokeDashoffset='232'; document.getElementById('ringArc').style.stroke='rgba(58,90,128,0.4)';
-  document.getElementById('ringNum').textContent='—'; document.getElementById('ringNum').style.fill='rgba(58,90,128,0.5)';
-  ['bv0','bv1','bv2','bv3'].forEach(id=>{document.getElementById(id).textContent='—'; document.getElementById(id).style.color='var(--muted)';});
-  ['bf0','bf1','bf2','bf3'].forEach(id=>{document.getElementById(id).style.width='0'; document.getElementById(id).style.opacity='0.3';});
-  document.getElementById('findingsList').innerHTML='<div class="finding" style="opacity:0.3;"><div class="f-dot" style="background:var(--muted);"></div><div class="f-text">No analysis run yet — findings will appear here.</div></div>';
-  setStatus('standby','Standby'); document.getElementById('standbyMsg').classList.remove('hidden');
-}
-
-// ── Gate ──────────────────────────────────────────────────
-function showModal(){ document.getElementById('emailModal').classList.add('visible'); }
-function showAccessModal(){ document.getElementById('accessModal').classList.add('visible'); }
-async function submitAccess(){
-  const name=document.getElementById('aName').value.trim();
-  const email=document.getElementById('aEmail').value.trim();
-  const org=document.getElementById('aOrg').value.trim();
-  const vert=document.getElementById('aVertical').value;
-  if(!email||!email.includes('@')){ document.getElementById('aEmail').style.borderColor='#E05050'; setTimeout(()=>document.getElementById('aEmail').style.borderColor='',1200); return; }
-  const btn=document.querySelector('#aForm .modal-btn');
-  if(btn){ btn.textContent='Sending…'; btn.disabled=true; }
-  try { await fetch('/api/contact',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({type:'access',name,email,org,vertical:vert})}); } catch(e){}
-  document.getElementById('aForm').style.display='none'; document.getElementById('aSuccess').style.display='block';
-  setTimeout(()=>{ document.getElementById('accessModal').classList.remove('visible'); document.getElementById('aForm').style.display=''; if(btn){btn.textContent='Send Request →';btn.disabled=false;} document.getElementById('aSuccess').style.display='none'; },3500);
-}
-async function submitGate(){
-  const e=document.getElementById('gEmail').value.trim();
-  const v=document.getElementById('gVertical').value;
-  if(!e||!e.includes('@')){ document.getElementById('gEmail').style.borderColor='#E05050'; setTimeout(()=>document.getElementById('gEmail').style.borderColor='',1200); return; }
-  await apiGateEmail(e, v);
-  ss({u:true}); refreshPips();
-  document.getElementById('mForm').style.display='none'; document.getElementById('mSuccess').style.display='block';
-  setTimeout(()=>{ document.getElementById('emailModal').classList.remove('visible'); document.getElementById('mForm').style.display=''; document.getElementById('mSuccess').style.display='none'; },2800);
-}
-function skipGate(){ const {sk}=gs(); ss({sk:sk+1}); document.getElementById('emailModal').classList.remove('visible'); }
-
-// ── Init ──────────────────────────────────────────────────
-// Sync state from server on load; fall back to localStorage silently
-async function initState() {
-  const d = await apiStatus();
-  if (d) ss({ n: d.check_count, u: d.unlocked });
-  refreshPips();
-}
-initState();
-
-// PWA lives at /app only — no service worker on homepage
 </script>
 </body>
 </html>
