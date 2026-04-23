@@ -379,16 +379,11 @@ nav {
 
 <!-- NAV -->
 <nav>
-  <div class="nav-brand"><span class="n4">4</span><span class="nc">CITE</span><span class="na">.ai</span></div>
-  <a href="#" class="nav-link active">Integrity Map</a>
-  <a href="#" class="nav-link">Verticals</a>
-  <a href="#" class="nav-link">Evidence</a>
-  <a href="#" class="nav-link">Pricing</a>
-  <div class="corpus-counter">
-    <div class="cc-dot"></div>
-    <div class="cc-label">Corpus</div>
-    <div class="cc-count" id="corpusCount">16,421</div>
-  </div>
+  <a href="index.html" class="nav-brand" style="text-decoration:none;"><span class="n4">4</span><span class="nc">CITE</span><span class="na">.ai</span></a>
+  <a href="index.html" class="nav-link active">Integrity Map</a>
+  <a href="index.html#verticals" class="nav-link">Verticals</a>
+  <a href="index.html#evidence" class="nav-link">Evidence</a>
+  <a href="index.html#waitlist" class="nav-link" style="color:var(--goldf);">Join Beta</a>
 </nav>
 
 <!-- HERO STRIP -->
@@ -406,28 +401,23 @@ nav {
   </div>
   <div class="hero-meta">
     <div class="hm-item">
-      <div class="hm-n"><span class="g">431</span></div>
-      <div class="hm-l">Companies scored<br>⁴biz</div>
+      <div class="hm-n"><span class="g" id="statDocs">23,407</span></div>
+      <div class="hm-l">Documents<br>Loaded</div>
     </div>
     <div class="hm-div"></div>
     <div class="hm-item">
-      <div class="hm-n"><span class="c">16,113</span></div>
-      <div class="hm-l">SEC filings<br>processed</div>
+      <div class="hm-n"><span class="c" id="statEnts">520</span></div>
+      <div class="hm-l">Entities<br>Identified</div>
     </div>
     <div class="hm-div"></div>
     <div class="hm-item">
-      <div class="hm-n"><span class="g">4</span></div>
-      <div class="hm-l">Independent<br>gate calls per doc</div>
+      <div class="hm-n"><span class="g" id="statExams">940</span></div>
+      <div class="hm-l">Structural<br>Exams</div>
     </div>
     <div class="hm-div"></div>
     <div class="hm-item">
-      <div class="hm-n" style="color:var(--amber);">T3</div>
-      <div class="hm-l">Corpus median<br>integrity tier</div>
-    </div>
-    <div class="hm-div"></div>
-    <div class="hm-item">
-      <div class="hm-n"><span class="g">T3</span></div>
-      <div class="hm-l">Corpus median<br>integrity tier</div>
+      <div class="hm-n"><span class="c" id="statCompl">&lt;1%</span></div>
+      <div class="hm-l">Map<br>Completion</div>
     </div>
   </div>
 </div>
@@ -451,12 +441,6 @@ nav {
   <button class="filter-pill t3" onclick="setTierFilter('t3',this)">T3</button>
   <button class="filter-pill t4" onclick="setTierFilter('t4',this)">T4</button>
   <button class="filter-pill theater" onclick="setTierFilter('theater',this)">⚠ Theater</button>
-  <div class="filter-sep"></div>
-  <div class="vert-selector">
-    <button class="vs-btn law active" onclick="toggleVert('law',this)">⁴law</button>
-    <button class="vs-btn biz active" onclick="toggleVert('biz',this)">⁴biz</button>
-    <button class="vs-btn gov active" onclick="toggleVert('gov',this)">⁴gov</button>
-  </div>
 </div>
 
 <!-- MAIN MAP -->
@@ -655,7 +639,6 @@ const ARCHETYPES = [
 // ── RENDER ───────────────────────────────────────────────────────────────────
 
 let currentTierFilter = 'all';
-let hiddenVerts = new Set();
 
 function tierColor(t) {
   return { t1:'#F7D85D', t2:'#7DEBFF', t3:'#F0A020', t4:'#E06070', t5:'#5A7090' }[t] || '#7A9ABE';
@@ -670,11 +653,10 @@ function renderTiles() {
     const vert = containerId.startsWith('law') ? 'law' : containerId.startsWith('biz') ? 'biz' : 'gov';
     tiles.forEach((t, i) => {
       const showTier = currentTierFilter === 'all' || currentTierFilter === t.tier || (currentTierFilter === 'theater' && t.theater);
-      const showVert = !hiddenVerts.has(vert);
       const div = document.createElement('div');
       div.className = `tile ${t.tier}`;
       div.style.animationDelay = `${(idx * tiles.length + i) * 45}ms`;
-      if (!showTier || !showVert) div.classList.add('hidden');
+      if (!showTier) div.classList.add('hidden');
       if (t.theater) {
         div.innerHTML += '<div class="tile-theater-flag"></div>';
       }
@@ -690,7 +672,7 @@ function renderTiles() {
       div.addEventListener('mousemove', e => moveTooltip(e));
       div.addEventListener('mouseleave', hideTooltip);
       container.appendChild(div);
-      if (showTier && showVert) total++;
+      if (showTier) total++;
     });
   });
   return total;
@@ -758,17 +740,6 @@ function setTierFilter(tier, btn) {
   renderTiles();
 }
 
-function toggleVert(vert, btn) {
-  if (hiddenVerts.has(vert)) {
-    hiddenVerts.delete(vert);
-    btn.classList.add('active');
-  } else {
-    hiddenVerts.add(vert);
-    btn.classList.remove('active');
-  }
-  renderTiles();
-}
-
 function renderArchetypes() {
   const grid = document.getElementById('archGrid');
   const max = Math.max(...ARCHETYPES.map(a=>a.count));
@@ -805,11 +776,27 @@ function animateCounter() {
   }, 4000);
 }
 
+// ── CORPUS STATS (live from Supabase via Vercel) ──────────────────────────────
+async function loadCorpusStats() {
+  try {
+    const r = await fetch('/api/corpus/stats');
+    if (!r.ok) return;
+    const d = await r.json();
+    if (d.documents_loaded)   document.getElementById('statDocs').textContent    = d.documents_loaded.toLocaleString();
+    if (d.entities_identified) document.getElementById('statEnts').textContent   = d.entities_identified.toLocaleString();
+    if (d.structural_exams)   document.getElementById('statExams').textContent   = d.structural_exams.toLocaleString();
+    if (d.map_completion_pct) document.getElementById('statCompl').textContent   = d.map_completion_pct;
+    // Also update nav counter
+    if (d.documents_loaded)   document.getElementById('corpusCount').textContent = d.documents_loaded.toLocaleString();
+  } catch(e) { /* fail silently — hardcoded fallbacks remain */ }
+}
+
 // ── INIT ─────────────────────────────────────────────────────────────────────
 document.addEventListener('DOMContentLoaded', () => {
   renderTiles();
   renderArchetypes();
   animateCounter();
+  loadCorpusStats();
 
   // Stagger archetype bars for entrance
   setTimeout(() => {
