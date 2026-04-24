@@ -23,13 +23,16 @@ module.exports = async function handler(req, res) {
 
     const docs = docsResult.count || 0;
     const entities = entitiesResult.count || 0;
-    const exams = examsResult.count || 0;
-    const completion = docs > 0 ? (exams / docs) : 0;
+    const gateScoreRows = examsResult.count || 0;
+    // Each scored document passes through 4 structural gates (G4/G6/G7/G8).
+    const structuralExams = gateScoreRows * 4;
+    // Map completion = scored documents / total documents, NOT exams / docs.
+    const completion = docs > 0 ? (gateScoreRows / docs) : 0;
 
     return res.status(200).json({
       documents_loaded: docs,
       entities_identified: entities,
-      structural_exams: exams,
+      structural_exams: structuralExams,
       map_completion: completion,
       map_completion_pct: completion < 0.01 ? '<1%' : (completion * 100).toFixed(1) + '%',
       updated_at: new Date().toISOString(),
