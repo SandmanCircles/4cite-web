@@ -304,13 +304,26 @@ footer { background:#030710; border-top:1px solid var(--border); padding:40px 80
     <a href="#waitlist" class="btn-g">Join the Beta Waitlist →</a>
     <a href="#how" class="btn-s">See how it works →</a>
   </div>
-  <div class="stats">
-    <div><div class="stat-n"><span class="g">81</span> pt</div><div class="stat-l">Integrity gap detected<br>Mata v. Avianca</div></div>
+  <div class="stats" id="heroStats">
+    <div><div class="stat-n g" id="hs-docs">—</div><div class="stat-l">Documents<br>in corpus</div></div>
     <div class="stat-div"></div>
-    <div><div class="stat-n"><span class="g">13</span>/13</div><div class="stat-l">Archetype clusters<br>correctly classified</div></div>
+    <div><div class="stat-n g" id="hs-entities">—</div><div class="stat-l">Entities<br>tracked</div></div>
     <div class="stat-div"></div>
-    <div><div class="stat-n"><span class="g">431</span></div><div class="stat-l">Companies scored<br>SEC EDGAR corpus</div></div>
+    <div><div class="stat-n g" id="hs-exams">—</div><div class="stat-l">Structural<br>exams run</div></div>
+    <div class="stat-div"></div>
+    <div><div class="stat-n g" id="hs-pct">—</div><div class="stat-l">Corpus<br>scored</div></div>
   </div>
+  <script>
+  (function(){
+    fetch('https://api.4cite.ai/api/stats').then(r=>r.json()).then(d=>{
+      function fmt(n){if(n>=1e6)return(n/1e6).toFixed(1)+'M';if(n>=1e3)return(n/1e3).toFixed(1)+'K';return n.toLocaleString();}
+      document.getElementById('hs-docs').textContent=fmt(d.total_documents);
+      document.getElementById('hs-entities').textContent=fmt(d.total_entities);
+      document.getElementById('hs-exams').textContent=fmt(d.structural_exams);
+      document.getElementById('hs-pct').textContent=d.pct_scored;
+    }).catch(()=>{});
+  })();
+  </script>
 </section>
 
 <!-- BETA STRIP -->
