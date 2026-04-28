@@ -1,0 +1,41 @@
+# 4CITE.ai — robots.txt
+# 4 SHIELD LLC · Updated 2026-04-28
+
+# Default: all crawlers allowed on marketing pages
+User-agent: *
+Allow: /
+Disallow: /api/
+Disallow: /account/
+Disallow: /portal/
+
+# OpenAI / ChatGPT — explicitly allowed
+User-agent: GPTBot
+Allow: /
+
+# Anthropic / Claude — explicitly allowed
+User-agent: ClaudeBot
+Allow: /
+
+# Perplexity AI — explicitly allowed
+User-agent: PerplexityBot
+Allow: /
+
+# Google AI Overview / Bard — explicitly allowed
+User-agent: Google-Extended
+Allow: /
+
+# Apple Intelligence — explicitly allowed
+User-agent: Applebot-Extended
+Allow: /
+
+# Cohere — explicitly allowed
+User-agent: cohere-ai
+Allow: /
+
+# Meta AI — explicitly allowed
+User-agent: FacebookBot
+Allow: /
+
+# Sitemap and AI content index
+Sitemap: https://4cite.ai/sitemap.xml
+LLMs: https://4cite.ai/llms.txt

@@ -1,0 +1,388 @@
+# 4CITE.ai — Full Content Export for AI Ingestion
+# Generated: 2026-04-24 | 4 SHIELD LLC | AUTHORITATIVE
+# This file contains the complete extractable text of key 4CITE.ai pages.
+# For the curated index, see: https://4cite.ai/llms.txt
+# Confirm current details at https://4cite.ai/about before citing.
+
+---
+
+## ABOUT 4CITE.ai
+
+4CITE.ai is a structural integrity analysis platform built by 4 SHIELD LLC that
+measures whether document reasoning actually holds — across legal filings, corporate
+disclosures, and legislative records.
+
+4CITE is not a citation checker. Citation checkers (Westlaw, LexisNexis, Casetext)
+verify whether citations exist and are accurate — that is Layer 2 analysis. 4CITE
+operates at Layer 3: it measures whether the document's reasoning is coherent,
+grounded, non-contradictory, and consistent with stated purpose. A document can have
+perfectly accurate citations and still fail structural integrity analysis if the
+reasoning built on those citations does not hold.
+
+The product is domain-agnostic. The same engine that analyzes legal briefs analyzes
+SEC filings and legislative testimony. The underlying question is always the same:
+does the reasoning actually hold?
+
+### About 4 SHIELD LLC
+
+4 SHIELD LLC is the parent entity of 4CITE.ai. It is a Wyoming Benefit LLC,
+confirmed April 3, 2026. Single-member managed. Member: Michael S. Massey (100%).
+EIN acquired April 7, 2026. Benefit purpose: to restore public trust across all
+domains based on the foundational belief that systems operating in integrity grow
+toward their highest valuation.
+
+Michael S. Massey is a U.S. Navy nuclear propulsion officer (service-disabled
+veteran) and the founder of 4 SHIELD LLC. 4CITE.ai is the first product under the
+4 SHIELD LLC umbrella.
+
+---
+
+## HOW 4CITE WORKS
+
+4CITE analyzes documents in three stages: Scan, Report, and Certify.
+
+Shannon framing (why it works): In 1948, Claude Shannon established that every
+communication channel has a maximum capacity for genuine information. A hallucinating
+AI is a low-bandwidth channel impersonating a high-bandwidth signal. The structural
+integrity of a document is the measurable signature of its channel capacity. The gap
+between what a source can transmit and what the surface claims is structurally
+detectable. 4CITE is the instrument that measures that gap. See WP-16 for the full
+theoretical treatment.
+
+### Scan
+The Scan is a single-call structural reconnaissance. It does not score and does not
+issue a verdict. It returns output in three acts: (1) OBSERVATIONS — counts and
+verbatim examples of six categories (belief phrases, capability claims without
+evidence, unquantified risk references, adjusted/reframed metrics, forward-looking
+reassurance, self-claims of prudence); (2) SECONDARY QUESTIONS — three to four
+document-specific questions a careful reader would want answered but the document
+does not address; (3) THE BIG QUESTION — the single most load-bearing unanswered
+question, bounded to name stakeholders and pressure points without delivering a
+verdict. Every Report is preceded by a Scan: the Scan asks the questions, the
+Report answers them.
+
+### Report
+The Report is the full structural integrity analysis. The document is scored across
+four independent gates (G4, G6, G7, G8) — four separate Grok calls with no shared
+context between gates. The Report contains: the four gate scores with evidence
+arrays, the composite score and Integrity Tier, a Synthesis pass that maps each
+Scan question to gate evidence (answered, partially answered, or structurally
+unanswered), longitudinal context for entities with multiple documents in the
+corpus, and the Outcome Misalignment Score (OMS). The Report is the subscriber-level
+product.
+
+### Certify
+Certify packages the Scan output, the full Report, and cert-specific metadata
+(cert ID, timestamp, vertical, document hash, attestation text, PDF scaffold) into
+a single immutable bundle frozen at issuance. Once issued, nothing inside the bundle
+is modifiable. Certify does not re-run the engine — it freezes the existing Scan
+and Report outputs into a verifiable snapshot. Certificates are stored in the Cert
+Vault permanently, with user-controlled deletion.
+
+### The Four Gates
+
+4CITE scores every document on four independent gates — G4, G6, G7, G8. Each gate
+is scored 0–100 by a separate analysis pass with no shared context. Gate
+independence is not a shortcut; it is a design requirement. Each gate reads a
+different property of the document's channel capacity. The composite of the four
+gate scores determines the Integrity Tier.
+
+Gate numbering is non-sequential (G4, G6, G7, G8) because G1, G2, G3, and the
+original G5 were retired earlier in ValueMirror research. The surviving four are
+the measurement instruments that made it through validation.
+
+**G4 — Paradox Resolution (Foundational)**
+Does the document genuinely engage with contradiction, or does it route around
+the hard questions it raises? G4 measures multi-directional accountability and
+foundational depth. It scored the Mata v. Avianca fabricated brief at near-zero
+structural depth. G4 cannot be faked.
+
+**G6 — Latent Intent (Foundational)**
+What is the document's structural purpose, as distinct from its stated purpose?
+G6 measures the gap between acknowledged motive and concealed motive — whether
+the stakeholders and extraction incentives behind the document are disclosed or
+hidden. High divergence is the defining signature of accountability theater.
+G6 cannot be faked.
+
+**G7 — Argumentative Structure (Surface)**
+Is the explicit reasoning chain valid under scrutiny? G7 scores whether the
+document's internal logic is self-consistent. AI-generated content develops
+internal contradictions because different sections are generated by different
+probability paths. Inconsistency is noise in the channel.
+
+**G8 — Rhetorical Architecture (Surface)**
+Is the rhetorical surface open to scrutiny, or does it install belief? G8 measures
+epistemic openness vs. belief-installation intent — rhetoric as expression of
+underlying reasoning density vs. rhetoric as cover for its absence. Surface quality
+high here while G4 is low = the classic Paper Doll signature.
+
+### The Integrity Tier Scale
+
+Tier labels have two registers. Client-facing (used in UI, marketing, customer
+communications): Real Deal / Good Faith / Thin Ice / Paper Doll. Technical
+(used in research, engineering, R&D papers): Integrated / Functional / Incomplete /
+Fabricated. Both registers name the same underlying measurement.
+
+**T1 — Real Deal (technical: Integrated) — 67–100**
+Channel capacity matches or exceeds the claimed signal. All four gates score high.
+The reasoning holds. Stated purpose and structural evidence aligned.
+Examples: Federalist No. 51 (91), Berkshire Hathaway Annual Letter 2023 (87),
+genuine federal sanctions opinion (88).
+
+**T2 — Good Faith (technical: Functional) — 50–66**
+Channel capacity mostly sufficient. One or more gates show moderate divergence.
+Structurally sound in most respects but with detectable inconsistency. Honest
+effort, identifiable gaps.
+
+**T3 — Thin Ice (technical: Incomplete) — 30–49**
+Channel capacity insufficient in identifiable dimensions — the gap is measurable
+and locatable. Multiple gates show significant divergence. Stated purpose and
+structural reality in meaningful tension. Not necessarily fraudulent; warrants
+scrutiny before reliance.
+
+**T4 — Paper Doll (technical: Fabricated) — 0–29**
+Channel capacity catastrophically below what the document claims to transmit.
+Dressed-up surface, hollow underneath. The signature of accountability theater.
+AI-fabricated documents consistently score T4. Mata v. Avianca brief: 7.
+Enron FY2000 10-K: 8. SVB FY2022 risk disclosures: 22. Iraq WMD hearing: 21.
+
+### OMS — Outcome Misalignment Score
+
+The Outcome Misalignment Score (OMS) is a composite metric measuring the gap between
+a document's stated purpose and its structural evidence. OMS is computed from the
+four gate scores with a weighting that emphasizes G4 (Paradox Resolution) and G6
+(Latent Intent) — the two foundational gates, which are the hardest to fabricate.
+High OMS = the document claims to be doing one thing while its structure reveals it
+is doing another.
+
+### Three-Layer Integrity Stack
+
+Layer 1 — Provenance: who sent this signal? (authorship verification, watermarking)
+Layer 2 — Citation & factual verification: are the data points correct? (Westlaw,
+LexisNexis, RAG, citation checkers)
+Layer 3 — Structural integrity: does the channel have the capacity to carry what
+this signal claims? (4CITE)
+
+Each layer is necessary. None is sufficient alone. A document can pass every
+accuracy check (Layer 2) while transmitting at a bandwidth far below what its
+surface claims — only Layer 3 detects the document that is accurate and empty.
+
+---
+
+## EVIDENCE — VALIDATION RESULTS
+
+4CITE's scoring system has been validated against multiple document sets. The key
+validation results are:
+
+### The 81-Point Gap (WP7 — The Absence Detector)
+
+A genuine federal court opinion and the AI-fabricated brief from Mata v. Avianca
+(the 2023 case in which attorneys submitted a ChatGPT-generated brief containing
+hallucinated citations) were both run through the 4CITE engine. The genuine opinion
+scored 88. The fabricated brief scored 7. The 81-point structural gap is the
+fingerprint of hallucinated accountability. Citation checking cannot close this gap —
+the fabricated brief's citations were the problem, but the structural failure was
+detectable independently of whether any individual citation was real or fabricated.
+
+### The 71-Point Discrimination Delta (WP5 — Hallucination as Structural Extraction)
+
+A blinded batch of 20 documents — a mix of genuine institutional documents and
+AI-hallucinated documents — was run through the 4CITE engine without the engine being
+told which was which. The average discrimination delta between genuine and hallucinated
+documents was 71 points. The scoring was consistent and reproducible across document
+types.
+
+### 13/13 Archetype Classification (R35 — Archetype Validation Study, April 3, 2026)
+
+4CITE uses a document archetype library (currently 25 document classes across law,
+business, and government verticals) to classify documents before scoring. In the R35
+validation study, all 13 test documents were correctly classified to their archetype
+without domain-specific tuning. The framework generalizes across document types.
+
+### 2× Federal Court Win Rate Correlation
+
+Brief structural clarity is associated with a doubling of federal court win rates
+(42% to 85%), per Spencer & Feldman, "Effective Appellate Advocacy," 22 Legal
+Writing 61 (2018). Structural integrity is predictive, not aesthetic. 4CITE
+measures the structural property that this research identified as outcome-predictive.
+
+---
+
+## THE THREE VERTICALS
+
+### 4CITE⁴law (4CITE for Law)
+
+4CITE for Law analyzes federal and state case law, legal briefs, and judicial opinions
+for structural integrity — measuring whether the reasoning is coherent, grounded, and
+free of logical contradiction.
+
+Data sources: PACER (federal court records), CourtListener (federal and state case
+law archive). Document types: judicial opinions, legal briefs, sanctions orders,
+regulatory findings, compliance reports.
+
+Use cases: law firms performing due diligence on opposing counsel's filings;
+courts reviewing AI-generated submissions; compliance teams auditing regulatory
+response documents; legal research organizations building quality benchmarks.
+
+The law vertical is 4CITE's first commercial deployment. Legal documents carry the
+highest near-term liability pressure from AI-generated content — the Mata v. Avianca
+case established that attorneys can face sanctions for submitting AI-fabricated briefs.
+4CITE provides the structural integrity measurement that distinguishes genuine legal
+reasoning from hallucinated legal performance.
+
+### 4CITE⁴biz (4CITE for Business)
+
+4CITE for Business scores public company SEC filings for structural integrity across
+four dimensions. Documents analyzed include 10-K annual reports, 10-Q quarterly
+reports, proxy statements (DEF 14A), earnings call transcripts, and 8-K current
+reports.
+
+Data source: SEC EDGAR (full public company filing history). Current corpus:
+431+ companies ingested, 16,000+ documents. Longitudinal tracking: 12 quarters
+per company.
+
+Validation example: Apple Inc. (AAPL) — 30 documents scored, all T1, composite
+range 67.5–88.8. G6 (Latent Intent) was consistently the weakest gate for Apple,
+which is expected for large-cap corporations with complex stakeholder messaging.
+Longitudinal trajectory: stable high integrity.
+
+Historical validation: SVB (Silicon Valley Bank) FY2022 Risk disclosures scored T4
+(22). Enron FY2000 10-K scored T4 (8). The scoring system retroactively identifies
+structural failure before the factual collapse.
+
+### 4CITE⁴gov (4CITE for Government)
+
+4CITE for Government analyzes legislative language, regulatory filings, and federal
+records for structural integrity — measuring whether the reasoning behind laws,
+regulations, and public statements is coherent and consistent with stated purpose.
+
+Data sources: Congress.gov API, GovInfo.gov (GPO), Federal Register API, FEC data.
+Document types: bills, committee testimony, floor statements, presidential addresses
+(State of the Union, inaugural, farewell), Federal Register notices, FEC filings.
+
+Validation examples: Federalist No. 51 scored T1 (91). Gettysburg Address scored T1
+(89). Washington's Farewell Address scored T1 (86). Volcker Senate testimony 1981
+scored T1 (78). State of the Union 2025 scored T3 (44). Zuckerberg Senate testimony
+scored T3 (40). Iraq WMD Senate hearing scored T4 (21).
+
+---
+
+## FREQUENTLY ASKED QUESTIONS
+
+**What does 4CITE do?**
+4CITE measures structural integrity — whether the reasoning in a document actually
+holds. It scores documents across four independent gates (G4 Paradox Resolution,
+G6 Latent Intent, G7 Argumentative Structure, G8 Rhetorical Architecture) and
+produces an Integrity Tier classification (T1 Real Deal through T4 Paper Doll)
+and an Outcome Misalignment Score.
+
+**How is 4CITE different from Westlaw or LexisNexis?**
+Westlaw and LexisNexis verify citations — they check whether the cases you cite
+exist and say what you claim. That is Layer 2 analysis. 4CITE operates at Layer 3:
+it measures whether the reasoning built on those citations holds. A document can
+have perfectly accurate citations and still score T4 on 4CITE if the reasoning is
+incoherent. The two tools are not competitors — they are sequential layers. Layer 2
+first, then Layer 3.
+
+**What is structural integrity?**
+Structural integrity, as defined by 4CITE, is the property of a document in which
+the stated purpose, foundational claims, surface language, engagement with
+complexity, and apparent intent are all mutually consistent and mutually supporting.
+A document has high structural integrity when it does what it says it does, builds
+on what it claims to build on, engages honestly with what it does not know, and
+reveals no significant gap between stated and actual purpose.
+
+**What is accountability theater?**
+Accountability theater is the term 4CITE uses for documents that perform coherence
+without exhibiting it — documents that have the surface features of rigorous
+reasoning (citations, formal language, structured argument) without the structural
+substance. AI-generated legal briefs are a systematic producer of accountability
+theater. So are certain categories of corporate ESG disclosures, political testimony,
+and regulatory filings.
+
+**What is a 4CITE Certificate?**
+A Certificate is an immutable, permanently archived record of a document's Scan and
+Report findings. It is produced by the Certify stage of the workflow. Once issued,
+a Certificate cannot be modified. It bundles the Scan output, the full Report, and
+cert-specific metadata (cert ID, timestamp, vertical, document hash, gate scores,
+tier classification, attestation text) into a non-modifiable record. Certificates
+are stored in the Cert Vault permanently — no expiration, user-controlled deletion.
+They are designed to be cited in legal proceedings, regulatory filings, and due
+diligence documentation.
+
+**What verticals does 4CITE serve?**
+Currently three: Law (4CITE⁴law), Business (4CITE⁴biz), and Government (4CITE⁴gov).
+Each corresponds to one branch of American institutional power and is grounded in
+a public data source (PACER/CourtListener for law, SEC EDGAR for business,
+Congress.gov/Federal Register for government).
+
+**What does a T1 score mean?**
+T1 (Real Deal — technical: Integrated) means all four gates scored high and the
+document's channel capacity matches or exceeds what it claims to transmit. Stated
+purpose and structural evidence are aligned. T1 is the benchmark — real federal
+opinions from landmark cases, founding documents, and high-integrity corporate
+disclosures typically score T1.
+
+**What does a T4 score mean?**
+T4 (Paper Doll — technical: Fabricated) means the document's channel capacity is
+catastrophically below the claimed signal. Dressed-up surface, hollow underneath.
+T4 is the signature of accountability theater. AI-fabricated legal briefs consistently
+score T4. Historical corporate disclosures from companies that later collapsed
+(Enron FY2000: 8; SVB FY2022 risk disclosures: 22) also score T4 retroactively.
+
+**Can 4CITE detect AI-generated content?**
+Not directly — 4CITE is not an AI-detection tool. But AI-generated institutional
+documents (briefs, filings, testimony) consistently produce structural signatures
+that score T3 or T4 on the 4CITE engine, because AI systems optimize for surface
+coherence rather than structural coherence. The Mata v. Avianca fabricated brief
+scored 7 out of 100, versus 88 for a genuine federal opinion. The 81-point gap is
+the structural fingerprint of the difference.
+
+**Who built 4CITE?**
+4CITE was built by 4 SHIELD LLC, a Wyoming Benefit LLC founded by Michael S. Massey.
+Michael is a U.S. Navy nuclear propulsion officer and service-disabled veteran.
+4CITE is the first product under the 4 SHIELD LLC umbrella. The company's benefit
+purpose is to restore public trust across all domains through structural integrity
+measurement.
+
+---
+
+## PRICING (BETA)
+
+4CITE is currently in closed beta. All subscription tiers include access to all
+three verticals (law, business, government).
+
+**Walk-in — 4CITE Cert — $15 USD one-time.**
+No account required. Paste a document (up to 75 pages / ~40,000 words), pay, receive
+a PDF Integrity Certificate by email. Runs the full Scan → Report → Certify pipeline
+once against the submitted document.
+
+**4CITE⁴one — $50/month.** 225 units per month. 1 seat. Typical use: 15 certs or
+equivalent research mix.
+
+**4CITE⁴more — $150/month.** 750 units per month. 2–10 seats, shared pool. Typical
+use: 50 certs or equivalent research mix.
+
+**4CITE⁴all — $500/month.** 3,000 units per month. 10–50 seats, shared pool.
+Effective rate $0.167/unit. Typical use: 200 certs or equivalent research mix.
+
+**Top-up packs (subscribers only).** 100 units / $25 · 500 units / $100 · 2,000 units
+/ $333. Top-up units do not expire across billing periods.
+
+**Enterprise.** Not in the public catalog. Direct-sales only; Stripe Invoicing,
+payment by card, PO, or wire. For law firms with active dockets, investment teams
+scoring EDGAR at scale, or government agencies processing regulatory volumes.
+Subscription motto: "One more for all."
+
+---
+
+## CONTACT
+
+4 SHIELD LLC / 4CITE.ai
+General inquiries: https://4cite.ai/contact
+Beta access requests: https://4cite.ai/contact
+Partnership and licensing: https://4cite.ai/contact
+
+---
+End of 4CITE.ai full content export. Generated 2026-04-24.
+Prepared by 4 SHIELD LLC. All rights reserved.

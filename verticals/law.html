@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>4CITE⁴law — Legal Structural Integrity Analysis</title>
+<meta name="description" content="4CITE for Law analyzes federal and state case law, legal briefs, and judicial opinions for structural integrity — detecting accountability theater before it reaches the bench.">
+<meta name="theme-color" content="#07152E">
+<link rel="apple-touch-icon" href="../icons/icon-192.png">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --midnight: #07152E; --navy: #0B2358; --card: #0C1628; --border: #1A3060;
+  --blue: #2B63D9; --cyan: #7DEBFF; --gold: #D89A0B; --goldf: #F7D85D;
+  --steel: #7A9ABE; --muted: #3A5A80; --text: #C8D8EE; --white: #FFFFFF;
+  --green: #22C97A; --amber: #F0A020; --red: #E05050;
+  --law: #C42840; --biz: #1A7ABF; --gov: #3A7A52;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior:smooth; }
+body { background:var(--midnight); color:var(--text); font-family:'Space Grotesk',-apple-system,sans-serif; line-height:1.7; font-size:16px; overflow-x:hidden; }
+nav { position:fixed; top:0; left:0; right:0; z-index:200; background:rgba(7,21,46,0.95); backdrop-filter:blur(16px); border-bottom:1px solid var(--border); padding:0 60px; height:62px; display:flex; align-items:center; gap:32px; }
+.nav-brand { font-size:22px; font-weight:700; margin-right:auto; letter-spacing:-0.5px; text-decoration:none; text-transform:none; }
+.nav-brand .n4 { color:var(--goldf); } .nav-brand .nc { color:var(--white); } .nav-brand .na { color:var(--cyan); font-weight:300; }
+nav a { color:var(--steel); text-decoration:none; font-size:12px; font-weight:500; letter-spacing:2px; text-transform:uppercase; transition:color 0.2s; }
+nav a:hover { color:var(--goldf); }
+.nav-cta { background:linear-gradient(135deg,#2B63D9,#0A2E80); border:1px solid rgba(43,99,217,0.6); color:var(--white) !important; padding:8px 20px; border-radius:6px; }
+main { padding-top:62px; }
+.page-hero { padding:80px 80px 60px; max-width:1100px; margin:0 auto; border-bottom:3px solid var(--law); }
+.page-eyebrow { font-size:10px; font-weight:700; letter-spacing:5px; color:var(--law); text-transform:uppercase; margin-bottom:16px; display:flex; align-items:center; gap:12px; }
+.page-eyebrow::before { content:''; display:block; width:32px; height:1px; background:var(--law); }
+h1 { font-size:clamp(32px,4vw,52px); font-weight:700; color:var(--white); line-height:1.1; margin-bottom:20px; }
+h1 .g { color:var(--goldf); } h1 .c { color:var(--cyan); } h1 .l { color:var(--law); }
+.page-lead { font-size:18px; color:var(--steel); line-height:1.8; max-width:680px; font-weight:300; }
+.page-lead strong { color:var(--text); font-weight:500; }
+.content { max-width:1100px; margin:0 auto; padding:0 80px 100px; }
+.section { padding:52px 0; border-top:1px solid rgba(26,48,96,0.4); }
+h2 { font-size:26px; font-weight:700; color:var(--white); margin-bottom:12px; line-height:1.15; }
+h2 .g { color:var(--goldf); } h2 .c { color:var(--cyan); } h2 .l { color:var(--law); }
+h3 { font-size:16px; font-weight:700; color:var(--text); margin-bottom:8px; margin-top:24px; }
+p { color:var(--steel); line-height:1.8; margin-bottom:16px; }
+p strong { color:var(--text); font-weight:600; }
+ul { color:var(--steel); padding-left:24px; margin-bottom:16px; }
+ul li { margin-bottom:8px; line-height:1.7; }
+ul li strong { color:var(--text); }
+.sec-label { font-size:10px; font-weight:700; letter-spacing:5px; text-transform:uppercase; color:var(--law); margin-bottom:12px; }
+.card { background:var(--card); border:1px solid var(--border); border-radius:12px; padding:32px; }
+.grid-2 { display:grid; grid-template-columns:1fr 1fr; gap:20px; margin-top:24px; }
+.grid-3 { display:grid; grid-template-columns:1fr 1fr 1fr; gap:20px; margin-top:24px; }
+.stat-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; margin-top:24px; }
+.stat-card { background:var(--card); border:1px solid var(--border); border-radius:10px; padding:24px; text-align:center; }
+.stat-n { font-size:36px; font-weight:700; color:var(--law); line-height:1; margin-bottom:8px; }
+.stat-l { font-size:11px; font-weight:600; letter-spacing:2px; text-transform:uppercase; color:var(--muted); }
+.case-box { background:rgba(196,40,64,0.06); border:1px solid rgba(196,40,64,0.25); border-radius:12px; padding:28px; margin-top:24px; }
+.case-box .case-head { font-size:10px; font-weight:700; letter-spacing:4px; text-transform:uppercase; color:var(--law); margin-bottom:12px; }
+.case-box h3 { color:var(--white); font-size:18px; margin-bottom:12px; margin-top:0; }
+.use-card { background:var(--card); border:1px solid var(--border); border-radius:10px; padding:24px 28px; }
+.use-card h3 { font-size:14px; color:var(--white); margin-top:0; margin-bottom:8px; }
+.use-card p { font-size:13px; margin-bottom:0; }
+.gate-row { display:flex; align-items:flex-start; gap:20px; padding:20px 0; border-bottom:1px solid rgba(26,48,96,0.3); }
+.gate-row:last-child { border-bottom:none; }
+.gate-badge { background:rgba(196,40,64,0.12); border:1px solid rgba(196,40,64,0.3); border-radius:6px; padding:6px 10px; font-size:10px; font-weight:700; letter-spacing:3px; color:var(--law); text-transform:uppercase; white-space:nowrap; min-width:52px; text-align:center; }
+.gate-info h3 { font-size:15px; color:var(--white); margin-top:0; margin-bottom:4px; }
+.gate-info p { font-size:13px; margin-bottom:0; }
+.tier-table { width:100%; border-collapse:collapse; margin-top:24px; font-size:13px; }
+.tier-table th { text-align:left; font-size:10px; font-weight:700; letter-spacing:3px; text-transform:uppercase; color:var(--muted); padding:10px 16px; border-bottom:1px solid var(--border); }
+.tier-table td { padding:14px 16px; border-bottom:1px solid rgba(26,48,96,0.3); color:var(--steel); vertical-align:top; }
+.tier-table tr:last-child td { border-bottom:none; }
+.tier-table td:first-child { font-weight:700; color:var(--text); }
+.t1b { background:rgba(34,201,122,0.12); color:var(--green); border:1px solid rgba(34,201,122,0.3); border-radius:4px; padding:2px 8px; font-size:11px; font-weight:700; }
+.t2b { background:rgba(43,99,217,0.12); color:#6699FF; border:1px solid rgba(43,99,217,0.3); border-radius:4px; padding:2px 8px; font-size:11px; font-weight:700; }
+.t3b { background:rgba(240,160,32,0.12); color:var(--amber); border:1px solid rgba(240,160,32,0.3); border-radius:4px; padding:2px 8px; font-size:11px; font-weight:700; }
+.t4b { background:rgba(224,80,80,0.12); color:var(--red); border:1px solid rgba(224,80,80,0.3); border-radius:4px; padding:2px 8px; font-size:11px; font-weight:700; }
+.callout { border-radius:12px; padding:24px 28px; margin:24px 0; font-size:14px; line-height:1.75; background:rgba(196,40,64,0.05); border:1px solid rgba(196,40,64,0.2); }
+.callout strong { color:var(--law); }
+footer { background:#030710; border-top:1px solid var(--border); padding:36px 80px; display:flex; align-items:center; justify-content:space-between; }
+.fb { font-size:20px; font-weight:700; }
+.fb .n4{color:var(--goldf);} .fb .nc{color:var(--white);} .fb .na{color:var(--cyan);font-weight:300;}
+.fl { display:flex; gap:28px; flex-wrap:wrap; }
+.fl a { font-size:12px; color:var(--muted); text-decoration:none; letter-spacing:1px; transition:color 0.2s; }
+.fl a:hover { color:var(--steel); }
+.fr { font-size:11px; color:var(--muted); letter-spacing:1px; }
+@media (max-width:960px) {
+  nav { padding:0 24px; gap:16px; }
+  nav a:not(.nav-brand):not(.nav-cta) { display:none; }
+  .page-hero { padding:60px 28px 40px; }
+  .content { padding:0 28px 80px; }
+  .grid-2, .grid-3, .stat-grid { grid-template-columns:1fr; }
+  footer { flex-direction:column; gap:20px; text-align:center; padding:28px; }
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="/" class="nav-brand"><span class="n4">4</span><span class="nc">CITE</span><span class="na">.ai</span></a>
+  <a href="/how-it-works">How It Works</a>
+  <a href="/verticals/">Verticals</a>
+  <a href="/pricing">Pricing</a>
+  <a href="/research/">Research</a>
+  <a href="/faq">FAQ</a>
+  <a href="/#waitlist" class="nav-cta">Join Beta →</a>
+</nav>
+
+<main>
+
+  <!-- ═══════════════════════════════ HERO ═══════════════════════════════ -->
+  <header class="page-hero">
+    <div class="page-eyebrow">Vertical · Law</div>
+    <h1><span class="g">4CITE</span><sup class="l" style="font-size:0.55em;vertical-align:super;font-weight:700;">4</sup><span class="l">law</span></h1>
+    <p class="page-lead">
+      4CITE for Law analyzes federal and state case law, legal briefs, and judicial opinions
+      for structural integrity — measuring whether the reasoning holds, not just whether the
+      citations exist. <strong>Accountability theater in legal documents has a measurable signature.</strong>
+      We built the instrument to detect it.
+    </p>
+  </header>
+
+  <div class="content">
+
+    <!-- ═══════════════════════════════ STATS ═══════════════════════════════ -->
+    <section class="section" id="stats">
+      <div class="sec-label">Corpus · Legal</div>
+      <h2>The <span class="g">Legal Corpus</span></h2>
+      <p>
+        The 4CITE legal corpus draws from PACER filings, CourtListener, federal appellate records,
+        and judicial opinions. Every document in the corpus is scored across four independent gates
+        and stored with a longitudinal timestamp for drift analysis.
+      </p>
+      <div class="stat-grid">
+        <div class="stat-card">
+          <div class="stat-n">81 pts</div>
+          <div class="stat-l">Highest Documented Gap</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-n">T4</div>
+          <div class="stat-l">AI Brief Score (Mata v. Avianca)</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-n">100%</div>
+          <div class="stat-l">AI-Generated Briefs Scored T3–T4</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════ WHAT IT ANALYZES ═══════════════════════════════ -->
+    <section class="section" id="documents">
+      <div class="sec-label">Document Types</div>
+      <h2>What <span class="g">4CITE Analyzes</span> in Law</h2>
+      <p>
+        4CITE for Law is built for the documents where structural failure has the highest stakes:
+        filings submitted to courts, opinions that set precedent, and briefs that argue for or
+        against someone's freedom, property, or rights.
+      </p>
+      <div class="grid-2" style="margin-top:28px;">
+        <div class="use-card">
+          <h3>Legal Briefs &amp; Motions</h3>
+          <p>Federal and state court briefs, motions to dismiss, summary judgment filings. Scores whether the argument structure is coherent with the cited authority — independent of whether the citations are real.</p>
+        </div>
+        <div class="use-card">
+          <h3>Judicial Opinions</h3>
+          <p>Appellate and district court opinions scored for internal consistency. Surfaces reasoning gaps and contradictions between stated holdings and the underlying analysis.</p>
+        </div>
+        <div class="use-card">
+          <h3>Regulatory Filings</h3>
+          <p>DOJ, FTC, SEC enforcement actions and responses. Detects accountability theater in institutional legal documents — the surface-coherent filing that contains no structural substance.</p>
+        </div>
+        <div class="use-card">
+          <h3>Contracts &amp; Agreements</h3>
+          <p>Material contracts where internal consistency of obligations and representations can be scored. Particularly effective for identifying drafting patterns common in AI-generated boilerplate.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════ LANDMARK CASE ═══════════════════════════════ -->
+    <section class="section" id="mata">
+      <div class="sec-label">Validation · WP7</div>
+      <h2>The <span class="l">Mata v. Avianca</span> Benchmark</h2>
+      <p>
+        The most extensively documented example of AI-generated legal failure is now part of
+        the 4CITE validation corpus. The results illustrate what structural integrity analysis
+        detects that citation checkers cannot.
+      </p>
+      <div class="case-box">
+        <div class="case-head">Case Study — WP7</div>
+        <h3>Mata v. Avianca, Inc. (S.D.N.Y. 2023)</h3>
+        <p>
+          Attorneys Schwartz and LoDuca submitted a brief containing citations to nonexistent
+          cases generated by ChatGPT. Judge P. Kevin Castel issued sanctions under Rule 11.
+          The brief became the defining example of AI-generated legal accountability theater.
+        </p>
+        <p>
+          4CITE scored the fabricated brief at <strong>7/100</strong> — Tier 4, Paper Doll —
+          and scored authentic briefs from the same legal domain at <strong>72–88/100</strong>.
+          The 81-point gap between the fabricated brief and the authentic average is the largest
+          single-document gap in the 4CITE validation corpus.
+        </p>
+        <p style="margin-bottom:0;">
+          <strong>Critical finding:</strong> The fabricated brief's structural failure was detectable
+          without knowing which citations were real. G4 (Paradox Resolution) scored the
+          reasoning architecture itself — and the architecture was hollow. This is the gap citation
+          checkers cannot close.
+        </p>
+      </div>
+      <p style="margin-top:20px;">
+        Full methodology and scoring breakdown: <a href="/evidence" style="color:var(--law);text-decoration:none;font-weight:600;">Evidence → WP7</a>
+      </p>
+    </section>
+
+    <!-- ═══════════════════════════════ FOUR GATES ═══════════════════════════════ -->
+    <section class="section" id="gates">
+      <div class="sec-label">Scoring System</div>
+      <h2>Four Gates. <span class="g">Independent Evaluation.</span></h2>
+      <p>
+        Each document is scored across four gates in separate, isolated analysis passes.
+        No gate sees another gate's output. This independence is what catches documents
+        that score well on surface measures while failing at the foundation — the precise
+        signature of AI-generated legal content and institutional accountability theater.
+      </p>
+      <div style="margin-top:28px;">
+        <div class="gate-row">
+          <div class="gate-badge">G4</div>
+          <div class="gate-info">
+            <h3>Paradox Resolution <span style="font-size:11px;color:var(--muted);font-weight:400;">— Cannot be faked</span></h3>
+            <p>Measures whether the foundational claims of the document actually support the conclusions. Detects the hollow architecture that underlies AI-generated briefs — arguments that read as coherent but contain no load-bearing reasoning. In the Mata brief, this gate detected near-zero structural depth.</p>
+          </div>
+        </div>
+        <div class="gate-row">
+          <div class="gate-badge">G6</div>
+          <div class="gate-info">
+            <h3>Latent Intent</h3>
+            <p>Probes the alignment between stated purpose and actual argumentative structure. Institutional documents designed to appear responsive without being substantive fail this gate at high rates — a characteristic pattern in accountability theater and AI-generated filings.</p>
+          </div>
+        </div>
+        <div class="gate-row">
+          <div class="gate-badge">G7</div>
+          <div class="gate-info">
+            <h3>Argumentative Structure</h3>
+            <p>Scores whether the document's internal logic is self-consistent under scrutiny. Authentic legal advocacy holds together under pressure because it comes from a single coherent reasoning source. AI-generated content develops internal contradictions because different sections were generated by different probability paths.</p>
+          </div>
+        </div>
+        <div class="gate-row">
+          <div class="gate-badge">G8</div>
+          <div class="gate-info">
+            <h3>Rhetorical Architecture <span style="font-size:11px;color:var(--muted);font-weight:400;">— Cannot be faked</span></h3>
+            <p>Probes the rhetorical surface for performance vs. substance. In genuine legal writing, rhetoric is an expression of underlying reasoning depth. In AI-generated briefs, rhetoric is compensation for the absence of that depth. The gate detects the difference. Surface quality that scores high here while G4 is low is the classic Paper Doll signature.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════ TIERS ═══════════════════════════════ -->
+    <section class="section" id="tiers">
+      <div class="sec-label">Scoring Output</div>
+      <h2>Integrity <span class="g">Tiers</span> in Legal Context</h2>
+      <p>
+        Every 4CITE score maps to one of four Integrity Tiers. In the legal vertical,
+        tier designation carries direct practical implications.
+      </p>
+      <table class="tier-table">
+        <thead>
+          <tr>
+            <th>Tier</th>
+            <th>Score Range</th>
+            <th>Designation</th>
+            <th>Legal Context</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><span class="t1b">T1</span></td>
+            <td>67–100</td>
+            <td>Real Deal</td>
+            <td>Channel capacity matches or exceeds the claimed signal. Authentic advocacy with coherent foundation — surface and structure come from the same genuine source. Consistent with decades of precedent-setting briefs. Federalist No. 51 scores 91; genuine federal sanctions opinion: 88; Gettysburg Address: 89.</td>
+          </tr>
+          <tr>
+            <td><span class="t2b">T2</span></td>
+            <td>50–66</td>
+            <td>Good Faith</td>
+            <td>Channel capacity mostly sufficient. Genuine legal drafting with identifiable structural gaps — real substance, honest effort, some compression visible but non-critical. Typical range for standard litigation filings that have not been strategically constructed for reasoning integrity.</td>
+          </tr>
+          <tr>
+            <td><span class="t3b">T3</span></td>
+            <td>30–49</td>
+            <td>Thin Ice</td>
+            <td>Channel capacity insufficient in identifiable dimensions — the gap is measurable and locatable. Surface holds in places, but specific structural areas cannot support the weight placed on them. Common in institutional filings designed to appear substantive. Warrants scrutiny before reliance.</td>
+          </tr>
+          <tr>
+            <td><span class="t4b">T4</span></td>
+            <td>0–29</td>
+            <td>Paper Doll</td>
+            <td>Channel capacity catastrophically below what the document claims to transmit. Dressed-up surface, hollow underneath. Mata v. Avianca brief: 7. All AI-generated briefs in the validation corpus scored T4. In contested litigation, a T4 score on an opposing filing is material information.</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- ═══════════════════════════════ USE CASES ═══════════════════════════════ -->
+    <section class="section" id="use-cases">
+      <div class="sec-label">Applications</div>
+      <h2>Who Uses <span class="g">4CITE⁴law</span></h2>
+      <div class="grid-3" style="margin-top:8px;">
+        <div class="use-card">
+          <h3>Litigation Attorneys</h3>
+          <p>Score opposing filings for structural integrity before responding. Identify AI-generated content in opposing briefs. Validate your own drafts before submission to reduce Rule 11 exposure.</p>
+        </div>
+        <div class="use-card">
+          <h3>Legal Research Teams</h3>
+          <p>Bulk-score case law for structural integrity trends. Identify the corpus of opinions where the reasoning is strongest — and where reliance carries hidden risk.</p>
+        </div>
+        <div class="use-card">
+          <h3>In-House Counsel</h3>
+          <p>Score outside counsel deliverables for accountability theater patterns. Know before you rely whether the analysis you received has structural substance or surfaces-only compliance.</p>
+        </div>
+        <div class="use-card">
+          <h3>Judicial Research Staff</h3>
+          <p>Support chambers with structural integrity screening of submitted materials. The Mata problem is now a docket-management problem. 4CITE surfaces it early.</p>
+        </div>
+        <div class="use-card">
+          <h3>Legal Tech Platforms</h3>
+          <p>Integrate 4CITE scoring as a quality layer for AI-assisted legal drafting tools. Surface integrity score alongside AI-generated content at the moment of generation.</p>
+        </div>
+        <div class="use-card">
+          <h3>Law Schools &amp; Clinics</h3>
+          <p>Score student work for structural reasoning quality, independent of citation accuracy. Teach the difference between coherent argumentation and surface-level legal writing.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════ DATA SOURCES ═══════════════════════════════ -->
+    <section class="section" id="sources">
+      <div class="sec-label">Data Infrastructure</div>
+      <h2>Legal <span class="g">Data Sources</span></h2>
+      <p>
+        The 4CITE legal corpus is built from public-record legal repositories. Document ingestion
+        is ongoing; the corpus is scored as new filings become available.
+      </p>
+      <div class="grid-2" style="margin-top:20px;">
+        <div class="card">
+          <div class="card-title" style="color:var(--law);">Federal Court Records</div>
+          <p style="font-size:13px;margin-bottom:8px;"><strong>PACER</strong> — Federal court electronic filing system. Source for district and appellate briefs, motions, and orders across all federal circuits.</p>
+          <p style="font-size:13px;margin-bottom:0;"><strong>CourtListener</strong> — Free Law Project's open-access database of federal and state opinions. Primary source for judicial opinion corpus.</p>
+        </div>
+        <div class="card">
+          <div class="card-title" style="color:var(--law);">Opinion &amp; Precedent Corpus</div>
+          <p style="font-size:13px;margin-bottom:8px;"><strong>Supreme Court opinions</strong> — Full corpus of published opinions from 1791 to present, scored for longitudinal integrity trend analysis.</p>
+          <p style="font-size:13px;margin-bottom:0;"><strong>Circuit court precedent</strong> — Published opinions from all 13 federal circuits, with emphasis on documents that are actively cited in current litigation.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════ CTA ═══════════════════════════════ -->
+    <section class="section" style="text-align:center;border-top:1px solid rgba(26,48,96,0.4);">
+      <h2 style="margin-bottom:12px;">Subscribe to <span class="g">4CITE<sup>4</sup>law</span></h2>
+      <p style="max-width:520px;margin:0 auto 28px;">4CITE for Law is in beta. Subscriptions are available now to law firms, legal research platforms, and in-house legal teams.</p>
+      <a href="/pricing?vertical=law#subscriptions" style="display:inline-block;background:linear-gradient(135deg,#C42840,#7A0018);border:1px solid rgba(196,40,64,0.6);color:var(--white);font-size:12px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:14px 32px;border-radius:8px;text-decoration:none;">Choose your plan →</a>
+      <p style="margin-top:16px;font-size:12px;color:var(--muted);">Or <a href="/portal/certify" style="color:var(--steel);">buy a single 4CITE Cert ($15)</a> — no account required</p>
+    </section>
+
+  </div><!-- end .content -->
+</main>
+
+<footer>
+  <div class="fb"><span class="n4">4</span><span class="nc">CITE</span><span class="na">.ai</span></div>
+  <div class="fl">
+    <a href="/about">About</a>
+    <a href="/contact">Contact</a>
+    <a href="/privacy">Privacy</a>
+    <a href="/terms">Terms</a>
+  </div>
+  <div class="fr">© 2026 4 SHIELD LLC · All Rights Reserved</div>
+</footer>
+
+</body>
+</html>

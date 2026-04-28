@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex,nofollow">
+<title>Usage — 4CITE.ai account</title>
+<meta name="description" content="Detailed usage breakdown for your 4CITE.ai subscription.">
+<meta name="theme-color" content="#07152E">
+<link rel="apple-touch-icon" href="/icons/icon-192.png">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --midnight:#07152E; --navy:#0B2358; --card:#0C1628; --border:#1A3060;
+  --blue:#2B63D9; --cyan:#7DEBFF; --gold:#D89A0B; --goldf:#F7D85D;
+  --steel:#7A9ABE; --muted:#3A5A80; --text:#C8D8EE; --white:#FFFFFF;
+  --green:#22C97A; --amber:#F0A020; --red:#E05050;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+html, body { height:100%; }
+body { background:var(--midnight); color:var(--text); font-family:'Space Grotesk',-apple-system,sans-serif; line-height:1.65; font-size:16px; min-height:100vh; display:flex; flex-direction:column; }
+
+.app-header { background:rgba(7,21,46,0.95); backdrop-filter:blur(16px); border-bottom:1px solid var(--border); padding:0 40px; height:56px; display:flex; align-items:center; gap:28px; flex-shrink:0; }
+.app-brand { font-size:20px; font-weight:700; letter-spacing:-0.5px; text-decoration:none; text-transform:none; margin-right:8px; }
+.app-brand .n4 { color:var(--goldf); } .app-brand .nc { color:var(--white); } .app-brand .na { color:var(--cyan); font-weight:300; }
+.beta-badge { font-size:9px; font-weight:700; letter-spacing:2px; background:rgba(247,216,93,0.10); border:1px solid rgba(247,216,93,0.35); border-radius:4px; padding:3px 8px; color:var(--goldf); }
+.acct-nav { display:flex; gap:22px; margin-right:auto; }
+.acct-nav a { font-size:11px; color:var(--steel); text-decoration:none; letter-spacing:2px; text-transform:uppercase; transition:color 0.2s; padding:4px 0; }
+.acct-nav a:hover { color:var(--text); }
+.acct-nav a.active { color:var(--goldf); border-bottom:1px solid var(--goldf); padding-bottom:2px; }
+.acct-email { font-size:11px; color:var(--muted); letter-spacing:0.5px; }
+.acct-logout { font-size:11px; color:var(--muted); text-decoration:none; letter-spacing:2px; text-transform:uppercase; transition:color 0.2s; }
+.acct-logout:hover { color:var(--red); }
+
+.acct-main { flex:1; max-width:1100px; width:100%; margin:0 auto; padding:40px 40px 60px; }
+.page-eyebrow { font-size:10px; font-weight:700; letter-spacing:5px; color:var(--muted); text-transform:uppercase; margin-bottom:14px; display:flex; align-items:center; gap:12px; }
+.page-eyebrow::before { content:''; display:block; width:32px; height:1px; background:var(--muted); }
+h1 { font-size:32px; font-weight:700; color:var(--white); margin-bottom:6px; line-height:1.2; }
+h1 .g { color:var(--goldf); }
+.page-lead { font-size:14px; color:var(--steel); margin-bottom:36px; }
+
+/* Meter card (same as /account) */
+.meter-card { background:var(--card); border:1px solid var(--border); border-radius:12px; padding:32px; margin-bottom:28px; position:relative; overflow:hidden; }
+.meter-card::before { content:''; position:absolute; top:0; left:0; right:0; height:3px; background:linear-gradient(90deg,var(--blue),var(--cyan)); }
+.meter-toggle-row { display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:14px; margin-bottom:24px; }
+.meter-toggle-label { font-size:10px; font-weight:700; letter-spacing:4px; text-transform:uppercase; color:var(--muted); }
+.toggle-group { display:inline-flex; background:rgba(7,21,46,0.6); border:1px solid var(--border); border-radius:8px; overflow:hidden; }
+.toggle-btn { background:transparent; border:none; color:var(--muted); font-family:'Space Grotesk',sans-serif; font-size:11px; font-weight:600; letter-spacing:1.5px; text-transform:uppercase; padding:8px 16px; cursor:pointer; transition:all 0.2s; border-right:1px solid var(--border); }
+.toggle-btn:last-child { border-right:none; }
+.toggle-btn:hover { color:var(--steel); }
+.toggle-btn.active { background:rgba(43,99,217,0.18); color:var(--goldf); }
+.meter-headline { font-size:32px; font-weight:700; color:var(--white); line-height:1.15; margin-bottom:6px; }
+.meter-headline .num { color:var(--goldf); }
+.meter-headline .of { color:var(--steel); font-weight:400; }
+.meter-bar-wrap { margin:18px 0; }
+.meter-bar-track { height:10px; background:rgba(7,21,46,0.7); border:1px solid var(--border); border-radius:6px; overflow:hidden; }
+.meter-bar-fill { height:100%; background:linear-gradient(90deg,var(--blue),var(--cyan)); border-radius:6px; transition:width 0.6s cubic-bezier(0.16,1,0.3,1); }
+.meter-bar-fill.warn { background:linear-gradient(90deg,var(--amber),var(--goldf)); }
+.meter-bar-fill.crit { background:linear-gradient(90deg,var(--red),var(--amber)); }
+.meter-resets { font-size:12px; color:var(--muted); letter-spacing:1px; }
+.meter-resets strong { color:var(--steel); font-weight:500; }
+
+/* 14-day spark */
+.spark-card { background:var(--card); border:1px solid var(--border); border-radius:12px; padding:28px 32px; margin-bottom:28px; }
+.spark-card h3 { font-size:11px; font-weight:700; color:var(--muted); letter-spacing:4px; text-transform:uppercase; margin-bottom:18px; }
+.spark-svg { width:100%; height:90px; display:block; }
+.spark-axis { display:flex; justify-content:space-between; font-size:10px; color:var(--muted); margin-top:8px; letter-spacing:0.5px; }
+
+/* Action breakdown table */
+.action-card { background:var(--card); border:1px solid var(--border); border-radius:12px; padding:28px 32px; margin-bottom:28px; }
+.action-card h3 { font-size:11px; font-weight:700; color:var(--muted); letter-spacing:4px; text-transform:uppercase; margin-bottom:18px; }
+.action-table { width:100%; font-size:14px; border-collapse:collapse; }
+.action-table th { text-align:left; font-size:10px; font-weight:700; color:var(--muted); letter-spacing:2px; text-transform:uppercase; padding:10px 12px; border-bottom:1px solid var(--border); }
+.action-table th:not(:first-child) { text-align:right; }
+.action-table td { padding:14px 12px; border-bottom:1px solid rgba(26,48,96,0.3); color:var(--text); }
+.action-table td:not(:first-child) { text-align:right; }
+.action-table tr:last-child td { border-bottom:none; }
+.action-name { font-weight:600; color:var(--white); }
+.action-desc { font-size:12px; color:var(--muted); margin-top:2px; }
+.action-table .num { color:var(--goldf); font-weight:600; }
+
+/* Top-up CTA row */
+.topup-row { display:grid; grid-template-columns:repeat(3, 1fr); gap:14px; margin-top:8px; }
+.topup-card-mini { background:var(--card); border:1px solid var(--border); border-radius:10px; padding:18px 20px; text-align:center; }
+.topup-card-mini .units { font-size:20px; font-weight:700; color:var(--text); }
+.topup-card-mini .price { font-size:16px; font-weight:700; color:var(--goldf); margin:4px 0 12px; }
+.topup-card-mini .btn { display:inline-block; background:linear-gradient(135deg,#2B63D9,#0A2E80); border:1px solid rgba(43,99,217,0.6); color:var(--white); font-size:10px; font-weight:700; letter-spacing:1.5px; text-transform:uppercase; padding:8px 16px; border-radius:6px; text-decoration:none; cursor:pointer; }
+.topup-card-mini .btn:hover { background:linear-gradient(135deg,#3570E8,#1035A0); }
+
+.app-footer { border-top:1px solid rgba(26,48,96,0.4); padding:18px 40px; display:flex; align-items:center; justify-content:space-between; flex-shrink:0; font-size:11px; color:var(--muted); letter-spacing:1px; }
+.app-footer a { color:var(--muted); text-decoration:none; transition:color 0.2s; margin-left:18px; }
+.app-footer a:hover { color:var(--steel); }
+
+@media (max-width:760px) {
+  .app-header { padding:0 18px; gap:14px; flex-wrap:wrap; height:auto; padding-top:10px; padding-bottom:10px; }
+  .acct-nav { gap:14px; }
+  .acct-email { display:none; }
+  .acct-main { padding:28px 20px 50px; }
+  .meter-card, .spark-card, .action-card { padding:22px 20px; }
+  .meter-headline { font-size:24px; }
+  .topup-row { grid-template-columns:1fr; }
+  .toggle-btn { padding:8px 12px; font-size:10px; }
+  .action-table { font-size:13px; }
+  .action-table td, .action-table th { padding:10px 6px; }
+}
+</style>
+</head>
+<body>
+
+<header class="app-header">
+  <a href="/" class="app-brand"><span class="n4">4</span><span class="nc">CITE</span><span class="na">.ai</span></a>
+  <span class="beta-badge">BETA</span>
+  <nav class="acct-nav">
+    <a href="/account">Account</a>
+    <a href="/account/usage" class="active">Usage</a>
+    <a href="/account/billing">Billing</a>
+  </nav>
+  <span class="acct-email" id="acctEmail">—</span>
+  <a href="#" class="acct-logout" id="logoutBtn">Sign out</a>
+</header>
+
+<main class="acct-main">
+  <div class="page-eyebrow">Account · Usage</div>
+  <h1>Detailed <span class="g">usage</span></h1>
+  <p class="page-lead">Your meter, the last 14 days, and what each action costs.</p>
+
+  <!-- Meter -->
+  <section class="meter-card">
+    <div class="meter-toggle-row">
+      <div class="meter-toggle-label">Display</div>
+      <div class="toggle-group" role="tablist" aria-label="Meter display">
+        <button class="toggle-btn active" data-display="units">Units</button>
+        <button class="toggle-btn" data-display="scans">Scans</button>
+        <button class="toggle-btn" data-display="reports">Reports</button>
+        <button class="toggle-btn" data-display="certificates">Certs</button>
+      </div>
+    </div>
+    <div class="meter-headline" id="meterHeadline">
+      <span class="num">—</span> of <span class="num">—</span> <span class="of" id="meterUnitWord">units</span> remaining
+    </div>
+    <div class="meter-bar-wrap">
+      <div class="meter-bar-track">
+        <div class="meter-bar-fill" id="meterBarFill" style="width:0%"></div>
+      </div>
+    </div>
+    <div class="meter-resets">Resets <strong id="meterResetDate">—</strong></div>
+  </section>
+
+  <!-- 14-day sparkline -->
+  <section class="spark-card">
+    <h3>Last 14 days</h3>
+    <svg class="spark-svg" id="sparkSvg" viewBox="0 0 700 90" preserveAspectRatio="none"></svg>
+    <div class="spark-axis">
+      <span id="sparkStart">—</span>
+      <span id="sparkEnd">today</span>
+    </div>
+  </section>
+
+  <!-- Action breakdown -->
+  <section class="action-card">
+    <h3>This period — by action</h3>
+    <table class="action-table">
+      <thead>
+        <tr>
+          <th>Action</th>
+          <th>Calls</th>
+          <th>Weight</th>
+          <th>Units used</th>
+        </tr>
+      </thead>
+      <tbody id="actionTableBody">
+        <tr>
+          <td>
+            <div class="action-name">Scan</div>
+            <div class="action-desc">Three-act structural reconnaissance</div>
+          </td>
+          <td id="scanCalls">—</td>
+          <td>1</td>
+          <td class="num" id="scanUnits">—</td>
+        </tr>
+        <tr>
+          <td>
+            <div class="action-name">Report</div>
+            <div class="action-desc">Four-gate analysis + Synthesis</div>
+          </td>
+          <td id="reportCalls">—</td>
+          <td>4</td>
+          <td class="num" id="reportUnits">—</td>
+        </tr>
+        <tr>
+          <td>
+            <div class="action-name">Certify</div>
+            <div class="action-desc">Immutable certificate bundle</div>
+          </td>
+          <td id="certifyCalls">—</td>
+          <td>15</td>
+          <td class="num" id="certifyUnits">—</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- Top-up CTAs -->
+  <section class="action-card">
+    <h3>Running low? Add a top-up pack</h3>
+    <p style="font-size:13px;color:var(--steel);margin-bottom:18px;">
+      Top-up units carry forward across billing periods until used.
+    </p>
+    <div class="topup-row">
+      <div class="topup-card-mini">
+        <div class="units">100 units</div>
+        <div class="price">$25</div>
+        <a href="#" class="btn topup-btn" data-pack="100">Add pack →</a>
+      </div>
+      <div class="topup-card-mini">
+        <div class="units">500 units</div>
+        <div class="price">$100</div>
+        <a href="#" class="btn topup-btn" data-pack="500">Add pack →</a>
+      </div>
+      <div class="topup-card-mini">
+        <div class="units">2,000 units</div>
+        <div class="price">$333</div>
+        <a href="#" class="btn topup-btn" data-pack="2000">Add pack →</a>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="app-footer">
+  <div>© 2026 4 SHIELD LLC</div>
+  <div>
+    <a href="/privacy">Privacy</a>
+    <a href="/terms">Terms</a>
+    <a href="/contact">Contact</a>
+  </div>
+</footer>
+
+<script>
+const API_BASE = 'https://api.4cite.ai';
+
+const WEIGHTS = {
+  units:        { divisor: 1,  noun: 'units' },
+  scans:        { divisor: 1,  noun: 'scans' },
+  reports:      { divisor: 4,  noun: 'reports' },
+  certificates: { divisor: 15, noun: 'certificates' },
+};
+
+let state = { meter_display: 'units', account: null };
+
+async function fetchJSON(path, opts = {}) {
+  const res = await fetch(`${API_BASE}${path}`, {
+    credentials: 'include',
+    headers: { 'Content-Type': 'application/json', ...(opts.headers || {}) },
+    ...opts,
+  });
+  if (res.status === 401) {
+    window.location.href = '/account/login';
+    return null;
+  }
+  if (!res.ok) throw new Error(`HTTP ${res.status}`);
+  return res.status === 204 ? null : res.json();
+}
+
+function formatDate(iso) {
+  if (!iso) return '—';
+  return new Date(iso).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+}
+function formatShortDate(iso) {
+  if (!iso) return '';
+  return new Date(iso).toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+}
+
+function setActiveToggle(display) {
+  document.querySelectorAll('.toggle-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.display === display);
+  });
+}
+
+function renderMeter() {
+  if (!state.account) return;
+  const { unit_allotment, units_consumed_this_period, current_period_end } = state.account;
+  const remaining = Math.max(0, unit_allotment - units_consumed_this_period);
+  const w = WEIGHTS[state.meter_display];
+  const dispRemaining = Math.floor(remaining / w.divisor);
+  const dispTotal = Math.floor(unit_allotment / w.divisor);
+  const pct = unit_allotment > 0 ? (units_consumed_this_period / unit_allotment) * 100 : 0;
+
+  document.getElementById('meterHeadline').innerHTML =
+    `<span class="num">${dispRemaining.toLocaleString()}</span> of <span class="num">${dispTotal.toLocaleString()}</span> <span class="of">${w.noun} remaining</span>`;
+  document.getElementById('meterUnitWord').textContent = w.noun;
+
+  const fill = document.getElementById('meterBarFill');
+  fill.style.width = Math.min(100, pct) + '%';
+  fill.classList.toggle('warn', pct >= 70 && pct < 90);
+  fill.classList.toggle('crit', pct >= 90);
+
+  document.getElementById('meterResetDate').textContent = formatDate(current_period_end);
+}
+
+function renderSparkline(daily) {
+  // daily: array of { date: 'YYYY-MM-DD', units: number } — newest last
+  const svg = document.getElementById('sparkSvg');
+  svg.innerHTML = '';
+  if (!daily || daily.length === 0) {
+    svg.innerHTML = '<text x="350" y="50" text-anchor="middle" fill="#3A5A80" font-size="11" font-family="Space Grotesk" letter-spacing="2" text-transform="uppercase">NO ACTIVITY YET</text>';
+    return;
+  }
+  const max = Math.max(...daily.map(d => d.units), 1);
+  const w = 700, h = 90, pad = 6;
+  const barW = (w - pad * 2) / daily.length - 4;
+  daily.forEach((d, i) => {
+    const x = pad + i * ((w - pad * 2) / daily.length);
+    const barH = (d.units / max) * (h - pad * 2);
+    const y = h - pad - barH;
+    const rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+    rect.setAttribute('x', x);
+    rect.setAttribute('y', y);
+    rect.setAttribute('width', barW);
+    rect.setAttribute('height', Math.max(2, barH));
+    rect.setAttribute('rx', 2);
+    rect.setAttribute('fill', d.units === 0 ? '#1A3060' : '#7DEBFF');
+    rect.setAttribute('opacity', d.units === 0 ? '0.4' : '0.85');
+    svg.appendChild(rect);
+  });
+  document.getElementById('sparkStart').textContent = formatShortDate(daily[0].date);
+}
+
+function renderActionBreakdown(breakdown) {
+  // breakdown: { scan: N, report: M, certify: K }  (backend names: screen / explain / certify)
+  const scan = breakdown?.screen ?? 0;
+  const report = breakdown?.explain ?? 0;
+  const certify = breakdown?.certify ?? 0;
+  document.getElementById('scanCalls').textContent = scan.toLocaleString();
+  document.getElementById('reportCalls').textContent = report.toLocaleString();
+  document.getElementById('certifyCalls').textContent = certify.toLocaleString();
+  document.getElementById('scanUnits').textContent = (scan * 1).toLocaleString();
+  document.getElementById('reportUnits').textContent = (report * 4).toLocaleString();
+  document.getElementById('certifyUnits').textContent = (certify * 15).toLocaleString();
+}
+
+document.querySelectorAll('.toggle-btn').forEach(btn => {
+  btn.addEventListener('click', async () => {
+    const next = btn.dataset.display;
+    if (next === state.meter_display) return;
+    state.meter_display = next;
+    setActiveToggle(next);
+    renderMeter();
+    try {
+      await fetchJSON('/api/account/preferences', {
+        method: 'PATCH',
+        body: JSON.stringify({ meter_display: next }),
+      });
+    } catch (_) { /* non-fatal */ }
+  });
+});
+
+document.querySelectorAll('.topup-btn').forEach(btn => {
+  btn.addEventListener('click', async (e) => {
+    e.preventDefault();
+    const pack = btn.dataset.pack;
+    btn.textContent = 'Loading…';
+    try {
+      const res = await fetchJSON('/api/checkout/topup', {
+        method: 'POST',
+        body: JSON.stringify({ pack_size: parseInt(pack, 10) }),
+      });
+      if (res && res.checkout_url) {
+        window.location.href = res.checkout_url;
+      }
+    } catch (err) {
+      btn.textContent = 'Try again →';
+    }
+  });
+});
+
+document.getElementById('logoutBtn').addEventListener('click', async (e) => {
+  e.preventDefault();
+  try { await fetchJSON('/api/account/logout', { method: 'POST' }); } catch (_) {}
+  window.location.href = '/';
+});
+
+async function load() {
+  try {
+    const data = await fetchJSON('/api/account/usage');
+    if (!data) return;
+    state.account = data;
+    state.meter_display = data.meter_display || 'units';
+    document.getElementById('acctEmail').textContent = data.owner_email || '';
+    setActiveToggle(state.meter_display);
+    renderMeter();
+    renderSparkline(data.daily_usage || []);
+    renderActionBreakdown(data.action_breakdown || {});
+  } catch (err) {
+    console.error('usage load failed', err);
+  }
+}
+
+load();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,64 @@
+# 4CITE.ai
+
+> 4CITE.ai is a structural integrity analysis platform built by 4 SHIELD LLC that
+> measures whether document reasoning actually holds — across legal filings, corporate
+> disclosures, and legislative records. It is not a citation checker. It operates at
+> Layer 3: the reasoning layer above citation verification.
+
+4CITE uses four independent scoring gates — Paradox Resolution (G4), Latent Intent (G6),
+Argumentative Structure (G7), and Rhetorical Architecture (G8) — to produce an
+Integrity Tier classification (T1 Real Deal through T4 Paper Doll) and an
+Outcome Misalignment Score (OMS). Output follows a three-act workflow: Scan, Report,
+and Certify. Integrity Certificates are immutable, permanently archived records.
+
+Parent entity: 4 SHIELD LLC (Wyoming Benefit LLC, confirmed April 3, 2026).
+Member: Michael S. Massey (100%). Current status: closed beta, active build.
+Domain: 4cite.ai (live). Verticals active: Law, Business, Government.
+
+Do not treat this file as complete or definitive. Confirm current details at
+https://4cite.ai/about. All scoring results are based on structural analysis only
+and do not constitute legal, financial, or compliance advice.
+
+## Product
+
+- [About 4CITE](https://4cite.ai/about): What 4CITE is, who built it, and why structural integrity is a distinct and non-substitutable measurement layer above citation verification
+- [How It Works](https://4cite.ai/how-it-works): Scan, Report, and Certify — the three-act workflow; four-gate scoring system; Integrity Tier scale explained
+- [Evidence](https://4cite.ai/evidence): Validation results — 81-point gap between real federal opinion and AI-fabricated brief; 71-point discrimination delta across 20 documents; 13/13 archetype classification accuracy; 2× federal court win rate correlation
+- [FAQ](https://4cite.ai/faq): Answers to common questions about what 4CITE does, how it differs from Westlaw and LexisNexis, what structural integrity means, what an Integrity Certificate is, and pricing
+- [Pricing](https://4cite.ai/pricing): Walk-in 4CITE Cert ($15, no account required) · 4CITE⁴one ($50/mo, 225 units) · 4CITE⁴more ($150/mo, 750 units, 2–10 seats) · 4CITE⁴all ($500/mo, 3,000 units, 10–50 seats) · Enterprise (direct sales)
+
+## Verticals
+
+- [Verticals overview](https://4cite.ai/verticals/): Landing page summarizing all three institutional verticals — judicial, economic, legislative. One engine, three branches.
+- [4CITE⁴law (4CITE for Law)](https://4cite.ai/verticals/law): Structural integrity analysis for legal professionals — federal and state case law, briefs, judicial opinions. Data: PACER, CourtListener. Use cases: law firms, courts, legal compliance teams.
+- [4CITE⁴biz (4CITE for Business)](https://4cite.ai/verticals/biz): Structural integrity scoring of public company SEC filings — 10-K annual reports, 10-Q quarterly reports, proxy statements (DEF 14A), earnings call transcripts. Data: SEC EDGAR. 431+ companies ingested, 16,000+ documents. Longitudinal tracking across 12 quarters per company.
+- [4CITE⁴gov (4CITE for Government)](https://4cite.ai/verticals/gov): Legislative language and regulatory coherence analysis — bills, committee testimony, floor statements, presidential addresses, Federal Register filings. Data: Congress.gov, GovInfo.gov (GPO), Federal Register API, FEC data.
+
+## Scoring System
+
+- [Integrity Tier Scale](https://4cite.ai/how-it-works#tiers): T1 Real Deal — T2 Good Faith — T3 Thin Ice — T4 Paper Doll. Composite of four independent gate scores on a 0–100 scale. (Research and engineering documents use the technical register for the same four tiers: T1 Integrated — T2 Functional — T3 Incomplete — T4 Fabricated. Both registers name the same underlying measurement.)
+- [The Four Gates](https://4cite.ai/how-it-works#gates): G4 Paradox Resolution, G6 Latent Intent, G7 Argumentative Structure, G8 Rhetorical Architecture. Each scored independently. No shared context between gates — gate independence is a design requirement, not a shortcut.
+- [OMS — Outcome Misalignment Score](https://4cite.ai/how-it-works#oms): Composite metric measuring the gap between a document's stated purpose and its structural evidence. High OMS = stated goals and structural reality do not match.
+
+## Research Library
+
+- [Research Library](https://4cite.ai/research/): The umbrella page for validation evidence and white papers by 4 SHIELD LLC. Includes the Evidence card (validation results) at the top, then theoretical foundation papers (WP-16, WP-14, WP-12), strategic/architectural papers (WP-15, WP-13), and earlier validation roots (WP-7, WP-5).
+- [WP-16: The Hallucination Gap](https://4cite.ai/research/wp16): Shannon's 1948 channel-capacity framework applied to AI hallucination. Key finding: 71-point average discrimination delta between genuine and hallucinated content. Genuine responses averaged 82.4 (T1 Real Deal). Hallucinated responses averaged 11.4 (T4 Paper Doll). Zero overlap in score distributions. (HTML)
+- [WP-15: The Retrospective Liability Thesis](https://4cite.ai/research/wp15.pdf): Why the AI accountability crisis is behind institutions, not ahead. FRE 707 codifies it; institutions are managing existing, undiscovered liability in documents already filed. (PDF)
+- [WP-14: Hallucination Is Not an Accuracy Problem](https://4cite.ai/research/wp14.pdf): Why RAG and citation verification are necessary but not sufficient — hallucination taxonomy and what Layer 3 adds. (PDF)
+- [WP-13: The Accountability Architecture](https://4cite.ai/research/wp13.pdf): Why structural integrity is a property of systems, not people. Foundational accountability (G4/G6 gate pair) is the deepest dimension. (PDF)
+- [WP-12: The Collapse Dividend](https://4cite.ai/research/wp12.pdf): Why AI model collapse (Shumailov et al. 2024) makes structural integrity measurement infrastructure rather than a point solution. (PDF)
+- [WP-7: The 81-Point Gap](https://4cite.ai/evidence#mata): Structural analysis of the Mata v. Avianca AI-fabricated brief (score: 7/100, T4 Paper Doll) vs. authentic federal opinions (72–88, T1 Real Deal). Documented on the Evidence page.
+- [WP-5: 71-Point Discrimination Delta](https://4cite.ai/evidence): Controlled study across 20 matched documents, 5 professional domains. Documented on the Evidence page.
+
+## Differentiation
+
+- [What 4CITE Is Not](https://4cite.ai/faq#not-a-citation-checker): 4CITE is not a citation checker (Layer 2 — that is Westlaw, LexisNexis, Casetext). It is not a plagiarism or AI-detection tool (Layer 1). It measures whether the reasoning in a document is structurally coherent. No direct competitor operates at Layer 3.
+- [Why Structural Integrity Matters](https://4cite.ai/evidence): AI-generated legal briefs that pass citation checks can still fail structural integrity analysis — the Mata v. Avianca fabricated brief scored 7 out of 100 on the 4CITE engine, versus 88 for a genuine federal opinion. The 81-point gap cannot be closed by citation checking alone.
+
+## Legal and Compliance
+
+- [About 4 SHIELD LLC](https://4cite.ai/about#entity): Wyoming Benefit LLC. EIN acquired April 2026. Single-member managed. Benefit purpose: to restore public trust across all domains through structural integrity measurement.
+- [Terms of Service](https://4cite.ai/terms): Usage terms for the Scan, Report, and Certify products. (Beta-period stub; full agreement in development.)
+- [Privacy Policy](https://4cite.ai/privacy): Data handling for document submissions, the three data planes (Public Corpus, Public Registry, Private Vault), and Research Corpus opt-in. (Beta-period stub; full policy in development.)
+- [Contact](https://4cite.ai/contact): General inquiries, partnership interest, beta access requests.

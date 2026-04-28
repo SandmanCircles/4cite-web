@@ -5,6 +5,67 @@
     }
   },
   "rewrites": [
-    { "source": "/app", "destination": "/app.html" }
+    { "source": "/app",            "destination": "/app.html" },
+    { "source": "/about",          "destination": "/about.html" },
+    { "source": "/faq",            "destination": "/faq.html" },
+    { "source": "/how-it-works",   "destination": "/how-it-works.html" },
+    { "source": "/evidence",       "destination": "/evidence.html" },
+    { "source": "/verticals/law",  "destination": "/verticals/law.html" },
+    { "source": "/verticals/biz",  "destination": "/verticals/biz.html" },
+    { "source": "/verticals/gov",  "destination": "/verticals/gov.html" },
+    { "source": "/contact",        "destination": "/contact.html" },
+    { "source": "/pricing",         "destination": "/pricing.html" },
+    { "source": "/research",        "destination": "/research/index.html" },
+    { "source": "/research/",       "destination": "/research/index.html" },
+    { "source": "/research/wp16",   "destination": "/research/wp16.html" },
+    { "source": "/verticals",       "destination": "/verticals/index.html" },
+    { "source": "/verticals/",      "destination": "/verticals/index.html" },
+    { "source": "/privacy",         "destination": "/privacy.html" },
+    { "source": "/terms",           "destination": "/terms.html" },
+
+    { "source": "/account",          "destination": "/account/index.html" },
+    { "source": "/account/",         "destination": "/account/index.html" },
+    { "source": "/account/login",    "destination": "/account/login.html" },
+    { "source": "/account/usage",    "destination": "/account/usage.html" },
+    { "source": "/account/billing",  "destination": "/account/billing.html" },
+
+    { "source": "/portal/certify",       "destination": "/portal/certify.html" },
+    { "source": "/portal/cert/recover",  "destination": "/portal/cert/recover.html" }
+  ],
+  "headers": [
+    {
+      "source": "/llms.txt",
+      "headers": [
+        { "key": "Content-Type", "value": "text/plain; charset=utf-8" },
+        { "key": "Cache-Control", "value": "public, max-age=3600" }
+      ]
+    },
+    {
+      "source": "/llms-full.txt",
+      "headers": [
+        { "key": "Content-Type", "value": "text/plain; charset=utf-8" },
+        { "key": "Cache-Control", "value": "public, max-age=3600" }
+      ]
+    },
+    {
+      "source": "/sitemap.xml",
+      "headers": [
+        { "key": "Content-Type", "value": "application/xml; charset=utf-8" },
+        { "key": "Cache-Control", "value": "public, max-age=86400" }
+      ]
+    },
+    {
+      "source": "/account/(.*)",
+      "headers": [
+        { "key": "X-Robots-Tag", "value": "noindex, nofollow" },
+        { "key": "Cache-Control", "value": "private, no-store" }
+      ]
+    },
+    {
+      "source": "/portal/(.*)",
+      "headers": [
+        { "key": "X-Robots-Tag", "value": "noindex, nofollow" }
+      ]
+    }
   ]
 }

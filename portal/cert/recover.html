@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Recover a 4CITE Cert — 4CITE.ai</title>
+<meta name="description" content="Recover a 4CITE Integrity Certificate by email. Magic-link delivery to your Cert Vault.">
+<meta name="theme-color" content="#07152E">
+<link rel="apple-touch-icon" href="/icons/icon-192.png">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --midnight:#07152E; --navy:#0B2358; --card:#0C1628; --border:#1A3060;
+  --blue:#2B63D9; --cyan:#7DEBFF; --gold:#D89A0B; --goldf:#F7D85D;
+  --steel:#7A9ABE; --muted:#3A5A80; --text:#C8D8EE; --white:#FFFFFF;
+  --green:#22C97A; --amber:#F0A020; --red:#E05050;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+html, body { height:100%; }
+body { background:var(--midnight); color:var(--text); font-family:'Space Grotesk',-apple-system,sans-serif; line-height:1.65; font-size:16px; min-height:100vh; display:flex; flex-direction:column; }
+
+.app-header { background:rgba(7,21,46,0.95); backdrop-filter:blur(16px); border-bottom:1px solid var(--border); padding:0 40px; height:56px; display:flex; align-items:center; flex-shrink:0; }
+.app-brand { font-size:20px; font-weight:700; letter-spacing:-0.5px; text-decoration:none; text-transform:none; margin-right:auto; }
+.app-brand .n4 { color:var(--goldf); } .app-brand .nc { color:var(--white); } .app-brand .na { color:var(--cyan); font-weight:300; }
+.app-back { font-size:11px; color:var(--muted); text-decoration:none; letter-spacing:2px; text-transform:uppercase; transition:color 0.2s; }
+.app-back:hover { color:var(--steel); }
+
+.recover-wrap { flex:1; display:flex; align-items:center; justify-content:center; padding:60px 24px; }
+.recover-card { background:var(--card); border:1px solid var(--border); border-radius:16px; padding:48px 44px; max-width:520px; width:100%; box-shadow:0 32px 80px rgba(0,0,0,0.4); }
+.recover-eyebrow { font-size:10px; font-weight:700; letter-spacing:5px; color:var(--muted); text-transform:uppercase; margin-bottom:16px; }
+.recover-title { font-size:24px; font-weight:700; color:var(--white); margin-bottom:10px; }
+.recover-title .g { color:var(--goldf); }
+.recover-sub { font-size:14px; color:var(--steel); line-height:1.75; margin-bottom:28px; }
+.recover-sub strong { color:var(--text); }
+
+.field { margin-bottom:18px; }
+.field label { display:block; font-size:10px; font-weight:600; letter-spacing:3px; text-transform:uppercase; color:var(--muted); margin-bottom:8px; }
+.field input { width:100%; background:rgba(255,255,255,0.04); border:1px solid var(--border); border-radius:8px; color:var(--text); font-family:'Space Grotesk',sans-serif; font-size:15px; padding:13px 16px; outline:none; transition:border-color 0.2s; -webkit-appearance:none; }
+.field input:focus { border-color:var(--blue); }
+.field input::placeholder { color:var(--muted); }
+.field-helper { font-size:11px; color:var(--muted); margin-top:6px; line-height:1.55; }
+
+.btn-primary { width:100%; background:linear-gradient(135deg,#D89A0B,#8B5E00); border:1px solid rgba(216,154,11,0.6); color:#07152E; font-family:'Space Grotesk',sans-serif; font-size:13px; font-weight:700; letter-spacing:2px; text-transform:uppercase; padding:14px; border-radius:8px; cursor:pointer; transition:all 0.2s; margin-top:6px; }
+.btn-primary:hover:not(:disabled) { background:linear-gradient(135deg,#F7D85D,#D89A0B); }
+.btn-primary:disabled { opacity:0.5; cursor:not-allowed; }
+
+.note { font-size:12px; color:var(--muted); line-height:1.7; margin-top:18px; }
+.note a { color:var(--steel); text-decoration:none; border-bottom:1px dotted var(--muted); }
+.note a:hover { color:var(--goldf); border-color:var(--goldf); }
+
+.success-state { display:none; text-align:center; padding:8px 0; }
+.success-state.visible { display:block; }
+.success-state .check-icon { font-size:42px; margin-bottom:18px; }
+.success-state .success-title { font-size:20px; font-weight:700; color:var(--green); margin-bottom:14px; }
+.success-state .success-body { font-size:14px; color:var(--steel); line-height:1.75; margin-bottom:18px; }
+.success-state .success-body strong { color:var(--text); }
+.resend-row { font-size:12px; color:var(--muted); margin-top:18px; }
+.resend-row button { background:none; border:none; color:var(--steel); font-family:inherit; font-size:12px; cursor:pointer; text-decoration:underline; padding:0; }
+.resend-row button:disabled { color:var(--muted); cursor:default; text-decoration:none; }
+.resend-row button:hover:not(:disabled) { color:var(--goldf); }
+
+.form-state.hidden { display:none; }
+
+.kicker { background:rgba(43,99,217,0.06); border:1px solid rgba(43,99,217,0.22); border-radius:8px; padding:14px 16px; margin-bottom:24px; font-size:12px; color:var(--steel); line-height:1.6; }
+.kicker strong { color:var(--cyan); }
+
+footer { background:#030710; border-top:1px solid var(--border); padding:24px 40px; display:flex; align-items:center; justify-content:space-between; flex-shrink:0; }
+.fb { font-size:18px; font-weight:700; }
+.fb .n4 { color:var(--goldf); } .fb .nc { color:var(--white); } .fb .na { color:var(--cyan); font-weight:300; }
+.fl { display:flex; gap:24px; flex-wrap:wrap; }
+.fl a { font-size:11px; color:var(--muted); text-decoration:none; letter-spacing:1px; transition:color 0.2s; }
+.fl a:hover { color:var(--steel); }
+.fr { font-size:11px; color:var(--muted); letter-spacing:1px; }
+
+@media (max-width:520px) {
+  .recover-card { padding:32px 24px; }
+  .app-header { padding:0 20px; }
+  footer { flex-direction:column; gap:16px; padding:24px 20px; text-align:center; }
+}
+</style>
+</head>
+<body>
+
+<header class="app-header">
+  <a href="/" class="app-brand"><span class="n4">4</span><span class="nc">CITE</span><span class="na">.ai</span></a>
+  <a href="/" class="app-back">← Back to site</a>
+</header>
+
+<main class="recover-wrap">
+  <div class="recover-card">
+
+    <!-- ── Form state ─────────────────────────────────── -->
+    <section id="formState" class="form-state">
+      <div class="recover-eyebrow">Cert Vault · Recovery</div>
+      <h1 class="recover-title">Recover a <span class="g">4CITE Cert</span></h1>
+      <p class="recover-sub">
+        Lost the PDF for a 4CITE Cert? Enter the email address you used to purchase it. We'll
+        send a one-time link to your Cert Vault — no account or password needed.
+      </p>
+
+      <div class="kicker">
+        <strong>How this works.</strong> The link is single-use, expires in 30 minutes, and only
+        works for the email it was sent to. Your Cert Vault page lists every certificate purchased
+        from this email, with PDF download links.
+      </div>
+
+      <form id="recoverForm" novalidate>
+        <div class="field">
+          <label for="email">Email address</label>
+          <input
+            id="email"
+            type="email"
+            autocomplete="email"
+            inputmode="email"
+            placeholder="you@example.com"
+            required
+            autofocus
+          >
+          <div class="field-helper">
+            Use the email address that received your certificate PDF originally.
+          </div>
+        </div>
+        <button type="submit" id="submitBtn" class="btn-primary">Send recovery link</button>
+      </form>
+
+      <p class="note">
+        Don't have a cert yet? <a href="/portal/certify">Get a 4CITE Cert ($15) →</a><br>
+        Have a subscription? <a href="/account/login">Sign in to your account</a>.
+      </p>
+    </section>
+
+    <!-- ── Success state ──────────────────────────────── -->
+    <section id="successState" class="success-state">
+      <div class="check-icon">✓</div>
+      <div class="success-title">Check your email</div>
+      <p class="success-body">
+        If <strong id="sentTo">that address</strong> has any 4CITE Certs on file, a recovery link
+        is on its way. The link is single-use and expires in <strong>30 minutes</strong>.
+      </p>
+      <p class="success-body" style="font-size:12px;color:var(--muted);">
+        Didn't receive it? Check spam, then try again below.
+      </p>
+      <div class="resend-row">
+        <button id="resendBtn" disabled>Resend in <span id="resendTimer">60</span>s</button>
+      </div>
+    </section>
+
+  </div>
+</main>
+
+<footer>
+  <div class="fb"><span class="n4">4</span><span class="nc">CITE</span><span class="na">.ai</span></div>
+  <div class="fl">
+    <a href="/about">About</a>
+    <a href="/contact">Contact</a>
+    <a href="/privacy">Privacy</a>
+    <a href="/terms">Terms</a>
+  </div>
+  <div class="fr">© 2026 4 SHIELD LLC</div>
+</footer>
+
+<script>
+const API_BASE = 'https://api.4cite.ai';
+
+const formState = document.getElementById('formState');
+const successState = document.getElementById('successState');
+const recoverForm = document.getElementById('recoverForm');
+const emailInput = document.getElementById('email');
+const submitBtn = document.getElementById('submitBtn');
+const sentTo = document.getElementById('sentTo');
+const resendBtn = document.getElementById('resendBtn');
+const resendTimer = document.getElementById('resendTimer');
+
+let lastEmail = '';
+let resendInterval = null;
+
+function showSuccess(email) {
+  lastEmail = email;
+  sentTo.textContent = email;
+  formState.classList.add('hidden');
+  successState.classList.add('visible');
+  startResendCooldown(60);
+}
+
+function startResendCooldown(seconds) {
+  let remaining = seconds;
+  resendBtn.disabled = true;
+  resendTimer.textContent = remaining;
+  resendBtn.firstChild.textContent = 'Resend in ';
+  if (resendInterval) clearInterval(resendInterval);
+  resendInterval = setInterval(() => {
+    remaining -= 1;
+    resendTimer.textContent = remaining;
+    if (remaining <= 0) {
+      clearInterval(resendInterval);
+      resendBtn.disabled = false;
+      resendBtn.textContent = 'Resend recovery link';
+    }
+  }, 1000);
+}
+
+async function requestRecovery(email) {
+  try {
+    await fetch(`${API_BASE}/api/cert/recover/request`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email }),
+    });
+  } catch (err) {
+    // Don't disclose whether the email exists. Both paths look identical.
+    console.warn('recovery request failed', err);
+  }
+}
+
+recoverForm.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const email = emailInput.value.trim();
+  if (!email || !email.includes('@')) {
+    emailInput.focus();
+    return;
+  }
+  submitBtn.disabled = true;
+  submitBtn.textContent = 'Sending…';
+  await requestRecovery(email);
+  submitBtn.disabled = false;
+  submitBtn.textContent = 'Send recovery link';
+  showSuccess(email);
+});
+
+resendBtn.addEventListener('click', async () => {
+  if (!lastEmail || resendBtn.disabled) return;
+  resendBtn.disabled = true;
+  resendBtn.textContent = 'Sending…';
+  await requestRecovery(lastEmail);
+  startResendCooldown(60);
+});
+</script>
+
+</body>
+</html>

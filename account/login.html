@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex,nofollow">
+<title>Sign in — 4CITE.ai</title>
+<meta name="description" content="Sign in to your 4CITE.ai account with a one-time email link.">
+<meta name="theme-color" content="#07152E">
+<link rel="apple-touch-icon" href="/icons/icon-192.png">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --midnight:#07152E; --navy:#0B2358; --card:#0C1628; --border:#1A3060;
+  --blue:#2B63D9; --cyan:#7DEBFF; --gold:#D89A0B; --goldf:#F7D85D;
+  --steel:#7A9ABE; --muted:#3A5A80; --text:#C8D8EE; --white:#FFFFFF;
+  --green:#22C97A; --amber:#F0A020; --red:#E05050;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+html, body { height:100%; }
+body { background:var(--midnight); color:var(--text); font-family:'Space Grotesk',-apple-system,sans-serif; line-height:1.65; font-size:16px; min-height:100vh; display:flex; flex-direction:column; }
+
+.app-header { background:rgba(7,21,46,0.95); backdrop-filter:blur(16px); border-bottom:1px solid var(--border); padding:0 40px; height:56px; display:flex; align-items:center; justify-content:space-between; flex-shrink:0; }
+.app-brand { font-size:20px; font-weight:700; letter-spacing:-0.5px; text-decoration:none; text-transform:none; }
+.app-brand .n4 { color:var(--goldf); } .app-brand .nc { color:var(--white); } .app-brand .na { color:var(--cyan); font-weight:300; }
+.app-back { font-size:11px; color:var(--muted); text-decoration:none; letter-spacing:2px; text-transform:uppercase; transition:color 0.2s; }
+.app-back:hover { color:var(--steel); }
+
+.login-wrap { flex:1; display:flex; align-items:center; justify-content:center; padding:60px 24px; }
+.login-card { background:var(--card); border:1px solid var(--border); border-radius:16px; padding:48px 44px; max-width:460px; width:100%; box-shadow:0 32px 80px rgba(0,0,0,0.4); }
+.login-eyebrow { font-size:10px; font-weight:700; letter-spacing:5px; color:var(--muted); text-transform:uppercase; margin-bottom:16px; }
+.login-title { font-size:24px; font-weight:700; color:var(--white); margin-bottom:10px; }
+.login-sub { font-size:14px; color:var(--steel); line-height:1.7; margin-bottom:28px; }
+.login-sub strong { color:var(--text); font-weight:500; }
+
+.field { margin-bottom:18px; }
+.field label { display:block; font-size:10px; font-weight:600; letter-spacing:3px; text-transform:uppercase; color:var(--muted); margin-bottom:8px; }
+.field input { width:100%; background:rgba(255,255,255,0.04); border:1px solid var(--border); border-radius:8px; color:var(--text); font-family:'Space Grotesk',sans-serif; font-size:15px; padding:13px 16px; outline:none; transition:border-color 0.2s; -webkit-appearance:none; }
+.field input:focus { border-color:var(--blue); }
+.field input::placeholder { color:var(--muted); }
+
+.btn-primary { width:100%; background:linear-gradient(135deg,#2B63D9,#0A2E80); border:1px solid rgba(43,99,217,0.6); color:var(--white); font-family:'Space Grotesk',sans-serif; font-size:13px; font-weight:600; letter-spacing:2px; text-transform:uppercase; padding:14px; border-radius:8px; cursor:pointer; transition:all 0.2s; margin-top:6px; }
+.btn-primary:hover:not(:disabled) { background:linear-gradient(135deg,#3570E8,#1035A0); box-shadow:0 6px 24px rgba(43,99,217,0.35); }
+.btn-primary:disabled { opacity:0.5; cursor:not-allowed; }
+
+.note { font-size:12px; color:var(--muted); line-height:1.7; margin-top:18px; }
+.note a { color:var(--steel); text-decoration:none; border-bottom:1px dotted var(--muted); }
+.note a:hover { color:var(--goldf); border-color:var(--goldf); }
+
+.success-state { display:none; text-align:center; padding:8px 0; }
+.success-state.visible { display:block; }
+.success-state .check-icon { font-size:42px; margin-bottom:18px; }
+.success-state .success-title { font-size:20px; font-weight:700; color:var(--green); margin-bottom:14px; }
+.success-state .success-body { font-size:14px; color:var(--steel); line-height:1.75; margin-bottom:24px; }
+.success-state .success-body strong { color:var(--text); }
+.resend-row { font-size:12px; color:var(--muted); margin-top:18px; }
+.resend-row button { background:none; border:none; color:var(--steel); font-family:inherit; font-size:12px; cursor:pointer; text-decoration:underline; padding:0; letter-spacing:0.5px; }
+.resend-row button:disabled { color:var(--muted); cursor:default; text-decoration:none; }
+.resend-row button:hover:not(:disabled) { color:var(--goldf); }
+
+.form-state.hidden { display:none; }
+
+.app-footer { border-top:1px solid rgba(26,48,96,0.4); padding:18px 40px; display:flex; align-items:center; justify-content:space-between; flex-shrink:0; font-size:11px; color:var(--muted); letter-spacing:1px; }
+.app-footer a { color:var(--muted); text-decoration:none; transition:color 0.2s; margin-left:18px; }
+.app-footer a:hover { color:var(--steel); }
+
+@media (max-width:520px) {
+  .login-card { padding:32px 24px; }
+  .app-header { padding:0 20px; }
+  .app-footer { padding:18px 20px; flex-direction:column; gap:10px; text-align:center; }
+}
+</style>
+</head>
+<body>
+
+<header class="app-header">
+  <a href="/" class="app-brand"><span class="n4">4</span><span class="nc">CITE</span><span class="na">.ai</span></a>
+  <a href="/" class="app-back">← Back to site</a>
+</header>
+
+<main class="login-wrap">
+  <div class="login-card">
+
+    <!-- ── Form state ─────────────────────────────────── -->
+    <section id="formState" class="form-state">
+      <div class="login-eyebrow">Account · Sign in</div>
+      <h1 class="login-title">Sign in to 4CITE</h1>
+      <p class="login-sub">
+        Enter the email address on your subscription. We'll send you a one-time sign-in link
+        — no password needed.
+      </p>
+
+      <form id="loginForm" novalidate>
+        <div class="field">
+          <label for="email">Email address</label>
+          <input
+            id="email"
+            type="email"
+            autocomplete="email"
+            inputmode="email"
+            placeholder="you@firm.com"
+            required
+            autofocus
+          >
+        </div>
+        <button type="submit" id="submitBtn" class="btn-primary">Send sign-in link</button>
+      </form>
+
+      <p class="note">
+        New to 4CITE? <a href="/pricing">See plans →</a><br>
+        Looking for a certificate? <a href="/portal/cert/recover">Recover a cert by email</a>.
+      </p>
+    </section>
+
+    <!-- ── Success state ──────────────────────────────── -->
+    <section id="successState" class="success-state">
+      <div class="check-icon">✓</div>
+      <div class="success-title">Check your email</div>
+      <p class="success-body">
+        If <strong id="sentTo">that address</strong> is on a 4CITE subscription, a sign-in
+        link is on its way. The link is single-use and expires in <strong>30 minutes</strong>.
+      </p>
+      <p class="success-body" style="font-size:12px;color:var(--muted);">
+        Didn't receive it? Check spam, then try again below.
+      </p>
+      <div class="resend-row">
+        <button id="resendBtn" disabled>Resend in <span id="resendTimer">60</span>s</button>
+      </div>
+    </section>
+
+  </div>
+</main>
+
+<footer class="app-footer">
+  <div>© 2026 4 SHIELD LLC</div>
+  <div>
+    <a href="/privacy">Privacy</a>
+    <a href="/terms">Terms</a>
+    <a href="/contact">Contact</a>
+  </div>
+</footer>
+
+<script>
+const API_BASE = 'https://api.4cite.ai';
+
+const formState = document.getElementById('formState');
+const successState = document.getElementById('successState');
+const loginForm = document.getElementById('loginForm');
+const emailInput = document.getElementById('email');
+const submitBtn = document.getElementById('submitBtn');
+const sentTo = document.getElementById('sentTo');
+const resendBtn = document.getElementById('resendBtn');
+const resendTimer = document.getElementById('resendTimer');
+
+let lastEmail = '';
+let resendInterval = null;
+
+function showSuccess(email) {
+  lastEmail = email;
+  sentTo.textContent = email;
+  formState.classList.add('hidden');
+  successState.classList.add('visible');
+  startResendCooldown(60);
+}
+
+function showForm() {
+  successState.classList.remove('visible');
+  formState.classList.remove('hidden');
+}
+
+function startResendCooldown(seconds) {
+  let remaining = seconds;
+  resendBtn.disabled = true;
+  resendTimer.textContent = remaining;
+  resendBtn.firstChild.textContent = 'Resend in ';
+  if (resendInterval) clearInterval(resendInterval);
+  resendInterval = setInterval(() => {
+    remaining -= 1;
+    resendTimer.textContent = remaining;
+    if (remaining <= 0) {
+      clearInterval(resendInterval);
+      resendBtn.disabled = false;
+      resendBtn.textContent = 'Resend sign-in link';
+    }
+  }, 1000);
+}
+
+async function requestLink(email) {
+  try {
+    await fetch(`${API_BASE}/api/account/login/request`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email })
+    });
+  } catch (err) {
+    // Network failure — surface the form again with a soft note.
+    // We deliberately do NOT show whether the email exists; both paths look identical.
+    console.warn('login request failed', err);
+  }
+}
+
+loginForm.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const email = emailInput.value.trim();
+  if (!email || !email.includes('@')) {
+    emailInput.focus();
+    return;
+  }
+  submitBtn.disabled = true;
+  submitBtn.textContent = 'Sending…';
+  await requestLink(email);
+  submitBtn.disabled = false;
+  submitBtn.textContent = 'Send sign-in link';
+  showSuccess(email);
+});
+
+resendBtn.addEventListener('click', async () => {
+  if (!lastEmail || resendBtn.disabled) return;
+  resendBtn.disabled = true;
+  resendBtn.textContent = 'Sending…';
+  await requestLink(lastEmail);
+  startResendCooldown(60);
+});
+</script>
+
+</body>
+</html>

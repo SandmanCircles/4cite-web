@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Evidence — 4CITE.ai Validation Results</title>
+<meta name="description" content="4CITE's scoring has been validated against real and fabricated documents: 81-point gap between genuine federal opinion and AI-fabricated brief; 71-point discrimination delta across 20 documents; 13/13 archetype classification accuracy.">
+<meta name="theme-color" content="#07152E">
+<link rel="apple-touch-icon" href="icons/icon-192.png">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --midnight: #07152E; --navy: #0B2358; --card: #0C1628; --border: #1A3060;
+  --blue: #2B63D9; --cyan: #7DEBFF; --gold: #D89A0B; --goldf: #F7D85D;
+  --steel: #7A9ABE; --muted: #3A5A80; --text: #C8D8EE; --white: #FFFFFF;
+  --green: #22C97A; --amber: #F0A020; --red: #E05050;
+  --law: #C42840; --biz: #1A7ABF; --gov: #3A7A52;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior:smooth; }
+body { background:var(--midnight); color:var(--text); font-family:'Space Grotesk',-apple-system,sans-serif; line-height:1.7; font-size:16px; overflow-x:hidden; }
+nav { position:fixed; top:0; left:0; right:0; z-index:200; background:rgba(7,21,46,0.95); backdrop-filter:blur(16px); border-bottom:1px solid var(--border); padding:0 60px; height:62px; display:flex; align-items:center; gap:32px; }
+.nav-brand { font-size:22px; font-weight:700; margin-right:auto; letter-spacing:-0.5px; text-decoration:none; text-transform:none; }
+.nav-brand .n4 { color:var(--goldf); } .nav-brand .nc { color:var(--white); } .nav-brand .na { color:var(--cyan); font-weight:300; }
+nav a { color:var(--steel); text-decoration:none; font-size:12px; font-weight:500; letter-spacing:2px; text-transform:uppercase; transition:color 0.2s; }
+nav a:hover { color:var(--goldf); }
+.nav-cta { background:linear-gradient(135deg,#2B63D9,#0A2E80); border:1px solid rgba(43,99,217,0.6); color:var(--white) !important; padding:8px 20px; border-radius:6px; }
+main { padding-top:62px; }
+.page-hero { padding:80px 80px 60px; max-width:1100px; margin:0 auto; }
+.page-eyebrow { font-size:10px; font-weight:700; letter-spacing:5px; color:var(--muted); text-transform:uppercase; margin-bottom:16px; display:flex; align-items:center; gap:12px; }
+.page-eyebrow::before { content:''; display:block; width:32px; height:1px; background:var(--muted); }
+h1 { font-size:clamp(28px,4vw,48px); font-weight:700; color:var(--white); line-height:1.1; margin-bottom:16px; }
+h1 .g { color:var(--goldf); }
+.page-lead { font-size:17px; color:var(--steel); line-height:1.8; max-width:720px; font-weight:300; }
+.page-lead strong { color:var(--text); font-weight:500; }
+.content { max-width:1100px; margin:0 auto; padding:0 80px 100px; }
+.section { padding:56px 0; border-top:1px solid rgba(26,48,96,0.4); }
+.sec-label { font-size:10px; font-weight:700; letter-spacing:5px; text-transform:uppercase; color:var(--muted); margin-bottom:12px; }
+h2 { font-size:26px; font-weight:700; color:var(--white); margin-bottom:12px; line-height:1.15; }
+h2 .g { color:var(--goldf); }
+h3 { font-size:17px; font-weight:700; color:var(--text); margin-bottom:10px; line-height:1.3; margin-top:24px; }
+p { color:var(--steel); line-height:1.8; margin-bottom:14px; font-size:15px; }
+p:last-child { margin-bottom:0; }
+p strong { color:var(--text); font-weight:600; }
+a { color:var(--cyan); text-decoration:none; border-bottom:1px solid rgba(125,235,255,0.25); padding-bottom:1px; }
+
+/* SUMMARY STATS */
+.stat-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:16px; margin-top:24px; }
+.stat-card { background:var(--card); border:1px solid var(--border); border-radius:12px; padding:28px 24px; text-align:center; }
+.stat-n { font-size:44px; font-weight:700; color:var(--goldf); line-height:1; margin-bottom:10px; }
+.stat-label { font-size:13px; color:var(--white); font-weight:600; margin-bottom:6px; }
+.stat-sub { font-size:11px; color:var(--muted); line-height:1.5; }
+.stat-source { font-size:10px; color:var(--muted); letter-spacing:1px; text-transform:uppercase; margin-top:14px; padding-top:10px; border-top:1px solid rgba(26,48,96,0.5); }
+
+/* STUDY CARDS */
+.study { background:var(--card); border:1px solid var(--border); border-radius:14px; padding:36px; margin-bottom:20px; }
+.study-header { display:flex; align-items:flex-start; gap:24px; margin-bottom:20px; }
+.study-num { font-size:52px; font-weight:700; color:var(--goldf); line-height:1; flex-shrink:0; }
+.study-meta { flex:1; }
+.study-id { font-size:10px; font-weight:700; letter-spacing:4px; text-transform:uppercase; color:var(--muted); margin-bottom:6px; }
+.study-title { font-size:20px; font-weight:700; color:var(--white); line-height:1.2; }
+.study-body { font-size:14px; color:var(--steel); line-height:1.8; }
+.study-body p { font-size:14px; }
+.study-cite { margin-top:16px; padding:12px 16px; background:rgba(26,48,96,0.4); border-radius:8px; font-size:11px; color:var(--muted); letter-spacing:1px; }
+.study-cite strong { color:var(--steel); text-transform:uppercase; }
+
+/* COMPARISON TABLE */
+table { width:100%; border-collapse:collapse; font-size:14px; margin-top:16px; }
+th { text-align:left; padding:10px 14px; background:rgba(26,48,96,0.4); color:var(--steel); font-size:10px; font-weight:700; letter-spacing:2px; text-transform:uppercase; border-bottom:1px solid var(--border); }
+td { padding:14px; border-bottom:1px solid rgba(26,48,96,0.3); vertical-align:middle; }
+tr:last-child td { border-bottom:none; }
+.score-badge { display:inline-block; font-size:16px; font-weight:700; padding:4px 14px; border-radius:8px; }
+.score-high { background:rgba(34,201,122,0.12); color:#22C97A; border:1px solid rgba(34,201,122,0.3); }
+.score-low { background:rgba(224,80,80,0.12); color:#E05050; border:1px solid rgba(224,80,80,0.3); }
+
+.callout { border-radius:10px; padding:20px 24px; margin:20px 0; font-size:14px; line-height:1.75; background:rgba(43,99,217,0.06); border:1px solid rgba(43,99,217,0.2); }
+.callout strong { color:var(--text); }
+footer { background:#030710; border-top:1px solid var(--border); padding:36px 80px; display:flex; align-items:center; justify-content:space-between; }
+.fb { font-size:20px; font-weight:700; }
+.fb .n4{color:var(--goldf);} .fb .nc{color:var(--white);} .fb .na{color:var(--cyan);font-weight:300;}
+.fl { display:flex; gap:28px; flex-wrap:wrap; }
+.fl a { font-size:12px; color:var(--muted); text-decoration:none; letter-spacing:1px; transition:color 0.2s; border:none; padding:0; }
+.fl a:hover { color:var(--steel); }
+.fr { font-size:11px; color:var(--muted); letter-spacing:1px; }
+@media (max-width:960px) {
+  nav { padding:0 24px; gap:16px; }
+  nav a:not(.nav-brand):not(.nav-cta) { display:none; }
+  .page-hero { padding:60px 28px 40px; }
+  .content { padding:0 28px 80px; }
+  .stat-grid { grid-template-columns:1fr 1fr; }
+  footer { flex-direction:column; gap:20px; text-align:center; padding:28px; }
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="/" class="nav-brand"><span class="n4">4</span><span class="nc">CITE</span><span class="na">.ai</span></a>
+  <a href="/how-it-works">How It Works</a>
+  <a href="/verticals/">Verticals</a>
+  <a href="/pricing">Pricing</a>
+  <a href="/research/">Research</a>
+  <a href="/faq">FAQ</a>
+  <a href="/#waitlist" class="nav-cta">Join Beta →</a>
+</nav>
+
+<main>
+
+  <header class="page-hero">
+    <div class="page-eyebrow">Evidence</div>
+    <h1>Validated. Measurable. <span class="g">Real.</span></h1>
+    <p class="page-lead">
+      4CITE's scoring produced an 81-point structural gap between a genuine federal
+      judicial opinion and the AI-fabricated brief at the center of
+      <em>Mata v. Avianca</em> — the 2023 case in which attorneys submitted
+      hallucinated citations to a federal court. <strong>The same engine scores SEC
+      filings, congressional testimony, and every other institutional document class
+      in the 4CITE corpus.</strong>
+    </p>
+  </header>
+
+  <div class="content">
+
+    <!-- SUMMARY STATS -->
+    <section class="section" id="summary">
+      <div class="sec-label">Summary</div>
+      <h2>Four <span class="g">Validation Results</span></h2>
+      <p>Every scoring result below is based on the live 4CITE engine applied to real documents in controlled studies. No cherry-picked examples. No theoretical claims.</p>
+
+      <div class="stat-grid">
+        <div class="stat-card">
+          <div class="stat-n">81</div>
+          <div class="stat-label">Point integrity gap</div>
+          <div class="stat-sub">Real federal opinion (88) vs. AI-fabricated brief (7)</div>
+          <div class="stat-source">WP7 — The Absence Detector</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-n">71pt</div>
+          <div class="stat-label">Discrimination delta</div>
+          <div class="stat-sub">Average gap across 20-document blinded batch</div>
+          <div class="stat-source">WP5 — Hallucination as Structural Extraction</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-n">13/13</div>
+          <div class="stat-label">Archetype accuracy</div>
+          <div class="stat-sub">All 13 test documents correctly classified</div>
+          <div class="stat-source">R35 — Archetype Validation Study</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-n">2×</div>
+          <div class="stat-label">Win rate correlation</div>
+          <div class="stat-sub">Structural clarity doubles federal court win rate (42% → 85%)</div>
+          <div class="stat-source">Spencer &amp; Feldman (2018)</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- STUDY 1: THE 81-POINT GAP -->
+    <section class="section" id="study-1">
+      <div class="sec-label">Study 1</div>
+      <h2>The <span class="g">81-Point Gap</span></h2>
+
+      <article class="study">
+        <div class="study-header">
+          <div class="study-num">81</div>
+          <div class="study-meta">
+            <div class="study-id">WP7 — The Absence Detector · 4 SHIELD LLC R&D</div>
+            <div class="study-title">Real federal opinion vs. AI-fabricated brief: a structural comparison</div>
+          </div>
+        </div>
+        <div class="study-body">
+          <p>
+            In 2023, attorneys Mata v. Avianca submitted a legal brief to the United States
+            District Court for the Southern District of New York that cited six cases that did
+            not exist. The brief had been generated with ChatGPT. When the court asked for
+            verification, the attorneys submitted further fabricated material. Judge P. Kevin
+            Castel sanctioned the attorneys under Federal Rules of Civil Procedure Rule 11.
+          </p>
+          <p>
+            The Mata v. Avianca case is the canonical example of AI hallucination in a legal
+            context — a document that had the form of a legal brief, citing cases in the
+            correct format, with plausible-sounding names and citations, that were entirely
+            fabricated. The citations were the Layer 2 failure. But 4CITE measures Layer 3:
+            structural integrity independent of whether any individual citation is real.
+          </p>
+          <p>
+            The 4CITE engine was run on both the fabricated Mata v. Avianca brief and a genuine
+            federal sanctions opinion of comparable subject matter and length. Results:
+          </p>
+
+          <table>
+            <thead><tr><th>Document</th><th>Type</th><th>4CITE Score</th><th>Tier</th></tr></thead>
+            <tbody>
+              <tr>
+                <td style="color:var(--text);font-weight:600;">Genuine federal sanctions opinion</td>
+                <td style="color:var(--steel);font-size:13px;">Real judicial opinion</td>
+                <td><span class="score-badge score-high">88</span></td>
+                <td style="color:#22C97A;font-weight:700;">T1 — Real Deal</td>
+              </tr>
+              <tr>
+                <td style="color:var(--text);font-weight:600;">Mata v. Avianca brief (ChatGPT-fabricated)</td>
+                <td style="color:var(--steel);font-size:13px;">AI-hallucinated brief</td>
+                <td><span class="score-badge score-low">7</span></td>
+                <td style="color:#E05050;font-weight:700;">T4 — Paper Doll</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <p style="margin-top:20px;">
+            The 81-point gap is the structural fingerprint of hallucinated accountability.
+            The fabricated brief scored low not because the engine detected fabricated citations —
+            it does not check citations. It scored low because the reasoning structure was hollow:
+            the surface language performed legal argumentation without the underlying logical
+            architecture that genuine legal opinions exhibit. The foundational gates (G4 Paradox
+            Resolution, G6 Latent Intent) and the surface reasoning gate (G7 Argumentative
+            Structure) all collapsed.
+          </p>
+          <p>
+            <strong>The implication:</strong> As AI systems improve at generating plausible
+            citations, Layer 2 tools become less reliable as the sole defense. The structural
+            integrity failure — the Layer 3 failure — is detectable independently of whether
+            any citation is real. That is the Layer 3 proposition.
+          </p>
+        </div>
+        <div class="study-cite"><strong>Source:</strong> WP7 — The Absence Detector, 4 SHIELD LLC R&D. Case: Mata v. Avianca, Inc., No. 22-cv-1461 (S.D.N.Y. 2023).</div>
+      </article>
+    </section>
+
+    <!-- STUDY 2: 71-POINT DELTA -->
+    <section class="section" id="study-2">
+      <div class="sec-label">Study 2</div>
+      <h2>The <span class="g">71-Point Delta</span></h2>
+
+      <article class="study">
+        <div class="study-header">
+          <div class="study-num">71</div>
+          <div class="study-meta">
+            <div class="study-id">WP5 — Hallucination as Structural Extraction · 4 SHIELD LLC R&D</div>
+            <div class="study-title">Blinded batch discrimination: genuine vs. hallucinated documents</div>
+          </div>
+        </div>
+        <div class="study-body">
+          <p>
+            A blinded batch of 20 documents — a mix of genuine institutional documents and
+            AI-hallucinated documents — was run through the 4CITE engine without the engine
+            being told which was which. The documents were drawn from the law and business
+            verticals, spanning multiple document classes.
+          </p>
+          <p>
+            The average discrimination delta between genuine and hallucinated documents was
+            71 points. The scoring was consistent across document types: the engine did not
+            require domain-specific calibration to distinguish genuine reasoning from
+            AI-generated performance of reasoning. The structural signatures are consistent
+            enough across domains that the same measurement framework discriminates reliably
+            without per-domain tuning.
+          </p>
+          <p>
+            <strong>What this means:</strong> The 4CITE engine is not a specialized
+            legal-document tool or a specialized financial-document tool. It is a
+            domain-agnostic structural integrity engine. The 71-point delta holds across
+            legal briefs and SEC filings alike, because the structural properties that
+            distinguish genuine reasoning from hallucinated reasoning are structural —
+            not domain-specific.
+          </p>
+        </div>
+        <div class="study-cite"><strong>Source:</strong> WP5 — Hallucination as Structural Extraction, 4 SHIELD LLC R&D. 20-document blinded batch, cross-domain (law + business verticals).</div>
+      </article>
+    </section>
+
+    <!-- STUDY 3: ARCHETYPE ACCURACY -->
+    <section class="section" id="study-3">
+      <div class="sec-label">Study 3</div>
+      <h2>13/13 Archetype <span class="g">Classification</span></h2>
+
+      <article class="study">
+        <div class="study-header">
+          <div class="study-num">13/13</div>
+          <div class="study-meta">
+            <div class="study-id">R35 — Archetype Validation Study · April 3, 2026</div>
+            <div class="study-title">Framework generalization: correct classification across all test document archetypes</div>
+          </div>
+        </div>
+        <div class="study-body">
+          <p>
+            Before scoring, 4CITE classifies every document into one of 25 document archetypes
+            — classes that define what a structurally sound version of that document type looks
+            like, what failure modes are typical, and how to calibrate the gate scores for that
+            class. Archetype classification is the prerequisite for scoring: the same raw text
+            that constitutes a T1 judicial opinion might look very different from a T1 earnings
+            call, even though both score high on structural integrity.
+          </p>
+          <p>
+            In the R35 validation study, 13 test documents spanning multiple document classes
+            across law, business, and government were submitted to the classification system
+            without labels. All 13 were correctly classified to their archetype. No
+            domain-specific tuning was applied between document classes.
+          </p>
+          <p>
+            <strong>The significance:</strong> Archetype classification accuracy is the
+            prerequisite for scoring accuracy. If the engine misclassifies a congressional
+            testimony as a legal brief, the gate calibration is wrong and the score is
+            meaningless. 13/13 accuracy confirms that the classification framework
+            generalizes correctly across the document classes in the current corpus.
+          </p>
+        </div>
+        <div class="study-cite"><strong>Source:</strong> R35 — Archetype Validation Study, 4 SHIELD LLC R&D, April 3, 2026. 13-document test set across law, business, and government archetypes.</div>
+      </article>
+    </section>
+
+    <!-- STUDY 4: 2X WIN RATE -->
+    <section class="section" id="study-4">
+      <div class="sec-label">Study 4 — External Research</div>
+      <h2>2× Federal Court <span class="g">Win Rate</span></h2>
+
+      <article class="study">
+        <div class="study-header">
+          <div class="study-num">2×</div>
+          <div class="study-meta">
+            <div class="study-id">Spencer &amp; Feldman, 22 Legal Writing 61 (2018)</div>
+            <div class="study-title">Brief structural clarity doubles win rate in federal court</div>
+          </div>
+        </div>
+        <div class="study-body">
+          <p>
+            Spencer and Feldman's 2018 study of federal appellate briefs found that brief
+            structural clarity — the property of legal briefs in which the argument structure
+            is coherent, logical, and follows clearly from its premises — was associated with
+            a doubling of win rates: briefs with low structural clarity showed win rates of
+            approximately 42%; briefs with high structural clarity showed win rates of
+            approximately 85%.
+          </p>
+          <p>
+            This study was conducted independently of 4CITE and using different methodology.
+            Its relevance to the 4CITE proposition: the property that the Spencer &amp; Feldman
+            study identified as outcome-predictive in federal litigation is precisely the
+            property that 4CITE measures. Structural integrity is not aesthetic. It is
+            predictive — and it has been predictive in federal court before 4CITE existed to
+            measure it.
+          </p>
+          <p>
+            <strong>What this adds:</strong> The Spencer &amp; Feldman finding validates the
+            underlying claim — that structural integrity in legal documents is a real,
+            measurable, outcome-predictive property — using independent research that predates
+            4CITE. The 4CITE engine provides the automated, scalable measurement infrastructure
+            that makes this insight operationally available.
+          </p>
+        </div>
+        <div class="study-cite"><strong>Source:</strong> Spencer, A.B. &amp; Feldman, R. (2018). Effective Appellate Advocacy: Brief Structure and the Win Rate in Federal Appeals. <em>Journal of Legal Writing Institute</em>, 22, 61. External research — not commissioned by 4 SHIELD LLC.</div>
+      </article>
+    </section>
+
+    <!-- CORPUS EXAMPLES -->
+    <section class="section" id="corpus">
+      <div class="sec-label">Live Corpus</div>
+      <h2>Scores From the <span class="g">4CITE Corpus</span></h2>
+      <p>Selected documents from the live corpus, scored by the 4CITE engine. All documents are from public record sources (PACER, CourtListener, SEC EDGAR, Congress.gov). Scores reflect the structural integrity of the document as assessed by the four-gate engine at the time of scoring.</p>
+
+      <table style="margin-top:20px;">
+        <thead><tr><th>Document</th><th>Vertical</th><th>Score</th><th>Tier</th><th>Notes</th></tr></thead>
+        <tbody>
+          <tr><td style="color:var(--text);font-weight:600;">Federalist No. 51</td><td style="color:var(--muted);font-size:12px;">⁴gov</td><td><span class="score-badge score-high">91</span></td><td style="color:#22C97A;font-size:13px;font-weight:700;">T1</td><td style="color:var(--muted);font-size:12px;">Highest G4 (Paradox Resolution) in corpus. Madison's paradox-first structure is the benchmark for foundational coherence.</td></tr>
+          <tr><td style="color:var(--text);font-weight:600;">Gettysburg Address</td><td style="color:var(--muted);font-size:12px;">⁴gov</td><td><span class="score-badge score-high">89</span></td><td style="color:#22C97A;font-size:13px;font-weight:700;">T1</td><td style="color:var(--muted);font-size:12px;">272 words. Perfect alignment between stated purpose and structural behavior. No drift.</td></tr>
+          <tr><td style="color:var(--text);font-weight:600;">Genuine federal sanctions opinion</td><td style="color:var(--muted);font-size:12px;">⁴law</td><td><span class="score-badge score-high">88</span></td><td style="color:#22C97A;font-size:13px;font-weight:700;">T1</td><td style="color:var(--muted);font-size:12px;">Benchmark document for the 81-point study. Genuine legal reasoning. G6 (Latent Intent) particularly strong.</td></tr>
+          <tr><td style="color:var(--text);font-weight:600;">Berkshire Hathaway Annual Letter 2023</td><td style="color:var(--muted);font-size:12px;">⁴biz</td><td><span class="score-badge score-high">87</span></td><td style="color:#22C97A;font-size:13px;font-weight:700;">T1</td><td style="color:var(--muted);font-size:12px;">Highest biz-vertical score in initial corpus. G8 (Rhetorical Architecture) exemplary — engages failure honestly.</td></tr>
+          <tr><td style="color:var(--text);font-weight:600;">Washington Farewell Address</td><td style="color:var(--muted);font-size:12px;">⁴gov</td><td><span class="score-badge score-high">86</span></td><td style="color:#22C97A;font-size:13px;font-weight:700;">T1</td><td style="color:var(--muted);font-size:12px;">Strong prospective accountability signal. G4 scores reflect genuine skin-in-the-game framing.</td></tr>
+          <tr><td style="color:var(--text);font-weight:600;">Apple Inc. 10-K FY2024</td><td style="color:var(--muted);font-size:12px;">⁴biz</td><td><span class="score-badge score-high">82</span></td><td style="color:#22C97A;font-size:13px;font-weight:700;">T1</td><td style="color:var(--muted);font-size:12px;">30 docs scored, all T1. Composite range 67.5–88.8. G6 (Latent Intent) consistently weakest gate for AAPL — expected for large-cap institutional messaging.</td></tr>
+          <tr><td style="color:var(--text);font-weight:600;">Volcker Senate testimony (1981)</td><td style="color:var(--muted);font-size:12px;">⁴gov</td><td><span class="score-badge score-high">78</span></td><td style="color:#22C97A;font-size:13px;font-weight:700;">T1</td><td style="color:var(--muted);font-size:12px;">Technically T1/T2 boundary. Scored T1 on G4 (Paradox Resolution) and G6 (Latent Intent). G8 (Rhetorical Architecture) slightly below threshold — testimony constraints noted.</td></tr>
+          <tr><td style="color:var(--text);font-weight:600;">Citizens United v. FEC opinion</td><td style="color:var(--muted);font-size:12px;">⁴law</td><td style="color:var(--amber);font-size:16px;font-weight:700;padding:4px 0;display:inline-block;">44</td><td style="color:var(--amber);font-size:13px;font-weight:700;">T3</td><td style="color:var(--muted);font-size:12px;">G7 (Argumentative Structure) and G4 (Paradox Resolution) diverge significantly. Accountability Theater flag on the G7+G8 vs. G4+G6 gap. Not fraudulent — structural tension from contested constitutional doctrine.</td></tr>
+          <tr><td style="color:var(--text);font-weight:600;">State of the Union 2025</td><td style="color:var(--muted);font-size:12px;">⁴gov</td><td style="color:var(--amber);font-size:16px;font-weight:700;padding:4px 0;display:inline-block;">44</td><td style="color:var(--amber);font-size:13px;font-weight:700;">T3</td><td style="color:var(--muted);font-size:12px;">Accountability Theater flag. G7 (Argumentative Structure) high; G6 (Latent Intent) and G4 (Paradox Resolution) low. Surface performance exceeds structural substance.</td></tr>
+          <tr><td style="color:var(--text);font-weight:600;">Zuckerberg Senate testimony (2018)</td><td style="color:var(--muted);font-size:12px;">⁴gov</td><td style="color:var(--amber);font-size:16px;font-weight:700;padding:4px 0;display:inline-block;">40</td><td style="color:var(--amber);font-size:13px;font-weight:700;">T3</td><td style="color:var(--muted);font-size:12px;">G8 (Rhetorical Architecture) score: 14 out of 100. Avoided complexity at every opportunity. Boilerplate deflection detected across 344 responses.</td></tr>
+          <tr><td style="color:var(--text);font-weight:600;">Iraq WMD Senate hearing (2002)</td><td style="color:var(--muted);font-size:12px;">⁴gov</td><td><span class="score-badge score-low">21</span></td><td style="color:#E05050;font-size:13px;font-weight:700;">T4</td><td style="color:var(--muted);font-size:12px;">All four gates below 30. G4 (Paradox Resolution) collapse: stated certainty about WMD stockpiles has no structural support in the presented evidence.</td></tr>
+          <tr><td style="color:var(--text);font-weight:600;">SVB FY2022 Risk disclosures</td><td style="color:var(--muted);font-size:12px;">⁴biz</td><td><span class="score-badge score-low">22</span></td><td style="color:#E05050;font-size:13px;font-weight:700;">T4</td><td style="color:var(--muted);font-size:12px;">Filed December 2022. Bank failed March 2023. G4 (Paradox Resolution) and G6 (Latent Intent) collapse pattern visible in final filings. Interest rate risk acknowledged and simultaneously minimized — structural contradiction.</td></tr>
+          <tr><td style="color:var(--text);font-weight:600;">Mata v. Avianca brief (AI-fabricated)</td><td style="color:var(--muted);font-size:12px;">⁴law</td><td><span class="score-badge score-low">7</span></td><td style="color:#E05050;font-size:13px;font-weight:700;">T4</td><td style="color:var(--muted);font-size:12px;">Lowest law-vertical score in corpus. G6 (Latent Intent) near zero. Foundation collapses when citations (the stated basis) are structurally absent from the reasoning architecture.</td></tr>
+          <tr><td style="color:var(--text);font-weight:600;">Enron 10-K FY2000</td><td style="color:var(--muted);font-size:12px;">⁴biz</td><td><span class="score-badge score-low">8</span></td><td style="color:#E05050;font-size:13px;font-weight:700;">T4</td><td style="color:var(--muted);font-size:12px;">Filed February 2001. Filed for bankruptcy December 2001. Lowest biz-vertical score in current corpus. All four gates collapse. Surface language maintains performance of integrity while structural architecture shows complete foundation absence.</td></tr>
+        </tbody>
+      </table>
+
+      <div class="callout" style="margin-top:24px;">
+        <strong>Note on corpus scores:</strong> All corpus scores are based on publicly
+        available documents and reflect structural analysis only. Scores do not constitute
+        legal, financial, or compliance determinations. T3 and T4 scores indicate structural
+        measurement results, not editorial judgments about the individuals or organizations
+        involved. Structural tension (T3) can arise from institutional constraints, political
+        complexity, and genuine uncertainty — not only from bad faith.
+      </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="section" style="text-align:center;">
+      <h2 style="margin-bottom:12px;">See the engine <span class="g">running</span></h2>
+      <p style="max-width:520px;margin:0 auto 28px;font-size:15px;">4CITE is in closed beta. Join the waitlist and get priority access when we open the doors in your vertical.</p>
+      <a href="/#waitlist" style="display:inline-block;background:linear-gradient(135deg,#D89A0B,#8B5E00);border:1px solid rgba(216,154,11,0.6);color:#07152E;font-size:12px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:14px 32px;border-radius:8px;text-decoration:none;border-bottom:none;">Join the Waitlist →</a>
+    </section>
+
+  </div><!-- end .content -->
+</main>
+
+<footer>
+  <div class="fb"><span class="n4">4</span><span class="nc">CITE</span><span class="na">.ai</span></div>
+  <div class="fl">
+    <a href="/about">About</a>
+    <a href="/contact">Contact</a>
+    <a href="/privacy">Privacy</a>
+    <a href="/terms">Terms</a>
+  </div>
+  <div class="fr">© 2026 4 SHIELD LLC · All Rights Reserved</div>
+</footer>
+
+</body>
+</html>

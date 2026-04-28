@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Research Library — 4CITE.ai | Structural Integrity Research by 4 SHIELD LLC</title>
+<meta name="description" content="4 SHIELD LLC research library. Validation evidence and white papers on structural integrity analysis, AI hallucination, model collapse, accountability theater, and the Shannon channel-capacity framework.">
+<meta name="theme-color" content="#07152E">
+<link rel="apple-touch-icon" href="../icons/icon-192.png">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --midnight: #07152E; --navy: #0B2358; --card: #0C1628; --border: #1A3060;
+  --blue: #2B63D9; --cyan: #7DEBFF; --gold: #D89A0B; --goldf: #F7D85D;
+  --steel: #7A9ABE; --muted: #3A5A80; --text: #C8D8EE; --white: #FFFFFF;
+  --green: #22C97A; --amber: #F0A020; --red: #E05050;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior:smooth; }
+body { background:var(--midnight); color:var(--text); font-family:'Space Grotesk',-apple-system,sans-serif; line-height:1.7; font-size:16px; overflow-x:hidden; }
+nav { position:fixed; top:0; left:0; right:0; z-index:200; background:rgba(7,21,46,0.95); backdrop-filter:blur(16px); border-bottom:1px solid var(--border); padding:0 60px; height:62px; display:flex; align-items:center; gap:32px; }
+.nav-brand { font-size:22px; font-weight:700; margin-right:auto; letter-spacing:-0.5px; text-decoration:none; text-transform:none; }
+.nav-brand .n4 { color:var(--goldf); } .nav-brand .nc { color:var(--white); } .nav-brand .na { color:var(--cyan); font-weight:300; }
+nav a { color:var(--steel); text-decoration:none; font-size:12px; font-weight:500; letter-spacing:2px; text-transform:uppercase; transition:color 0.2s; }
+nav a:hover { color:var(--goldf); }
+.nav-cta { background:linear-gradient(135deg,#2B63D9,#0A2E80); border:1px solid rgba(43,99,217,0.6); color:var(--white) !important; padding:8px 20px; border-radius:6px; }
+main { padding-top:62px; }
+.page-hero { padding:80px 80px 60px; max-width:1100px; margin:0 auto; }
+.page-eyebrow { font-size:10px; font-weight:700; letter-spacing:5px; color:var(--muted); text-transform:uppercase; margin-bottom:16px; display:flex; align-items:center; gap:12px; }
+.page-eyebrow::before { content:''; display:block; width:32px; height:1px; background:var(--muted); }
+h1 { font-size:clamp(32px,4vw,52px); font-weight:700; color:var(--white); line-height:1.1; margin-bottom:20px; }
+h1 .g { color:var(--goldf); } h1 .c { color:var(--cyan); }
+.page-lead { font-size:18px; color:var(--steel); line-height:1.8; max-width:680px; font-weight:300; }
+.page-lead strong { color:var(--text); font-weight:500; }
+.content { max-width:1100px; margin:0 auto; padding:0 80px 100px; }
+.section { padding:48px 0; border-top:1px solid rgba(26,48,96,0.4); }
+h2 { font-size:20px; font-weight:700; color:var(--white); margin-bottom:8px; line-height:1.2; }
+h2 .g { color:var(--goldf); }
+p { color:var(--steel); line-height:1.8; margin-bottom:16px; font-size:15px; }
+.sec-label { font-size:10px; font-weight:700; letter-spacing:5px; text-transform:uppercase; color:var(--muted); margin-bottom:8px; }
+.sec-intro { font-size:14px; color:var(--steel); margin-bottom:24px; max-width:780px; }
+
+/* Evidence hero card — sits at top, more prominent */
+.ev-hero { background:linear-gradient(135deg,rgba(34,201,122,0.06),rgba(125,235,255,0.05)); border:1px solid rgba(34,201,122,0.25); border-left:4px solid var(--green); border-radius:14px; padding:32px 36px; margin-bottom:24px; display:flex; gap:32px; align-items:center; text-decoration:none; transition:border-color 0.2s; }
+.ev-hero:hover { border-color:rgba(34,201,122,0.5); }
+.ev-icon { font-size:11px; font-weight:700; letter-spacing:3px; text-transform:uppercase; color:var(--green); flex-shrink:0; min-width:80px; }
+.ev-body { flex:1; }
+.ev-title { font-size:22px; color:var(--white); font-weight:700; margin-bottom:6px; }
+.ev-sub { font-size:13px; color:var(--steel); margin-bottom:10px; }
+.ev-stats { display:flex; gap:24px; margin-top:14px; }
+.ev-stat { font-size:11px; color:var(--muted); letter-spacing:1px; }
+.ev-stat strong { color:var(--green); font-size:14px; font-weight:700; margin-right:6px; }
+.ev-link { font-size:11px; font-weight:700; letter-spacing:2px; text-transform:uppercase; color:var(--green); flex-shrink:0; }
+
+/* Paper card */
+.paper-card { background:var(--card); border:1px solid var(--border); border-radius:12px; padding:28px 32px; margin-bottom:16px; display:flex; gap:28px; align-items:flex-start; text-decoration:none; transition:border-color 0.2s; }
+.paper-card:hover { border-color:rgba(247,216,93,0.3); }
+.paper-card.published { border-left:3px solid var(--goldf); }
+.paper-card.available { border-left:3px solid var(--blue); }
+.paper-card.upcoming { border-left:3px solid var(--border); opacity:0.7; }
+.pc-id { font-size:11px; font-weight:700; letter-spacing:3px; text-transform:uppercase; min-width:52px; flex-shrink:0; padding-top:3px; }
+.paper-card.published .pc-id { color:var(--goldf); }
+.paper-card.available .pc-id { color:#6699FF; }
+.paper-card.upcoming .pc-id { color:var(--muted); }
+.pc-body { flex:1; }
+.pc-status { display:inline-block; font-size:9px; font-weight:700; letter-spacing:3px; text-transform:uppercase; border-radius:3px; padding:2px 8px; margin-bottom:10px; }
+.paper-card.published .pc-status { background:rgba(247,216,93,0.12); color:var(--goldf); border:1px solid rgba(247,216,93,0.25); }
+.paper-card.available .pc-status { background:rgba(43,99,217,0.12); color:#6699FF; border:1px solid rgba(43,99,217,0.25); }
+.paper-card.upcoming .pc-status { background:rgba(58,90,128,0.2); color:var(--muted); border:1px solid var(--border); }
+.pc-title { font-size:17px; font-weight:700; color:var(--white); margin-bottom:6px; line-height:1.3; }
+.pc-subtitle { font-size:13px; color:var(--steel); margin-bottom:10px; }
+.pc-abstract { font-size:13px; color:var(--muted); line-height:1.7; margin-bottom:0; }
+.pc-meta { margin-top:10px; font-size:11px; color:var(--muted); display:flex; gap:20px; flex-wrap:wrap; }
+.pc-meta span { display:flex; align-items:center; gap:5px; }
+.read-link { display:inline-block; margin-top:12px; font-size:11px; font-weight:700; letter-spacing:2px; text-transform:uppercase; color:var(--goldf); }
+.read-link.pdf { color:#6699FF; }
+
+/* Research areas */
+.area-grid { display:grid; grid-template-columns:1fr 1fr 1fr; gap:16px; margin-top:20px; }
+.area-card { background:var(--card); border:1px solid var(--border); border-radius:10px; padding:20px 22px; }
+.area-card h3 { font-size:14px; font-weight:700; color:var(--white); margin-bottom:6px; }
+.area-card p { font-size:12px; color:var(--muted); margin-bottom:0; line-height:1.6; }
+
+footer { background:#030710; border-top:1px solid var(--border); padding:36px 80px; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:24px; }
+.fb { font-size:20px; font-weight:700; }
+.fb .n4{color:var(--goldf);} .fb .nc{color:var(--white);} .fb .na{color:var(--cyan);font-weight:300;}
+.fl { display:flex; gap:28px; flex-wrap:wrap; }
+.fl a { font-size:12px; color:var(--muted); text-decoration:none; letter-spacing:1px; transition:color 0.2s; }
+.fl a:hover { color:var(--steel); }
+.fr { font-size:11px; color:var(--muted); letter-spacing:1px; }
+@media (max-width:960px) {
+  nav { padding:0 24px; gap:16px; }
+  nav a:not(.nav-brand):not(.nav-cta) { display:none; }
+  .page-hero { padding:60px 28px 40px; }
+  .content { padding:0 28px 80px; }
+  .area-grid { grid-template-columns:1fr; }
+  .paper-card { flex-direction:column; gap:12px; }
+  .ev-hero { flex-direction:column; gap:16px; align-items:flex-start; }
+  footer { flex-direction:column; gap:20px; text-align:center; padding:28px; }
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="/" class="nav-brand"><span class="n4">4</span><span class="nc">CITE</span><span class="na">.ai</span></a>
+  <a href="/how-it-works">How It Works</a>
+  <a href="/verticals/">Verticals</a>
+  <a href="/pricing">Pricing</a>
+  <a href="/research/">Research</a>
+  <a href="/faq">FAQ</a>
+  <a href="/#waitlist" class="nav-cta">Join Beta →</a>
+</nav>
+
+<main>
+
+  <!-- ═══ HERO ═══ -->
+  <header class="page-hero">
+    <div class="page-eyebrow">Research</div>
+    <h1><span class="g">Research</span> Library</h1>
+    <p class="page-lead">
+      Validation evidence and white papers from 4 SHIELD LLC on structural integrity analysis,
+      AI hallucination, model collapse, accountability theater, and the Shannon channel-capacity
+      framework. <strong>All papers are externally publishable and freely available.</strong>
+    </p>
+  </header>
+
+  <div class="content">
+
+    <!-- ═══ EVIDENCE — at the top, prominent ═══ -->
+    <section class="section" id="evidence" style="border-top:none;padding-top:24px;">
+      <div class="sec-label">Validation Evidence</div>
+      <p class="sec-intro">
+        The empirical case for structural integrity measurement — controlled studies, retroactive
+        scoring of historical disclosures, archetype validation across domains.
+      </p>
+      <a href="/evidence" class="ev-hero">
+        <div class="ev-icon">Evidence</div>
+        <div class="ev-body">
+          <div class="ev-title">Validation Results</div>
+          <div class="ev-sub">Cross-domain corpus scores · Mata v. Avianca · SVB · Enron · Founding documents</div>
+          <p style="font-size:13px;color:var(--muted);line-height:1.7;margin-bottom:0;">
+            The full validation page: 81-point gap between genuine federal opinion and AI-fabricated brief;
+            71-point discrimination delta on a blinded 20-document batch; 13/13 archetype classification
+            accuracy; the corpus scores spanning Federalist No. 51 (91) down to Enron FY2000 10-K (8).
+          </p>
+          <div class="ev-stats">
+            <div class="ev-stat"><strong>81pt</strong>Mata gap</div>
+            <div class="ev-stat"><strong>71pt</strong>Discrimination delta</div>
+            <div class="ev-stat"><strong>13/13</strong>Archetype accuracy</div>
+            <div class="ev-stat"><strong>2×</strong>Federal court win rate corr.</div>
+          </div>
+        </div>
+        <span class="ev-link">View Evidence →</span>
+      </a>
+    </section>
+
+    <!-- ═══ WHITE PAPERS — THEORETICAL FOUNDATION ═══ -->
+    <section class="section" id="white-papers">
+      <div class="sec-label">White Papers — Theoretical Foundation</div>
+      <p class="sec-intro">
+        Why structural integrity measurement works, why the discrimination gap is so large, and why
+        accuracy-based detection methods measure the wrong layer.
+      </p>
+
+      <!-- WP-16 — HTML PAGE -->
+      <a href="/research/wp16" class="paper-card published">
+        <div class="pc-id">WP-16</div>
+        <div class="pc-body">
+          <span class="pc-status">Published · April 24, 2026</span>
+          <div class="pc-title">The Hallucination Gap</div>
+          <div class="pc-subtitle">Why Shannon's Law Explains Structural Integrity Measurement</div>
+          <p class="pc-abstract">
+            A hallucinating AI is a low-bandwidth channel impersonating a high-bandwidth signal. This paper applies Shannon's
+            1948 channel-capacity framework to AI hallucination, documenting a 71-point discrimination delta between
+            genuine and hallucinated content and explaining why accuracy-based detection measures the wrong layer.
+            Positions structural integrity analysis as a measurement of channel capacity grounded in the same theoretical
+            framework the AI models themselves are built on.
+          </p>
+          <div class="pc-meta">
+            <span>12 sections</span>
+            <span>71-pt delta · Shannon framework · Layer 3 positioning</span>
+          </div>
+          <span class="read-link">Read Paper (HTML) →</span>
+        </div>
+      </a>
+
+      <!-- WP-14 — PDF -->
+      <a href="/research/wp14.pdf" class="paper-card available" target="_blank" rel="noopener">
+        <div class="pc-id">WP-14</div>
+        <div class="pc-body">
+          <span class="pc-status">Published · April 2026</span>
+          <div class="pc-title">Hallucination Is Not an Accuracy Problem</div>
+          <div class="pc-subtitle">Why AI Confabulation Is a Structural Integrity Event</div>
+          <p class="pc-abstract">
+            Retrieval-augmented generation and citation verification are necessary but not sufficient for hallucination
+            detection. A document with perfectly accurate citations can still fail structural integrity analysis if the
+            reasoning connecting those citations is performed rather than genuine. Establishes the taxonomy of
+            hallucination modes and maps each to the measurement layer capable of detecting it.
+          </p>
+          <div class="pc-meta">
+            <span>Hallucination taxonomy · RAG limitations · Layer 3 necessity</span>
+          </div>
+          <span class="read-link pdf">Read Paper (PDF) →</span>
+        </div>
+      </a>
+
+      <!-- WP-12 — PDF -->
+      <a href="/research/wp12.pdf" class="paper-card available" target="_blank" rel="noopener">
+        <div class="pc-id">WP-12</div>
+        <div class="pc-body">
+          <span class="pc-status">Published · April 2026</span>
+          <div class="pc-title">The Collapse Dividend</div>
+          <div class="pc-subtitle">Why AI Model Collapse Makes Structural Integrity Measurement Infrastructure</div>
+          <p class="pc-abstract">
+            Shumailov et al. (2024) demonstrated that AI models trained on recursively generated data collapse toward a
+            bland distributional mean. Argues that model collapse is not just a model quality problem — it is a
+            documentary ecosystem problem. As AI-generated content replaces human-authored content in training data,
+            the structural integrity gap between genuine and generated documents narrows from below. Measurement
+            infrastructure becomes more critical, not less, as the surface differences diminish.
+          </p>
+          <div class="pc-meta">
+            <span>Model collapse · Shumailov 2024 · Documentary ecosystem</span>
+          </div>
+          <span class="read-link pdf">Read Paper (PDF) →</span>
+        </div>
+      </a>
+    </section>
+
+    <!-- ═══ WHITE PAPERS — STRATEGIC / ARCHITECTURE ═══ -->
+    <section class="section">
+      <div class="sec-label">White Papers — Strategic &amp; Architectural</div>
+      <p class="sec-intro">
+        Why structural integrity is a property of systems rather than people, why the AI accountability
+        crisis is already behind institutions rather than ahead, and what the regulatory environment is
+        about to require.
+      </p>
+
+      <!-- WP-15 — PDF -->
+      <a href="/research/wp15.pdf" class="paper-card available" target="_blank" rel="noopener">
+        <div class="pc-id">WP-15</div>
+        <div class="pc-body">
+          <span class="pc-status">Published · April 2026</span>
+          <div class="pc-title">The Retrospective Liability Thesis</div>
+          <div class="pc-subtitle">Why the AI Accountability Crisis Is Behind Us, Not Ahead</div>
+          <p class="pc-abstract">
+            The sanctions event horizon has already passed. Mata v. Avianca (2023) and Brigandi v. GEICO ($110,000+)
+            established the liability pattern. FRE 707 codifies it. Argues that institutions are not preparing for future
+            AI accountability risk — they are managing existing, undiscovered liability in documents already filed and
+            relied upon.
+          </p>
+          <div class="pc-meta">
+            <span>FRE 707 · Retrospective scoring · Liability architecture</span>
+          </div>
+          <span class="read-link pdf">Read Paper (PDF) →</span>
+        </div>
+      </a>
+
+      <!-- WP-13 — PDF -->
+      <a href="/research/wp13.pdf" class="paper-card available" target="_blank" rel="noopener">
+        <div class="pc-id">WP-13</div>
+        <div class="pc-body">
+          <span class="pc-status">Published · April 2026</span>
+          <div class="pc-title">The Accountability Architecture</div>
+          <div class="pc-subtitle">Why Structural Integrity Is a Property of Systems, Not People</div>
+          <p class="pc-abstract">
+            Structural integrity measurement is not a judgment about individual authors — it is a measurement of
+            the accountability architecture in which documents are produced. Establishes the theoretical basis for
+            why foundational accountability (the G4/G6 gate pair) is the most fundamental dimension and why no
+            amount of surface polish can compensate for its absence.
+          </p>
+          <div class="pc-meta">
+            <span>Foundational accountability · Accountability architecture · Institutional analysis</span>
+          </div>
+          <span class="read-link pdf">Read Paper (PDF) →</span>
+        </div>
+      </a>
+    </section>
+
+    <!-- ═══ EARLIER PAPERS — VALIDATION ROOTS ═══ -->
+    <section class="section">
+      <div class="sec-label">Earlier Papers — Validation Roots</div>
+      <p class="sec-intro">
+        The empirical results that grounded the theoretical framework — the 81-point Mata gap and the
+        71-point discrimination delta. Both are summarized on the
+        <a href="/evidence" style="color:var(--cyan);text-decoration:none;border-bottom:1px solid rgba(125,235,255,0.3);">Evidence page</a>.
+      </p>
+
+      <!-- WP-7 — abstract only; full study on Evidence page -->
+      <a href="/evidence#mata" class="paper-card available">
+        <div class="pc-id">WP-7</div>
+        <div class="pc-body">
+          <span class="pc-status">Available · 2025–2026</span>
+          <div class="pc-title">The 81-Point Gap</div>
+          <div class="pc-subtitle">Structural Integrity Analysis of AI-Fabricated Legal Briefs: Mata v. Avianca Case Study</div>
+          <p class="pc-abstract">
+            Detailed structural integrity scoring of the ChatGPT-fabricated brief submitted in Mata v. Avianca, Inc.
+            (S.D.N.Y. 2023), which resulted in Rule 11 sanctions from Judge P. Kevin Castel. The fabricated brief
+            scored 7/100 (T4 Paper Doll). Authentic briefs from the same legal domain scored 72–88/100 (T1 Real Deal).
+            The 81-point gap is the largest single-document delta in the 4CITE validation corpus.
+          </p>
+          <div class="pc-meta">
+            <span>Score: 7/100 · T4 · 81pt gap · Rule 11 sanctions</span>
+          </div>
+          <span class="read-link">View on Evidence Page →</span>
+        </div>
+      </a>
+
+      <!-- WP-5 — abstract only; full study on Evidence page -->
+      <a href="/evidence" class="paper-card available">
+        <div class="pc-id">WP-5</div>
+        <div class="pc-body">
+          <span class="pc-status">Available · 2025–2026</span>
+          <div class="pc-title">71-Point Discrimination Delta</div>
+          <div class="pc-subtitle">Blinded Batch Comparison of Genuine and Hallucinated Content Across Five Professional Domains</div>
+          <p class="pc-abstract">
+            Controlled study: 20 matched AI responses (10 genuine, 10 hallucinated) across five professional domains,
+            scored blind on multi-dimensional structural integrity analysis. Genuine responses averaged 82.4 (T1 Real Deal —
+            all). Hallucinated responses averaged 11.4 (T4 Paper Doll — all). Zero overlap in score distributions. The
+            71-point average discrimination delta is the primary empirical validation of the structural integrity measurement methodology.
+          </p>
+          <div class="pc-meta">
+            <span>n=20 · 71pt avg delta · Zero distribution overlap · 5 domains</span>
+          </div>
+          <span class="read-link">View on Evidence Page →</span>
+        </div>
+      </a>
+    </section>
+
+    <!-- ═══ RESEARCH REPORTS — R Series ═══ -->
+    <section class="section" id="research-reports">
+      <div class="sec-label">Research Reports — R Series</div>
+
+      <div class="paper-card available">
+        <div class="pc-id">R35</div>
+        <div class="pc-body">
+          <span class="pc-status">Available · April 3, 2026</span>
+          <div class="pc-title">13/13 Archetype Classification Validation</div>
+          <div class="pc-subtitle">Integrity Archetype Self-Tuning Layer: Cross-Corpus Validation Study</div>
+          <p class="pc-abstract">
+            Validation study of the 4CITE archetype classification layer across 13 documents spanning legal, corporate,
+            and government domains. 13 of 13 documents received archetype classifications consistent with human expert
+            review. Validates the archetype layer as a reliable subtype descriptor operating above tier designation.
+          </p>
+          <div class="pc-meta">
+            <span>13/13 accuracy · Cross-domain · Archetype layer validation</span>
+          </div>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- ═══ RESEARCH AREAS ═══ -->
+    <section class="section" id="research-areas">
+      <div class="sec-label">Research Areas</div>
+      <h2>What the <span class="g">Research Covers</span></h2>
+      <div class="area-grid" style="margin-top:20px;">
+        <div class="area-card">
+          <h3>Shannon Framework &amp; Channel Capacity</h3>
+          <p>Applying Shannon's 1948 information-theoretic framework to document reliability. The foundational theory behind why structural integrity measurement works and why the discrimination gap is so large.</p>
+        </div>
+        <div class="area-card">
+          <h3>AI Hallucination Detection</h3>
+          <p>Structural integrity as a hallucination detection method. Why accuracy-based tools (RAG, citation verification) measure the wrong layer, and what Layer 3 adds to the complete integrity stack.</p>
+        </div>
+        <div class="area-card">
+          <h3>Model Collapse &amp; Ecosystem Effects</h3>
+          <p>How recursive AI training degrades documentary ecosystems. The Shumailov et al. (2024) findings applied to the institutional document corpus and long-run measurement infrastructure requirements.</p>
+        </div>
+        <div class="area-card">
+          <h3>Legal Accountability Theater</h3>
+          <p>Structural integrity analysis of fabricated legal briefs. The Mata v. Avianca and Brigandi case studies, Rule 11 sanctions patterns, and FRE 707 regulatory implications for AI-generated legal content.</p>
+        </div>
+        <div class="area-card">
+          <h3>Corporate Disclosure Integrity</h3>
+          <p>Retroactive scoring of SEC filings from SVB, Enron, and the broader EDGAR corpus. Score drift as a leading indicator. The accountability theater pattern in risk disclosures that precedes institutional failure.</p>
+        </div>
+        <div class="area-card">
+          <h3>Founding Document Benchmarks</h3>
+          <p>High-integrity calibration corpus: Federalist Papers (91), Gettysburg Address (89), Declaration of Independence. The structural standard that existed before it was measurable — now measured.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ CTA ═══ -->
+    <section class="section" style="text-align:center;">
+      <h2 style="margin-bottom:12px;font-size:26px;">Research <span class="g">Partnerships</span></h2>
+      <p style="max-width:520px;margin:0 auto 28px;font-size:15px;">Academic institutions and independent researchers interested in corpus access, methodology validation, or collaborative research are invited to reach out directly.</p>
+      <a href="/contact" style="display:inline-block;background:transparent;border:1px solid rgba(247,216,93,0.35);color:var(--goldf);font-size:12px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:14px 28px;border-radius:8px;text-decoration:none;margin-right:12px;">Research Inquiry →</a>
+      <a href="/#waitlist" style="display:inline-block;background:linear-gradient(135deg,#2B63D9,#0A2E80);border:1px solid rgba(43,99,217,0.6);color:var(--white);font-size:12px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:14px 28px;border-radius:8px;text-decoration:none;">Join Beta →</a>
+    </section>
+
+  </div>
+</main>
+
+<footer>
+  <div class="fb"><span class="n4">4</span><span class="nc">CITE</span><span class="na">.ai</span></div>
+  <div class="fl">
+    <a href="/about">About</a>
+    <a href="/contact">Contact</a>
+    <a href="/privacy">Privacy</a>
+    <a href="/terms">Terms</a>
+  </div>
+  <div class="fr">© 2026 4 SHIELD LLC · All Rights Reserved</div>
+</footer>
+
+</body>
+</html>

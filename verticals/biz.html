@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>4CITE⁴biz — SEC Filing Integrity Analysis</title>
+<meta name="description" content="4CITE for Business scores public company SEC filings for structural integrity — detecting accountability theater in 10-Ks, 8-Ks, and proxy statements before investors, analysts, and regulators rely on them.">
+<meta name="theme-color" content="#07152E">
+<link rel="apple-touch-icon" href="../icons/icon-192.png">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --midnight: #07152E; --navy: #0B2358; --card: #0C1628; --border: #1A3060;
+  --blue: #2B63D9; --cyan: #7DEBFF; --gold: #D89A0B; --goldf: #F7D85D;
+  --steel: #7A9ABE; --muted: #3A5A80; --text: #C8D8EE; --white: #FFFFFF;
+  --green: #22C97A; --amber: #F0A020; --red: #E05050;
+  --law: #C42840; --biz: #1A7ABF; --gov: #3A7A52;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior:smooth; }
+body { background:var(--midnight); color:var(--text); font-family:'Space Grotesk',-apple-system,sans-serif; line-height:1.7; font-size:16px; overflow-x:hidden; }
+nav { position:fixed; top:0; left:0; right:0; z-index:200; background:rgba(7,21,46,0.95); backdrop-filter:blur(16px); border-bottom:1px solid var(--border); padding:0 60px; height:62px; display:flex; align-items:center; gap:32px; }
+.nav-brand { font-size:22px; font-weight:700; margin-right:auto; letter-spacing:-0.5px; text-decoration:none; text-transform:none; }
+.nav-brand .n4 { color:var(--goldf); } .nav-brand .nc { color:var(--white); } .nav-brand .na { color:var(--cyan); font-weight:300; }
+nav a { color:var(--steel); text-decoration:none; font-size:12px; font-weight:500; letter-spacing:2px; text-transform:uppercase; transition:color 0.2s; }
+nav a:hover { color:var(--goldf); }
+.nav-cta { background:linear-gradient(135deg,#2B63D9,#0A2E80); border:1px solid rgba(43,99,217,0.6); color:var(--white) !important; padding:8px 20px; border-radius:6px; }
+main { padding-top:62px; }
+.page-hero { padding:80px 80px 60px; max-width:1100px; margin:0 auto; border-bottom:3px solid var(--biz); }
+.page-eyebrow { font-size:10px; font-weight:700; letter-spacing:5px; color:var(--biz); text-transform:uppercase; margin-bottom:16px; display:flex; align-items:center; gap:12px; }
+.page-eyebrow::before { content:''; display:block; width:32px; height:1px; background:var(--biz); }
+h1 { font-size:clamp(32px,4vw,52px); font-weight:700; color:var(--white); line-height:1.1; margin-bottom:20px; }
+h1 .g { color:var(--goldf); } h1 .c { color:var(--cyan); } h1 .b { color:var(--biz); }
+.page-lead { font-size:18px; color:var(--steel); line-height:1.8; max-width:680px; font-weight:300; }
+.page-lead strong { color:var(--text); font-weight:500; }
+.content { max-width:1100px; margin:0 auto; padding:0 80px 100px; }
+.section { padding:52px 0; border-top:1px solid rgba(26,48,96,0.4); }
+h2 { font-size:26px; font-weight:700; color:var(--white); margin-bottom:12px; line-height:1.15; }
+h2 .g { color:var(--goldf); } h2 .c { color:var(--cyan); } h2 .b { color:var(--biz); }
+h3 { font-size:16px; font-weight:700; color:var(--text); margin-bottom:8px; margin-top:24px; }
+p { color:var(--steel); line-height:1.8; margin-bottom:16px; }
+p strong { color:var(--text); font-weight:600; }
+.sec-label { font-size:10px; font-weight:700; letter-spacing:5px; text-transform:uppercase; color:var(--biz); margin-bottom:12px; }
+.card { background:var(--card); border:1px solid var(--border); border-radius:12px; padding:32px; }
+.grid-2 { display:grid; grid-template-columns:1fr 1fr; gap:20px; margin-top:24px; }
+.grid-3 { display:grid; grid-template-columns:1fr 1fr 1fr; gap:20px; margin-top:24px; }
+.stat-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:16px; margin-top:24px; }
+.stat-card { background:var(--card); border:1px solid var(--border); border-radius:10px; padding:24px; text-align:center; }
+.stat-n { font-size:36px; font-weight:700; color:var(--biz); line-height:1; margin-bottom:8px; }
+.stat-l { font-size:11px; font-weight:600; letter-spacing:2px; text-transform:uppercase; color:var(--muted); }
+.case-box { background:rgba(26,122,191,0.06); border:1px solid rgba(26,122,191,0.25); border-radius:12px; padding:28px; margin-top:24px; }
+.case-box .case-head { font-size:10px; font-weight:700; letter-spacing:4px; text-transform:uppercase; color:var(--biz); margin-bottom:12px; }
+.case-box h3 { color:var(--white); font-size:18px; margin-bottom:12px; margin-top:0; }
+.use-card { background:var(--card); border:1px solid var(--border); border-radius:10px; padding:24px 28px; }
+.use-card h3 { font-size:14px; color:var(--white); margin-top:0; margin-bottom:8px; }
+.use-card p { font-size:13px; margin-bottom:0; }
+.doc-row { display:flex; align-items:center; gap:20px; padding:16px 0; border-bottom:1px solid rgba(26,48,96,0.3); font-size:13px; }
+.doc-row:last-child { border-bottom:none; }
+.doc-name { font-weight:700; color:var(--text); min-width:200px; }
+.doc-desc { color:var(--steel); }
+.score-chip { border-radius:4px; padding:3px 10px; font-size:11px; font-weight:700; white-space:nowrap; }
+.t1c { background:rgba(34,201,122,0.12); color:var(--green); border:1px solid rgba(34,201,122,0.3); }
+.t2c { background:rgba(43,99,217,0.12); color:#6699FF; border:1px solid rgba(43,99,217,0.3); }
+.t3c { background:rgba(240,160,32,0.12); color:var(--amber); border:1px solid rgba(240,160,32,0.3); }
+.t4c { background:rgba(224,80,80,0.12); color:var(--red); border:1px solid rgba(224,80,80,0.3); }
+.callout { border-radius:12px; padding:24px 28px; margin:24px 0; font-size:14px; line-height:1.75; background:rgba(26,122,191,0.05); border:1px solid rgba(26,122,191,0.2); }
+.callout strong { color:var(--biz); }
+.long-card { background:var(--card); border:1px solid var(--border); border-radius:10px; padding:24px; }
+.long-card .metric { font-size:10px; font-weight:700; letter-spacing:3px; text-transform:uppercase; color:var(--biz); margin-bottom:6px; }
+.long-card .val { font-size:22px; font-weight:700; color:var(--white); margin-bottom:6px; }
+.long-card .desc { font-size:12px; color:var(--muted); }
+footer { background:#030710; border-top:1px solid var(--border); padding:36px 80px; display:flex; align-items:center; justify-content:space-between; }
+.fb { font-size:20px; font-weight:700; }
+.fb .n4{color:var(--goldf);} .fb .nc{color:var(--white);} .fb .na{color:var(--cyan);font-weight:300;}
+.fl { display:flex; gap:28px; flex-wrap:wrap; }
+.fl a { font-size:12px; color:var(--muted); text-decoration:none; letter-spacing:1px; transition:color 0.2s; }
+.fl a:hover { color:var(--steel); }
+.fr { font-size:11px; color:var(--muted); letter-spacing:1px; }
+@media (max-width:960px) {
+  nav { padding:0 24px; gap:16px; }
+  nav a:not(.nav-brand):not(.nav-cta) { display:none; }
+  .page-hero { padding:60px 28px 40px; }
+  .content { padding:0 28px 80px; }
+  .grid-2, .grid-3, .stat-grid { grid-template-columns:1fr 1fr; }
+  footer { flex-direction:column; gap:20px; text-align:center; padding:28px; }
+}
+@media (max-width:600px) {
+  .grid-2, .grid-3, .stat-grid { grid-template-columns:1fr; }
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="/" class="nav-brand"><span class="n4">4</span><span class="nc">CITE</span><span class="na">.ai</span></a>
+  <a href="/how-it-works">How It Works</a>
+  <a href="/verticals/">Verticals</a>
+  <a href="/pricing">Pricing</a>
+  <a href="/research/">Research</a>
+  <a href="/faq">FAQ</a>
+  <a href="/#waitlist" class="nav-cta">Join Beta →</a>
+</nav>
+
+<main>
+
+  <!-- ═══════════════════════════════ HERO ═══════════════════════════════ -->
+  <header class="page-hero">
+    <div class="page-eyebrow">Vertical · Business</div>
+    <h1><span class="g">4CITE</span><sup class="b" style="font-size:0.55em;vertical-align:super;font-weight:700;">4</sup><span class="b">biz</span></h1>
+    <p class="page-lead">
+      4CITE for Business scores public company SEC filings for structural integrity —
+      measuring whether the reasoning in 10-Ks, 8-Ks, and proxy statements actually holds.
+      <strong>SVB filed risk disclosures that looked coherent. They scored 22/100.</strong>
+      The signal was in the structure, seventeen months before the collapse.
+    </p>
+  </header>
+
+  <div class="content">
+
+    <!-- ═══════════════════════════════ STATS ═══════════════════════════════ -->
+    <section class="section" id="stats">
+      <div class="sec-label">Corpus · Business</div>
+      <h2>The <span class="g">Business Corpus</span></h2>
+      <p>
+        The 4CITE business corpus is built from the SEC EDGAR public filing database —
+        the authoritative source for 10-K annual reports, 10-Q quarterly reports, 8-K
+        material disclosures, and proxy statements for all public companies. Every filing
+        is scored across four independent gates and timestamped for longitudinal tracking.
+      </p>
+      <div class="stat-grid">
+        <div class="stat-card">
+          <div class="stat-n">431+</div>
+          <div class="stat-l">Companies Scored</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-n">16K+</div>
+          <div class="stat-l">Documents in Corpus</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-n">22/100</div>
+          <div class="stat-l">SVB Risk Disclosure Score</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-n">82/100</div>
+          <div class="stat-l">Apple 10-K Benchmark</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════ SVB CASE ═══════════════════════════════ -->
+    <section class="section" id="svb">
+      <div class="sec-label">Validation · Retroactive</div>
+      <h2>The <span class="b">SVB Signal</span></h2>
+      <p>
+        Silicon Valley Bank filed risk disclosures that were structurally indistinguishable
+        from accountability theater — documents that appeared to address material risk while
+        containing no structural substance. 4CITE's retroactive scoring of those filings
+        illustrates what the engine detects that traditional analysis cannot.
+      </p>
+      <div class="case-box">
+        <div class="case-head">Case Study — Retroactive Scoring</div>
+        <h3>Silicon Valley Bank Risk Disclosures (Dec 2022 → March 2023)</h3>
+        <p>
+          SVB's December 2022 10-K risk disclosures — filed seventeen months before the
+          March 2023 collapse — scored <strong>22/100</strong> on the 4CITE engine.
+          The disclosures addressed interest rate risk in surface language while failing to
+          demonstrate coherent risk management reasoning at the foundation layer.
+        </p>
+        <p>
+          For comparison, the Apple AAPL 10-K — a document that discusses comparable
+          categories of macro risk — scores <strong>82/100</strong>. The 60-point gap
+          is not a judgment on Apple's performance vs. SVB's. It is a measurement of
+          structural integrity in how each company reasoned about its own risk.
+        </p>
+        <p style="margin-bottom:0;">
+          <strong>The Enron validation:</strong> Enron's FY2000 annual filing — the last
+          full-year filing before the scandal — scores <strong>8/100</strong>. The structural
+          failure was present in the document before the financial failure became public.
+          This is the forensic use case. The signal preceded the event.
+        </p>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════ DOCUMENTS ═══════════════════════════════ -->
+    <section class="section" id="documents">
+      <div class="sec-label">Document Types</div>
+      <h2>What <span class="g">4CITE Analyzes</span> in Business</h2>
+      <p>
+        Every major public company filing type is in scope. The 4CITE engine was built
+        on the EDGAR corpus — the structural integrity patterns in SEC filings are the
+        most extensively documented in the corpus.
+      </p>
+      <div style="margin-top:20px;">
+        <div class="doc-row">
+          <div class="doc-name">10-K Annual Report</div>
+          <div class="doc-desc">Full-year business overview, risk factors, MD&amp;A, financial statements. Highest-stakes single document in the disclosure corpus. SVB 10-K: 22. AAPL 10-K: 82.</div>
+        </div>
+        <div class="doc-row">
+          <div class="doc-name">10-Q Quarterly Report</div>
+          <div class="doc-desc">Quarterly update on financial condition and results. Longitudinal tracking across four quarters reveals score drift — a leading indicator of disclosure deterioration.</div>
+        </div>
+        <div class="doc-row">
+          <div class="doc-name">8-K Material Events</div>
+          <div class="doc-desc">Disclosure of material corporate events. Particularly effective for scoring the structural coherence of crisis disclosures — where accountability theater is most prevalent.</div>
+        </div>
+        <div class="doc-row">
+          <div class="doc-name">Proxy Statement (DEF 14A)</div>
+          <div class="doc-desc">Shareholder meeting materials including executive compensation justification, board governance narratives. Common source of high-surface / low-foundation accountability theater.</div>
+        </div>
+        <div class="doc-row">
+          <div class="doc-name">S-1 Registration Statement</div>
+          <div class="doc-desc">IPO filings and registration statements. Risk factor sections in S-1s are among the most templated documents in the corpus — scoring separates authentic from boilerplate.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════ LONGITUDINAL ═══════════════════════════════ -->
+    <section class="section" id="longitudinal">
+      <div class="sec-label">Longitudinal Tracking</div>
+      <h2>Score <span class="g">Drift</span> as a Signal</h2>
+      <p>
+        The most powerful use of 4CITE in the business vertical is not the point-in-time
+        score — it is the trajectory. Score drift across filing periods is a measurable
+        signal that precedes disclosure failures in the historical corpus.
+      </p>
+      <div class="grid-2" style="margin-top:8px;">
+        <div class="long-card">
+          <div class="metric">L1 Metric</div>
+          <div class="val">Score Trend</div>
+          <div class="desc">Directional change in composite OMS across consecutive filings. Sustained decline is the primary longitudinal flag.</div>
+        </div>
+        <div class="long-card">
+          <div class="metric">L2 Metric</div>
+          <div class="val">Gate Divergence</div>
+          <div class="desc">Increasing gap between G4/G6 (foundational) and G7/G8 (surface) scores. Surface scores holding while foundation erodes is the classic accountability theater signature.</div>
+        </div>
+        <div class="long-card">
+          <div class="metric">L3 Metric</div>
+          <div class="val">Language Drift</div>
+          <div class="desc">Changes in engagement pattern and latent intent scores relative to company-specific baseline. Detects when an issuer's relationship with its own disclosures is changing.</div>
+        </div>
+        <div class="long-card">
+          <div class="metric">L4 Metric</div>
+          <div class="val">Corpus Percentile</div>
+          <div class="desc">Score position relative to the full 431+ company corpus and sector peers. Contextualizes individual scores within the distribution of comparable filings.</div>
+        </div>
+      </div>
+      <div class="callout" style="margin-top:28px;">
+        <strong>The SVB Trajectory:</strong> SVB's scores show the gate divergence pattern across the four quarters preceding the March 2023 collapse. Surface scores (G7/G8) remained stable while foundation scores (G4/G6) declined. This is the longitudinal pattern that distinguishes accountability theater from disclosed risk.
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════ USE CASES ═══════════════════════════════ -->
+    <section class="section" id="use-cases">
+      <div class="sec-label">Applications</div>
+      <h2>Who Uses <span class="g">4CITE⁴biz</span></h2>
+      <div class="grid-3" style="margin-top:8px;">
+        <div class="use-card">
+          <h3>Investment Analysts</h3>
+          <p>Score 10-K and 10-Q filings for structural integrity as part of fundamental analysis. The OMS is a structural signal not captured in financial ratios or sentiment analysis.</p>
+        </div>
+        <div class="use-card">
+          <h3>ESG &amp; Governance Teams</h3>
+          <p>Score proxy statements and ESG disclosures for accountability theater. The gap between what companies say about governance and what their filings structurally support is measurable.</p>
+        </div>
+        <div class="use-card">
+          <h3>Risk Management</h3>
+          <p>Monitor counterparty disclosures for longitudinal score drift. The SVB and Enron patterns — present in filings before public failure — are retroactively validated benchmarks.</p>
+        </div>
+        <div class="use-card">
+          <h3>Activist Investors</h3>
+          <p>Build structural integrity analysis into campaign preparation. Score target company filings vs. proxy statement claims. The divergence between stated governance and scored structure is actionable.</p>
+        </div>
+        <div class="use-card">
+          <h3>Corporate Counsel</h3>
+          <p>Validate disclosure drafts before filing. Know whether your risk factor section scores as structurally coherent or as boilerplate before it goes to the SEC.</p>
+        </div>
+        <div class="use-card">
+          <h3>Regulatory Analysts</h3>
+          <p>Score issuer filings at scale for structural integrity patterns. Identify the tail of the distribution — filings that score significantly below the sector baseline — for closer review.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════ DATA SOURCES ═══════════════════════════════ -->
+    <section class="section" id="sources">
+      <div class="sec-label">Data Infrastructure</div>
+      <h2>Business <span class="g">Data Sources</span></h2>
+      <div class="grid-2" style="margin-top:20px;">
+        <div class="card">
+          <div class="card-title" style="color:var(--biz);">SEC EDGAR</div>
+          <p style="font-size:13px;margin-bottom:8px;">The primary source for the 4CITE business corpus. All major filing types (10-K, 10-Q, 8-K, DEF 14A, S-1) from 431+ public companies across all GICS sectors.</p>
+          <p style="font-size:13px;margin-bottom:0;">Current corpus depth: 16K+ documents with full longitudinal scoring back to FY2000 for select benchmarks.</p>
+        </div>
+        <div class="card">
+          <div class="card-title" style="color:var(--biz);">Benchmark Corpus</div>
+          <p style="font-size:13px;margin-bottom:8px;"><strong>High-integrity anchors:</strong> Federalist No. 51 (91), Gettysburg Address (89), AAPL 10-K (82). These establish the upper bound of the scoring range.</p>
+          <p style="font-size:13px;margin-bottom:0;"><strong>Low-integrity anchors:</strong> Enron FY2000 (8), SVB risk disclosures (22). These establish the accountability theater range and provide retroactive forensic validation.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════ CTA ═══════════════════════════════ -->
+    <section class="section" style="text-align:center;border-top:1px solid rgba(26,48,96,0.4);">
+      <h2 style="margin-bottom:12px;">Subscribe to <span class="g">4CITE<sup>4</sup>biz</span></h2>
+      <p style="max-width:520px;margin:0 auto 28px;">4CITE for Business is in beta. Subscriptions are available now to investment teams, ESG analysts, and corporate disclosure teams.</p>
+      <a href="/pricing?vertical=biz#subscriptions" style="display:inline-block;background:linear-gradient(135deg,#1A7ABF,#0A3E6E);border:1px solid rgba(26,122,191,0.6);color:var(--white);font-size:12px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:14px 32px;border-radius:8px;text-decoration:none;">Choose your plan →</a>
+      <p style="margin-top:16px;font-size:12px;color:var(--muted);">Or <a href="/portal/certify" style="color:var(--steel);">buy a single 4CITE Cert ($15)</a> — no account required</p>
+    </section>
+
+  </div><!-- end .content -->
+</main>
+
+<footer>
+  <div class="fb"><span class="n4">4</span><span class="nc">CITE</span><span class="na">.ai</span></div>
+  <div class="fl">
+    <a href="/about">About</a>
+    <a href="/contact">Contact</a>
+    <a href="/privacy">Privacy</a>
+    <a href="/terms">Terms</a>
+  </div>
+  <div class="fr">© 2026 4 SHIELD LLC · All Rights Reserved</div>
+</footer>
+
+</body>
+</html>

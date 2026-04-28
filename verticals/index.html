@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Verticals — 4CITE.ai for Law, Business, Government</title>
+<meta name="description" content="4CITE.ai deploys into three institutional verticals — 4CITE⁴law (legal), 4CITE⁴biz (corporate), 4CITE⁴gov (government). One engine, one scoring framework, three branches of public trust.">
+<meta name="theme-color" content="#07152E">
+<link rel="apple-touch-icon" href="../icons/icon-192.png">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --midnight: #07152E; --navy: #0B2358; --card: #0C1628; --border: #1A3060;
+  --blue: #2B63D9; --cyan: #7DEBFF; --gold: #D89A0B; --goldf: #F7D85D;
+  --steel: #7A9ABE; --muted: #3A5A80; --text: #C8D8EE; --white: #FFFFFF;
+  --green: #22C97A; --amber: #F0A020; --red: #E05050;
+  --law: #C42840; --biz: #1A7ABF; --gov: #3A7A52;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior:smooth; }
+body { background:var(--midnight); color:var(--text); font-family:'Space Grotesk',-apple-system,sans-serif; line-height:1.7; font-size:16px; overflow-x:hidden; }
+nav { position:fixed; top:0; left:0; right:0; z-index:200; background:rgba(7,21,46,0.95); backdrop-filter:blur(16px); border-bottom:1px solid var(--border); padding:0 60px; height:62px; display:flex; align-items:center; gap:32px; }
+.nav-brand { font-size:22px; font-weight:700; margin-right:auto; letter-spacing:-0.5px; text-decoration:none; text-transform:none; }
+.nav-brand .n4 { color:var(--goldf); } .nav-brand .nc { color:var(--white); } .nav-brand .na { color:var(--cyan); font-weight:300; }
+nav a { color:var(--steel); text-decoration:none; font-size:12px; font-weight:500; letter-spacing:2px; text-transform:uppercase; transition:color 0.2s; }
+nav a:hover { color:var(--goldf); }
+.nav-cta { background:linear-gradient(135deg,#2B63D9,#0A2E80); border:1px solid rgba(43,99,217,0.6); color:var(--white) !important; padding:8px 20px; border-radius:6px; }
+main { padding-top:62px; }
+.page-hero { padding:80px 80px 50px; max-width:1100px; margin:0 auto; }
+.page-eyebrow { font-size:10px; font-weight:700; letter-spacing:5px; color:var(--muted); text-transform:uppercase; margin-bottom:16px; display:flex; align-items:center; gap:12px; }
+.page-eyebrow::before { content:''; display:block; width:32px; height:1px; background:var(--muted); }
+h1 { font-size:clamp(32px,4vw,52px); font-weight:700; color:var(--white); line-height:1.1; margin-bottom:20px; }
+h1 .g { color:var(--goldf); } h1 .c { color:var(--cyan); }
+.page-lead { font-size:18px; color:var(--steel); line-height:1.8; max-width:720px; font-weight:300; }
+.page-lead strong { color:var(--text); font-weight:500; }
+.content { max-width:1100px; margin:0 auto; padding:0 80px 100px; }
+.section { padding:40px 0; }
+.sec-label { font-size:10px; font-weight:700; letter-spacing:5px; text-transform:uppercase; color:var(--muted); margin-bottom:12px; }
+h2 { font-size:24px; font-weight:700; color:var(--white); margin-bottom:14px; line-height:1.2; }
+h2 .g { color:var(--goldf); }
+p { color:var(--steel); line-height:1.8; margin-bottom:14px; font-size:15px; }
+p strong { color:var(--text); font-weight:600; }
+
+/* Vertical cards */
+.vert-grid { display:grid; grid-template-columns:1fr 1fr 1fr; gap:24px; margin-top:32px; }
+.vert-card { background:var(--card); border:1px solid var(--border); border-radius:14px; padding:36px 32px; text-decoration:none; display:flex; flex-direction:column; transition:transform 0.2s, border-color 0.2s; position:relative; overflow:hidden; }
+.vert-card::before { content:''; position:absolute; top:0; left:0; right:0; height:4px; }
+.vert-card.law::before { background:var(--law); }
+.vert-card.biz::before { background:var(--biz); }
+.vert-card.gov::before { background:var(--gov); }
+.vert-card:hover { transform:translateY(-3px); }
+.vert-card.law:hover { border-color:rgba(196,40,64,0.5); }
+.vert-card.biz:hover { border-color:rgba(26,122,191,0.5); }
+.vert-card.gov:hover { border-color:rgba(58,122,82,0.5); }
+.vert-branch { font-size:10px; font-weight:700; letter-spacing:3px; text-transform:uppercase; margin-bottom:10px; }
+.vert-card.law .vert-branch { color:var(--law); }
+.vert-card.biz .vert-branch { color:var(--biz); }
+.vert-card.gov .vert-branch { color:var(--gov); }
+.vert-name { font-size:28px; font-weight:700; color:var(--white); margin-bottom:14px; line-height:1.1; }
+.vert-name sup { font-size:16px; vertical-align:super; font-weight:700; }
+.vert-card.law .vert-name sup { color:var(--law); }
+.vert-card.biz .vert-name sup { color:var(--biz); }
+.vert-card.gov .vert-name sup { color:var(--gov); }
+.vert-tag { font-size:13px; color:var(--text); margin-bottom:14px; font-weight:500; }
+.vert-desc { font-size:13px; color:var(--steel); line-height:1.75; margin-bottom:18px; flex-grow:1; }
+.vert-stats { display:flex; gap:14px; margin-bottom:18px; padding-bottom:18px; border-bottom:1px solid rgba(26,48,96,0.4); }
+.vert-stat { flex:1; }
+.vert-stat-n { font-size:20px; font-weight:700; line-height:1; margin-bottom:4px; }
+.vert-card.law .vert-stat-n { color:var(--law); }
+.vert-card.biz .vert-stat-n { color:var(--biz); }
+.vert-card.gov .vert-stat-n { color:var(--gov); }
+.vert-stat-l { font-size:9px; font-weight:600; letter-spacing:1.5px; text-transform:uppercase; color:var(--muted); line-height:1.3; }
+.vert-link { font-size:11px; font-weight:700; letter-spacing:2px; text-transform:uppercase; }
+.vert-card.law .vert-link { color:var(--law); }
+.vert-card.biz .vert-link { color:var(--biz); }
+.vert-card.gov .vert-link { color:var(--gov); }
+
+/* Shared engine block */
+.engine-block { margin-top:48px; background:rgba(43,99,217,0.06); border:1px solid rgba(43,99,217,0.2); border-radius:12px; padding:32px 36px; }
+.engine-block h3 { font-size:18px; color:var(--white); margin-bottom:12px; font-weight:700; }
+.engine-block p { font-size:14px; color:var(--steel); margin-bottom:0; }
+.engine-block strong { color:var(--cyan); }
+
+/* Endgame note */
+.endgame-note { margin-top:32px; font-size:13px; color:var(--muted); padding:18px 24px; background:rgba(247,216,93,0.04); border:1px solid rgba(247,216,93,0.15); border-left:3px solid rgba(247,216,93,0.4); border-radius:8px; }
+.endgame-note strong { color:var(--goldf); }
+
+footer { background:#030710; border-top:1px solid var(--border); padding:36px 80px; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:24px; }
+.fb { font-size:20px; font-weight:700; }
+.fb .n4{color:var(--goldf);} .fb .nc{color:var(--white);} .fb .na{color:var(--cyan);font-weight:300;}
+.fl { display:flex; gap:28px; flex-wrap:wrap; }
+.fl a { font-size:12px; color:var(--muted); text-decoration:none; letter-spacing:1px; transition:color 0.2s; }
+.fl a:hover { color:var(--steel); }
+.fr { font-size:11px; color:var(--muted); letter-spacing:1px; }
+@media (max-width:960px) {
+  nav { padding:0 24px; gap:16px; }
+  nav a:not(.nav-brand):not(.nav-cta) { display:none; }
+  .page-hero { padding:60px 28px 40px; }
+  .content { padding:0 28px 80px; }
+  .vert-grid { grid-template-columns:1fr; }
+  footer { flex-direction:column; gap:20px; text-align:center; padding:28px; }
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="/" class="nav-brand"><span class="n4">4</span><span class="nc">CITE</span><span class="na">.ai</span></a>
+  <a href="/how-it-works">How It Works</a>
+  <a href="/verticals/">Verticals</a>
+  <a href="/pricing">Pricing</a>
+  <a href="/research/">Research</a>
+  <a href="/faq">FAQ</a>
+  <a href="/#waitlist" class="nav-cta">Join Beta →</a>
+</nav>
+
+<main>
+
+  <header class="page-hero">
+    <div class="page-eyebrow">Verticals</div>
+    <h1>One <span class="g">Engine</span>. Three <span class="c">Branches</span>.</h1>
+    <p class="page-lead">
+      4CITE.ai deploys into three institutional verticals — judicial, economic, legislative. Each vertical
+      is anchored to a public data source and corresponds to one branch of American institutional power.
+      <strong>The engine is the same across all three.</strong> The calibration, document classes, and
+      archetype libraries are vertical-specific.
+    </p>
+  </header>
+
+  <div class="content">
+
+    <section class="section">
+      <div class="vert-grid">
+
+        <a href="/verticals/law" class="vert-card law">
+          <div class="vert-branch">Judicial Branch</div>
+          <div class="vert-name">4CITE<sup>4</sup>law</div>
+          <div class="vert-tag">Structural integrity for legal documents</div>
+          <p class="vert-desc">
+            Federal and state case law, legal briefs, judicial opinions. Detects accountability theater
+            and AI-fabricated reasoning before it reaches the bench. The validation corpus includes the
+            Mata v. Avianca fabricated brief — scored 7/100, the largest single-document gap in the corpus.
+          </p>
+          <div class="vert-stats">
+            <div class="vert-stat">
+              <div class="vert-stat-n">81 pts</div>
+              <div class="vert-stat-l">Highest documented gap</div>
+            </div>
+            <div class="vert-stat">
+              <div class="vert-stat-n">100%</div>
+              <div class="vert-stat-l">AI briefs scored T3–T4</div>
+            </div>
+          </div>
+          <span class="vert-link">Learn more →</span>
+        </a>
+
+        <a href="/verticals/biz" class="vert-card biz">
+          <div class="vert-branch">Economic / Corporate</div>
+          <div class="vert-name">4CITE<sup>4</sup>biz</div>
+          <div class="vert-tag">SEC filing structural integrity</div>
+          <p class="vert-desc">
+            10-K, 10-Q, 8-K, proxy statements. Built on the SEC EDGAR public corpus. SVB's December 2022
+            risk disclosures scored 22 — seventeen months before the March 2023 collapse. Enron FY2000:
+            8/100. The signal was in the structure before the failure became public.
+          </p>
+          <div class="vert-stats">
+            <div class="vert-stat">
+              <div class="vert-stat-n">431+</div>
+              <div class="vert-stat-l">Companies scored</div>
+            </div>
+            <div class="vert-stat">
+              <div class="vert-stat-n">16K+</div>
+              <div class="vert-stat-l">Documents in corpus</div>
+            </div>
+          </div>
+          <span class="vert-link">Learn more →</span>
+        </a>
+
+        <a href="/verticals/gov" class="vert-card gov">
+          <div class="vert-branch">Legislative Branch</div>
+          <div class="vert-name">4CITE<sup>4</sup>gov</div>
+          <div class="vert-tag">Public-record reasoning analysis</div>
+          <p class="vert-desc">
+            Bills, committee testimony, presidential addresses, Federal Register notices. Calibrated against
+            the founding documents — Federalist No. 51 (91), Gettysburg Address (89). The Iraq WMD Senate
+            hearing scored 21. The standard has always existed. Now it is measurable.
+          </p>
+          <div class="vert-stats">
+            <div class="vert-stat">
+              <div class="vert-stat-n">91/100</div>
+              <div class="vert-stat-l">Federalist No. 51</div>
+            </div>
+            <div class="vert-stat">
+              <div class="vert-stat-n">70 pts</div>
+              <div class="vert-stat-l">Founders vs. modern gap</div>
+            </div>
+          </div>
+          <span class="vert-link">Learn more →</span>
+        </a>
+
+      </div>
+
+      <div class="engine-block">
+        <h3>One engine across all three verticals</h3>
+        <p>
+          The four-gate scoring architecture (G4 Paradox Resolution · G6 Latent Intent · G7 Argumentative
+          Structure · G8 Rhetorical Architecture) is identical across legal, business, and government
+          documents. A T2 (Good Faith) is a T2 whether it comes from a federal brief, a 10-K, or congressional
+          testimony. <strong>Channel-capacity measurement is domain-agnostic; the documents are domain-specific.</strong>
+          See <a href="/how-it-works" style="color:var(--cyan);text-decoration:none;border-bottom:1px solid rgba(125,235,255,0.3);">How It Works</a>
+          for the engine architecture, or <a href="/research/" style="color:var(--cyan);text-decoration:none;border-bottom:1px solid rgba(125,235,255,0.3);">Research</a>
+          for the theoretical foundation.
+        </p>
+      </div>
+
+      <div class="endgame-note">
+        <strong>Long-term:</strong> A fourth vertical, <strong>4CITE⁴one</strong> (personal integrity analysis),
+        is the endgame product — built last, informed by everything the three institutional verticals establish.
+      </div>
+    </section>
+
+  </div>
+</main>
+
+<footer>
+  <div class="fb"><span class="n4">4</span><span class="nc">CITE</span><span class="na">.ai</span></div>
+  <div class="fl">
+    <a href="/about">About</a>
+    <a href="/contact">Contact</a>
+    <a href="/privacy">Privacy</a>
+    <a href="/terms">Terms</a>
+  </div>
+  <div class="fr">© 2026 4 SHIELD LLC · All Rights Reserved</div>
+</footer>
+
+</body>
+</html>

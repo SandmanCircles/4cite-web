@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>About 4CITE.ai — Structural Integrity Analysis Platform</title>
+<meta name="description" content="4CITE.ai is a structural integrity analysis platform built by 4 SHIELD LLC that measures whether document reasoning actually holds — across legal filings, corporate disclosures, and legislative records.">
+<meta name="theme-color" content="#07152E">
+<link rel="apple-touch-icon" href="icons/icon-192.png">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --midnight: #07152E; --navy: #0B2358; --card: #0C1628; --border: #1A3060;
+  --blue: #2B63D9; --cyan: #7DEBFF; --gold: #D89A0B; --goldf: #F7D85D;
+  --steel: #7A9ABE; --muted: #3A5A80; --text: #C8D8EE; --white: #FFFFFF;
+  --green: #22C97A; --amber: #F0A020; --red: #E05050;
+  --law: #C42840; --biz: #1A7ABF; --gov: #3A7A52;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior:smooth; }
+body { background:var(--midnight); color:var(--text); font-family:'Space Grotesk',-apple-system,sans-serif; line-height:1.7; font-size:16px; overflow-x:hidden; }
+nav { position:fixed; top:0; left:0; right:0; z-index:200; background:rgba(7,21,46,0.95); backdrop-filter:blur(16px); border-bottom:1px solid var(--border); padding:0 60px; height:62px; display:flex; align-items:center; gap:32px; }
+.nav-brand { font-size:22px; font-weight:700; margin-right:auto; letter-spacing:-0.5px; text-decoration:none; text-transform:none; }
+.nav-brand .n4 { color:var(--goldf); } .nav-brand .nc { color:var(--white); } .nav-brand .na { color:var(--cyan); font-weight:300; }
+nav a { color:var(--steel); text-decoration:none; font-size:12px; font-weight:500; letter-spacing:2px; text-transform:uppercase; transition:color 0.2s; }
+nav a:hover { color:var(--goldf); }
+.nav-cta { background:linear-gradient(135deg,#2B63D9,#0A2E80); border:1px solid rgba(43,99,217,0.6); color:var(--white) !important; padding:8px 20px; border-radius:6px; }
+main { padding-top:62px; }
+.page-hero { padding:80px 80px 60px; max-width:1100px; margin:0 auto; }
+.page-eyebrow { font-size:10px; font-weight:700; letter-spacing:5px; color:var(--muted); text-transform:uppercase; margin-bottom:16px; display:flex; align-items:center; gap:12px; }
+.page-eyebrow::before { content:''; display:block; width:32px; height:1px; background:var(--muted); }
+h1 { font-size:clamp(32px,4vw,52px); font-weight:700; color:var(--white); line-height:1.1; margin-bottom:20px; }
+h1 .g { color:var(--goldf); } h1 .c { color:var(--cyan); }
+.page-lead { font-size:18px; color:var(--steel); line-height:1.8; max-width:680px; font-weight:300; }
+.page-lead strong { color:var(--text); font-weight:500; }
+.content { max-width:1100px; margin:0 auto; padding:0 80px 100px; }
+.section { padding:52px 0; border-top:1px solid rgba(26,48,96,0.4); }
+h2 { font-size:26px; font-weight:700; color:var(--white); margin-bottom:12px; line-height:1.15; }
+h2 .g { color:var(--goldf); } h2 .c { color:var(--cyan); }
+h3 { font-size:16px; font-weight:700; color:var(--text); margin-bottom:8px; margin-top:24px; }
+p { color:var(--steel); line-height:1.8; margin-bottom:16px; }
+p strong { color:var(--text); font-weight:600; }
+.sec-label { font-size:10px; font-weight:700; letter-spacing:5px; text-transform:uppercase; color:var(--muted); margin-bottom:12px; }
+.card { background:var(--card); border:1px solid var(--border); border-radius:12px; padding:32px; }
+.card-title { font-size:10px; font-weight:700; letter-spacing:4px; text-transform:uppercase; color:var(--muted); margin-bottom:16px; padding-bottom:12px; border-bottom:1px solid var(--border); }
+.grid-2 { display:grid; grid-template-columns:1fr 1fr; gap:20px; margin-top:24px; }
+.grid-3 { display:grid; grid-template-columns:1fr 1fr 1fr; gap:20px; margin-top:24px; }
+.fact-row { display:flex; align-items:flex-start; gap:14px; padding:12px 0; border-bottom:1px solid rgba(26,48,96,0.3); font-size:14px; }
+.fact-row:last-child { border-bottom:none; }
+.fact-label { font-size:10px; font-weight:700; letter-spacing:2px; text-transform:uppercase; color:var(--muted); min-width:160px; padding-top:2px; }
+.fact-value { color:var(--text); line-height:1.6; }
+.vert-card { background:var(--card); border:1px solid var(--border); border-radius:12px; padding:28px; position:relative; overflow:hidden; }
+.vert-card::before { content:''; position:absolute; top:0; left:0; right:0; height:3px; }
+.vert-card.law::before { background:var(--law); }
+.vert-card.biz::before { background:var(--biz); }
+.vert-card.gov::before { background:var(--gov); }
+.vert-badge { font-size:9px; font-weight:700; letter-spacing:3px; text-transform:uppercase; margin-bottom:12px; }
+.vert-card.law .vert-badge { color:var(--law); }
+.vert-card.biz .vert-badge { color:var(--biz); }
+.vert-card.gov .vert-badge { color:var(--gov); }
+.vert-name { font-size:20px; font-weight:700; color:var(--white); margin-bottom:8px; }
+.vert-name sup { font-size:12px; vertical-align:super; }
+.vert-card.law .vert-name sup { color:var(--law); }
+.vert-card.biz .vert-name sup { color:var(--biz); }
+.vert-card.gov .vert-name sup { color:var(--gov); }
+.vert-desc { font-size:13px; color:var(--steel); line-height:1.7; }
+.callout { border-radius:12px; padding:24px 28px; margin:24px 0; font-size:14px; line-height:1.75; background:rgba(247,216,93,0.05); border:1px solid rgba(247,216,93,0.2); }
+.callout strong { color:var(--goldf); }
+footer { background:#030710; border-top:1px solid var(--border); padding:36px 80px; display:flex; align-items:center; justify-content:space-between; }
+.fb { font-size:20px; font-weight:700; }
+.fb .n4{color:var(--goldf);} .fb .nc{color:var(--white);} .fb .na{color:var(--cyan);font-weight:300;}
+.fl { display:flex; gap:28px; flex-wrap:wrap; }
+.fl a { font-size:12px; color:var(--muted); text-decoration:none; letter-spacing:1px; transition:color 0.2s; }
+.fl a:hover { color:var(--steel); }
+.fr { font-size:11px; color:var(--muted); letter-spacing:1px; }
+@media (max-width:960px) {
+  nav { padding:0 24px; gap:16px; }
+  nav a:not(.nav-brand):not(.nav-cta) { display:none; }
+  .page-hero { padding:60px 28px 40px; }
+  .content { padding:0 28px 80px; }
+  .grid-2, .grid-3 { grid-template-columns:1fr; }
+  footer { flex-direction:column; gap:20px; text-align:center; padding:28px; }
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="/" class="nav-brand"><span class="n4">4</span><span class="nc">CITE</span><span class="na">.ai</span></a>
+  <a href="/how-it-works">How It Works</a>
+  <a href="/verticals/">Verticals</a>
+  <a href="/pricing">Pricing</a>
+  <a href="/research/">Research</a>
+  <a href="/faq">FAQ</a>
+  <a href="/#waitlist" class="nav-cta">Join Beta →</a>
+</nav>
+
+<main>
+
+  <!-- ═══════════════════════════════ HERO ═══════════════════════════════ -->
+  <header class="page-hero">
+    <div class="page-eyebrow">About</div>
+    <h1>About <span class="g">4CITE</span><span class="c">.ai</span></h1>
+    <p class="page-lead">
+      4CITE.ai is a structural integrity analysis platform built by 4 SHIELD LLC that
+      measures whether document reasoning actually holds — across legal filings, corporate
+      disclosures, and legislative records. It is not a citation checker. It operates at
+      <strong>Layer 3: the reasoning layer above citation verification.</strong>
+    </p>
+  </header>
+
+  <div class="content">
+
+    <!-- ═══════════════════════════════ WHAT WE DO ═══════════════════════════════ -->
+    <section class="section" id="what-we-do">
+      <div class="sec-label">The Product</div>
+      <h2>What <span class="g">4CITE Does</span></h2>
+      <p>
+        4CITE analyzes documents for structural integrity — measuring whether the reasoning
+        actually holds, not just whether the citations exist. Citation checkers (Westlaw,
+        LexisNexis, Casetext) verify that the cases you cite are real and say what you
+        claim. That is Layer 2 analysis. 4CITE operates at Layer 3: it measures whether
+        the argument built on those citations is coherent, grounded, non-contradictory,
+        and consistent with stated purpose.
+      </p>
+      <p>
+        A document can have perfectly accurate citations and still fail structural integrity
+        analysis if the reasoning is hollow. This is the mechanism behind AI-generated legal
+        briefs that pass citation checks but score near-zero on the 4CITE engine. The Mata v.
+        Avianca fabricated brief — submitted by attorneys relying on ChatGPT — contained
+        citations to nonexistent cases, but its structural failure was detectable
+        independently: it scored 7 out of 100 against 88 for a genuine federal opinion.
+        That 81-point gap is the fingerprint of what 4CITE calls accountability theater.
+      </p>
+      <p>
+        The product is domain-agnostic. The same engine that analyzes legal briefs analyzes
+        SEC filings and legislative testimony. The underlying question is always the same:
+        <strong>does the reasoning actually hold?</strong>
+      </p>
+
+      <div class="callout">
+        <strong>The Layer 3 Claim:</strong> Attribution (Layer 1) and citation verification
+        (Layer 2) are prerequisites that others solve. 4CITE owns the layer above them —
+        structural integrity — and has no direct competitor at this layer.
+      </div>
+
+      <h3>The Three-Stage Workflow</h3>
+      <p>
+        Every document submitted to 4CITE moves through three stages: <strong>Scan</strong>,
+        <strong>Report</strong>, and <strong>Certify</strong>. Scan is a single-call structural
+        reconnaissance that produces observations, secondary questions, and the BIG question —
+        it asks what a careful reader would want to know. Report is the full analysis across
+        four independent gates (G4, G6, G7, G8) with evidence arrays, composite score,
+        Integrity Tier, and the Synthesis pass that maps the Scan's questions to the gate
+        evidence. Certify packages the Scan and Report outputs with cert-specific metadata
+        into an immutable, permanently archived bundle — a non-modifiable record designed
+        for use in legal proceedings, regulatory filings, and due diligence.
+      </p>
+    </section>
+
+    <!-- ═══════════════════════════════ VERTICALS ═══════════════════════════════ -->
+    <section class="section" id="verticals">
+      <div class="sec-label">Deployment</div>
+      <h2>Three <span class="g">Verticals</span></h2>
+      <p>
+        4CITE deploys into three verticals, each corresponding to one branch of American
+        institutional power and grounded in a public data source. The engine is the same
+        across all three; the calibration, document classes, and archetype libraries are
+        vertical-specific.
+      </p>
+      <div class="grid-3">
+        <article class="vert-card law">
+          <div class="vert-badge">Judicial Branch</div>
+          <div class="vert-name">4CITE<sup>4</sup>law</div>
+          <p class="vert-desc">
+            Structural integrity analysis for legal professionals — federal and state case law,
+            briefs, judicial opinions. Data: PACER, CourtListener. First commercial vertical.
+          </p>
+          <p style="margin-top:12px;font-size:12px;"><a href="/verticals/law" style="color:var(--law);text-decoration:none;border-bottom:1px solid rgba(196,40,64,0.3);padding-bottom:1px;">Learn more →</a></p>
+        </article>
+        <article class="vert-card biz">
+          <div class="vert-badge">Economic / Corporate</div>
+          <div class="vert-name">4CITE<sup>4</sup>biz</div>
+          <p class="vert-desc">
+            Structural integrity scoring of public company SEC filings — 10-K, 10-Q, proxy
+            statements, earnings calls. 431+ companies, 16,000+ documents. SEC EDGAR.
+          </p>
+          <p style="margin-top:12px;font-size:12px;"><a href="/verticals/biz" style="color:var(--biz);text-decoration:none;border-bottom:1px solid rgba(26,122,191,0.3);padding-bottom:1px;">Learn more →</a></p>
+        </article>
+        <article class="vert-card gov">
+          <div class="vert-badge">Legislative Branch</div>
+          <div class="vert-name">4CITE<sup>4</sup>gov</div>
+          <p class="vert-desc">
+            Legislative language and regulatory coherence analysis — bills, testimony,
+            presidential addresses, Federal Register. Congress.gov, GovInfo, FEC.
+          </p>
+          <p style="margin-top:12px;font-size:12px;"><a href="/verticals/gov" style="color:var(--gov);text-decoration:none;border-bottom:1px solid rgba(58,122,82,0.3);padding-bottom:1px;">Learn more →</a></p>
+        </article>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════ ENTITY ═══════════════════════════════ -->
+    <section class="section" id="entity">
+      <div class="sec-label">The Company</div>
+      <h2>About <span class="g">4 SHIELD LLC</span></h2>
+      <p>
+        4CITE.ai is built and owned by 4 SHIELD LLC, a Wyoming Benefit LLC. The company's
+        benefit purpose is to restore public trust across all domains based on the
+        foundational belief that systems operating in integrity grow toward their highest
+        valuation — providing a public benefit through the stabilization of social,
+        economic, and political institutions.
+      </p>
+      <div class="card" style="margin-top:24px;">
+        <div class="card-title">Entity Facts</div>
+        <div class="fact-row"><div class="fact-label">Legal Name</div><div class="fact-value">4 SHIELD LLC</div></div>
+        <div class="fact-row"><div class="fact-label">Structure</div><div class="fact-value">Wyoming Benefit LLC (single-member, member-managed)</div></div>
+        <div class="fact-row"><div class="fact-label">Confirmed</div><div class="fact-value">April 3, 2026 — Wyoming Secretary of State</div></div>
+        <div class="fact-row"><div class="fact-label">EIN</div><div class="fact-value">Acquired April 7, 2026</div></div>
+        <div class="fact-row"><div class="fact-label">Member</div><div class="fact-value">Michael S. Massey (100%)</div></div>
+        <div class="fact-row"><div class="fact-label">First Product</div><div class="fact-value">4CITE.ai — structural integrity analysis platform</div></div>
+        <div class="fact-row"><div class="fact-label">Status</div><div class="fact-value">Closed beta — active build. Backend scoring pipeline live. 431+ companies in corpus.</div></div>
+        <div class="fact-row"><div class="fact-label">Benefit Purpose</div><div class="fact-value">To restore public trust across all domains through structural integrity measurement</div></div>
+      </div>
+
+      <h3>The Founder</h3>
+      <p>
+        Michael S. Massey is a U.S. Navy nuclear propulsion officer and service-disabled
+        veteran. He is the sole member and founder of 4 SHIELD LLC. His background in
+        systems where structural integrity is not optional — naval nuclear propulsion
+        operates on the principle that the reasoning behind every procedure must hold,
+        completely, before action — is the intellectual foundation of 4CITE's approach
+        to document analysis.
+      </p>
+      <p>
+        4CITE.ai is the first product under the 4 SHIELD LLC umbrella. The second product,
+        4SYNC.ai (domain acquired April 2026), is in early planning.
+      </p>
+    </section>
+
+    <!-- ═══════════════════════════════ POSITIONING ═══════════════════════════════ -->
+    <section class="section" id="positioning">
+      <div class="sec-label">Market Position</div>
+      <h2>The <span class="g">Layer 3 Position</span></h2>
+      <p>
+        The market for document analysis tools operates across three distinct layers. Layer 1
+        (attribution and provenance) answers the question "who made this?" — tools like
+        Turnitin and AI-detection services operate here. Layer 2 (citation verification)
+        answers "are the citations real?" — Westlaw, LexisNexis, and Casetext operate here.
+      </p>
+      <p>
+        Layer 3 — structural integrity — answers "does the reasoning actually hold?" No tool
+        currently operates at this layer at scale across law, business, and government. 4CITE
+        owns Layer 3. The two layers below are prerequisites, not competitors: you need your
+        citations to be real before you can assess whether the argument built on them is sound.
+      </p>
+      <p>
+        The practical consequence: a document can pass all Layer 1 and Layer 2 checks —
+        known author, accurate citations — and still fail structural integrity analysis if
+        the reasoning is incoherent, internally contradictory, or structurally misaligned
+        with stated purpose. AI-generated documents that fabricate citations fail Layer 2.
+        AI-generated documents that construct coherent-looking arguments on valid citations
+        — the next phase of the problem — fail Layer 3. That is the layer 4CITE is built for.
+      </p>
+    </section>
+
+    <!-- ═══════════════════════════════ EVIDENCE ═══════════════════════════════ -->
+    <section class="section" id="validation">
+      <div class="sec-label">Validation</div>
+      <h2>The <span class="g">Evidence</span></h2>
+      <p>
+        4CITE's scoring has been validated against real and fabricated documents across
+        multiple studies. Key results:
+      </p>
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-title">81-Point Gap</div>
+          <p style="font-size:28px;font-weight:700;color:var(--goldf);margin-bottom:8px;line-height:1;">81 pts</p>
+          <p style="font-size:14px;">A genuine federal sanctions opinion scored 88. The Mata v. Avianca ChatGPT-fabricated brief scored 7. The 81-point structural gap is the fingerprint of hallucinated accountability. Citation checking alone cannot detect this gap.</p>
+          <p style="font-size:11px;color:var(--muted);margin-top:12px;text-transform:uppercase;letter-spacing:1px;">Source: WP7 — The Absence Detector</p>
+        </div>
+        <div class="card">
+          <div class="card-title">71-Point Discrimination Delta</div>
+          <p style="font-size:28px;font-weight:700;color:var(--goldf);margin-bottom:8px;line-height:1;">71 pts avg</p>
+          <p style="font-size:14px;">A blinded batch of 20 documents — genuine and hallucinated — run through the engine without labels. Average discrimination delta: 71 points. Consistent and reproducible across document types.</p>
+          <p style="font-size:11px;color:var(--muted);margin-top:12px;text-transform:uppercase;letter-spacing:1px;">Source: WP5 — Hallucination as Structural Extraction</p>
+        </div>
+      </div>
+      <p style="margin-top:20px;font-size:14px;"><a href="/evidence" style="color:var(--cyan);text-decoration:none;border-bottom:1px solid rgba(125,235,255,0.3);padding-bottom:1px;">View the full evidence page →</a></p>
+    </section>
+
+    <!-- ═══════════════════════════════ CTA ═══════════════════════════════ -->
+    <section class="section" style="text-align:center;border-top:1px solid rgba(26,48,96,0.4);">
+      <h2 style="margin-bottom:12px;">Join the <span class="g">Beta</span></h2>
+      <p style="max-width:500px;margin:0 auto 28px;">4CITE is in closed beta across all three verticals. The engine is live and scoring. Join the waitlist for priority access.</p>
+      <a href="/#waitlist" style="display:inline-block;background:linear-gradient(135deg,#D89A0B,#8B5E00);border:1px solid rgba(216,154,11,0.6);color:#07152E;font-size:12px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:14px 32px;border-radius:8px;text-decoration:none;">Join the Waitlist →</a>
+      <p style="margin-top:16px;font-size:12px;color:var(--muted);">No card required · No spam</p>
+    </section>
+
+  </div><!-- end .content -->
+</main>
+
+<footer>
+  <div class="fb"><span class="n4">4</span><span class="nc">CITE</span><span class="na">.ai</span></div>
+  <div class="fl">
+    <a href="/about">About</a>
+    <a href="/contact">Contact</a>
+    <a href="/privacy">Privacy</a>
+    <a href="/terms">Terms</a>
+  </div>
+  <div class="fr">© 2026 4 SHIELD LLC · All Rights Reserved</div>
+</footer>
+
+</body>
+</html>

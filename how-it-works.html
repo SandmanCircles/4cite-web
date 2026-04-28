@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>How 4CITE Works — Scan, Report, Certify</title>
+<meta name="description" content="4CITE analyzes documents in three stages: Scan, Report, and Certify. The engine scores structural integrity across four independent gates — G4 Paradox Resolution, G6 Latent Intent, G7 Argumentative Structure, and G8 Rhetorical Architecture — measuring whether the document's source has the channel capacity its surface claims.">
+<meta name="theme-color" content="#07152E">
+<link rel="apple-touch-icon" href="icons/icon-192.png">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --midnight: #07152E; --navy: #0B2358; --card: #0C1628; --border: #1A3060;
+  --blue: #2B63D9; --cyan: #7DEBFF; --gold: #D89A0B; --goldf: #F7D85D;
+  --steel: #7A9ABE; --muted: #3A5A80; --text: #C8D8EE; --white: #FFFFFF;
+  --green: #22C97A; --amber: #F0A020; --red: #E05050;
+  --law: #C42840; --biz: #1A7ABF; --gov: #3A7A52;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior:smooth; }
+body { background:var(--midnight); color:var(--text); font-family:'Space Grotesk',-apple-system,sans-serif; line-height:1.7; font-size:16px; overflow-x:hidden; }
+nav { position:fixed; top:0; left:0; right:0; z-index:200; background:rgba(7,21,46,0.95); backdrop-filter:blur(16px); border-bottom:1px solid var(--border); padding:0 60px; height:62px; display:flex; align-items:center; gap:32px; }
+.nav-brand { font-size:22px; font-weight:700; margin-right:auto; letter-spacing:-0.5px; text-decoration:none; text-transform:none; }
+.nav-brand .n4 { color:var(--goldf); } .nav-brand .nc { color:var(--white); } .nav-brand .na { color:var(--cyan); font-weight:300; }
+nav a { color:var(--steel); text-decoration:none; font-size:12px; font-weight:500; letter-spacing:2px; text-transform:uppercase; transition:color 0.2s; }
+nav a:hover { color:var(--goldf); }
+.nav-cta { background:linear-gradient(135deg,#2B63D9,#0A2E80); border:1px solid rgba(43,99,217,0.6); color:var(--white) !important; padding:8px 20px; border-radius:6px; }
+main { padding-top:62px; }
+.page-hero { padding:80px 80px 60px; max-width:1100px; margin:0 auto; }
+.page-eyebrow { font-size:10px; font-weight:700; letter-spacing:5px; color:var(--muted); text-transform:uppercase; margin-bottom:16px; display:flex; align-items:center; gap:12px; }
+.page-eyebrow::before { content:''; display:block; width:32px; height:1px; background:var(--muted); }
+h1 { font-size:clamp(28px,4vw,48px); font-weight:700; color:var(--white); line-height:1.1; margin-bottom:16px; }
+h1 .g { color:var(--goldf); } h1 .c { color:var(--cyan); }
+.page-lead { font-size:17px; color:var(--steel); line-height:1.8; max-width:680px; font-weight:300; }
+.page-lead strong { color:var(--text); font-weight:500; }
+.content { max-width:1100px; margin:0 auto; padding:0 80px 100px; }
+.section { padding:52px 0; border-top:1px solid rgba(26,48,96,0.4); }
+.sec-label { font-size:10px; font-weight:700; letter-spacing:5px; text-transform:uppercase; color:var(--muted); margin-bottom:12px; }
+h2 { font-size:26px; font-weight:700; color:var(--white); margin-bottom:12px; line-height:1.15; }
+h2 .g { color:var(--goldf); } h2 .c { color:var(--cyan); }
+h3 { font-size:17px; font-weight:700; color:var(--text); margin-bottom:10px; margin-top:0; line-height:1.3; }
+p { color:var(--steel); line-height:1.8; margin-bottom:14px; font-size:15px; }
+p:last-child { margin-bottom:0; }
+p strong { color:var(--text); font-weight:600; }
+a { color:var(--cyan); text-decoration:none; border-bottom:1px solid rgba(125,235,255,0.25); padding-bottom:1px; }
+
+/* THREE-TIER FLOW */
+.tier-flow { display:flex; flex-direction:column; gap:0; margin-top:8px; }
+.tier-step { background:var(--card); border:1px solid var(--border); padding:28px 32px; position:relative; }
+.tier-step:first-child { border-radius:12px 12px 0 0; }
+.tier-step:last-child { border-radius:0 0 12px 12px; }
+.tier-step + .tier-step { border-top:none; }
+.tier-num { font-size:10px; font-weight:700; letter-spacing:4px; text-transform:uppercase; color:var(--muted); margin-bottom:8px; }
+.tier-name { font-size:22px; font-weight:700; color:var(--white); margin-bottom:8px; }
+.tier-desc { font-size:14px; color:var(--steel); line-height:1.75; max-width:640px; }
+.tier-tag { display:inline-block; margin-top:14px; font-size:10px; font-weight:700; letter-spacing:2px; text-transform:uppercase; padding:4px 14px; border-radius:20px; }
+.tier-free { background:rgba(34,201,122,0.1); color:var(--green); border:1px solid rgba(34,201,122,0.25); }
+.tier-sub { background:rgba(43,99,217,0.12); color:var(--cyan); border:1px solid rgba(43,99,217,0.25); }
+.tier-cert { background:rgba(247,216,93,0.1); color:var(--goldf); border:1px solid rgba(247,216,93,0.25); }
+.flow-arrow { text-align:center; padding:6px 0; color:var(--muted); font-size:18px; }
+
+/* GATE CARDS */
+.gates-grid { display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-top:8px; }
+.gate-card { background:var(--card); border:1px solid var(--border); border-radius:12px; padding:28px; position:relative; overflow:hidden; }
+.gate-card::before { content:''; position:absolute; top:0; left:0; right:0; height:3px; }
+.gate-card.foundational::before { background:var(--goldf); }
+.gate-card.surface::before { background:var(--cyan); }
+.gate-id { font-size:10px; font-weight:700; letter-spacing:4px; text-transform:uppercase; margin-bottom:12px; }
+.gate-card.foundational .gate-id { color:var(--goldf); }
+.gate-card.surface .gate-id { color:var(--cyan); }
+.gate-name { font-size:19px; font-weight:700; color:var(--white); margin-bottom:10px; }
+.gate-desc { font-size:13px; color:var(--steel); line-height:1.7; margin-bottom:14px; }
+.gate-measures { font-size:11px; letter-spacing:2px; text-transform:uppercase; padding-top:12px; border-top:1px solid rgba(26,48,96,0.5); }
+.gate-card.foundational .gate-measures { color:rgba(247,216,93,0.5); }
+.gate-card.surface .gate-measures { color:rgba(125,235,255,0.5); }
+.gate-tag { display:inline-block; margin-top:12px; font-size:9px; font-weight:700; letter-spacing:2px; text-transform:uppercase; padding:3px 12px; border-radius:20px; }
+.gate-card.foundational .gate-tag { background:rgba(247,216,93,0.1); border:1px solid rgba(247,216,93,0.3); color:var(--goldf); }
+.gate-card.surface .gate-tag { background:rgba(125,235,255,0.08); border:1px solid rgba(125,235,255,0.25); color:var(--cyan); }
+
+/* TIER TABLE */
+table { width:100%; border-collapse:collapse; font-size:14px; }
+th { text-align:left; padding:10px 14px; background:rgba(26,48,96,0.4); color:var(--steel); font-size:10px; font-weight:700; letter-spacing:2px; text-transform:uppercase; border-bottom:1px solid var(--border); }
+td { padding:14px; border-bottom:1px solid rgba(26,48,96,0.3); vertical-align:top; line-height:1.55; }
+tr:last-child td { border-bottom:none; }
+.tb { display:inline-block; font-size:11px; font-weight:700; padding:3px 12px; border-radius:20px; letter-spacing:1px; white-space:nowrap; }
+.t1b{background:rgba(34,201,122,0.15);color:#22C97A;border:1px solid rgba(34,201,122,0.3);}
+.t2b{background:rgba(125,235,255,0.12);color:#7DEBFF;border:1px solid rgba(125,235,255,0.3);}
+.t3b{background:rgba(240,160,32,0.12);color:#F0A020;border:1px solid rgba(240,160,32,0.3);}
+.t4b{background:rgba(224,80,80,0.12);color:#E05050;border:1px solid rgba(224,80,80,0.3);}
+
+.callout { border-radius:10px; padding:22px 26px; margin:20px 0; font-size:14px; line-height:1.75; }
+.callout.gold { background:rgba(247,216,93,0.05); border:1px solid rgba(247,216,93,0.2); }
+.callout.red { background:rgba(224,80,80,0.05); border:1px solid rgba(224,80,80,0.2); }
+.callout strong { color:var(--goldf); }
+.callout.red strong { color:var(--red); }
+.independence-note { background:rgba(43,99,217,0.07); border:1px solid rgba(43,99,217,0.2); border-radius:10px; padding:20px 24px; margin-top:16px; font-size:13px; color:var(--steel); line-height:1.75; }
+.independence-note strong { color:var(--text); }
+footer { background:#030710; border-top:1px solid var(--border); padding:36px 80px; display:flex; align-items:center; justify-content:space-between; }
+.fb { font-size:20px; font-weight:700; }
+.fb .n4{color:var(--goldf);} .fb .nc{color:var(--white);} .fb .na{color:var(--cyan);font-weight:300;}
+.fl { display:flex; gap:28px; flex-wrap:wrap; }
+.fl a { font-size:12px; color:var(--muted); text-decoration:none; letter-spacing:1px; transition:color 0.2s; border:none; padding:0; }
+.fl a:hover { color:var(--steel); }
+.fr { font-size:11px; color:var(--muted); letter-spacing:1px; }
+@media (max-width:960px) {
+  nav { padding:0 24px; gap:16px; }
+  nav a:not(.nav-brand):not(.nav-cta) { display:none; }
+  .page-hero { padding:60px 28px 40px; }
+  .content { padding:0 28px 80px; }
+  .gates-grid { grid-template-columns:1fr; }
+  footer { flex-direction:column; gap:20px; text-align:center; padding:28px; }
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="/" class="nav-brand"><span class="n4">4</span><span class="nc">CITE</span><span class="na">.ai</span></a>
+  <a href="/how-it-works">How It Works</a>
+  <a href="/verticals/">Verticals</a>
+  <a href="/pricing">Pricing</a>
+  <a href="/research/">Research</a>
+  <a href="/faq">FAQ</a>
+  <a href="/#waitlist" class="nav-cta">Join Beta →</a>
+</nav>
+
+<main>
+
+  <header class="page-hero">
+    <div class="page-eyebrow">How It Works</div>
+    <h1>Scan. Report. <span class="g">Certify.</span></h1>
+    <p class="page-lead">
+      4CITE analyzes documents in three stages, scoring structural integrity across
+      four independent gates. A hallucinating AI is a <strong>low-bandwidth channel
+      impersonating a high-bandwidth signal</strong> — and the gap between the two is
+      structurally detectable. 4CITE is the instrument that measures it.
+    </p>
+  </header>
+
+  <div class="content">
+
+    <!-- ═══════ THREE-TIER WORKFLOW ═══════ -->
+    <section class="section" id="workflow">
+      <div class="sec-label">The Workflow</div>
+      <h2>Three <span class="g">Stages</span></h2>
+      <p>Every document submitted to 4CITE moves through three stages. Each stage builds on the last.</p>
+
+      <div class="tier-flow" style="margin-top:24px;">
+        <div class="tier-step">
+          <div class="tier-num">Stage 1</div>
+          <h3 class="tier-name">Scan</h3>
+          <p class="tier-desc">
+            The Scan is a single-call structural reconnaissance of the document. It produces
+            output in three acts: <strong>observations</strong> (counts and verbatim examples
+            of belief phrases, capability claims without evidence, unquantified risk references,
+            adjusted or reframed metrics, forward-looking reassurance, and self-claims of prudence);
+            <strong>secondary questions</strong> (three to four document-specific questions a careful
+            reader would want answered but the document does not address); and
+            <strong>THE BIG QUESTION</strong> — the single most load-bearing unanswered question
+            the document raises about itself. The Scan does not score and does not issue a verdict.
+            It surfaces what is there and what is missing. Every Report begins with a Scan —
+            the Scan asks the questions, the Report answers them.
+          </p>
+          <span class="tier-tag tier-free">Free during beta</span>
+        </div>
+        <div class="flow-arrow">↓</div>
+        <div class="tier-step">
+          <div class="tier-num">Stage 2</div>
+          <h3 class="tier-name">Report</h3>
+          <p class="tier-desc">
+            The Report is the full structural integrity analysis. Each document is scored
+            across four independent gates — G4 Paradox Resolution, G6 Latent Intent, G7
+            Argumentative Structure, G8 Rhetorical Architecture. Each gate is a separate,
+            isolated analysis pass; no gate sees another gate's output. The Report includes
+            the four gate scores with evidence arrays, the composite score and Integrity Tier,
+            a Synthesis pass mapping the Scan's questions to the gate evidence (answered,
+            partially answered, or structurally unanswered), longitudinal context for entities
+            with multiple documents in the corpus, and the Outcome Misalignment Score (OMS).
+            The Report is the primary deliverable for professional use.
+          </p>
+          <span class="tier-tag tier-sub">Subscription</span>
+        </div>
+        <div class="flow-arrow">↓</div>
+        <div class="tier-step">
+          <div class="tier-num">Stage 3</div>
+          <h3 class="tier-name">Certify</h3>
+          <p class="tier-desc">
+            Certify packages the Scan output, the full Report, and cert-specific metadata
+            (cert ID, timestamp, vertical, document hash, attestation text) into a single
+            immutable bundle frozen at issuance. Once issued, nothing inside the bundle
+            is modifiable. The Integrity Certificate is designed for use in legal filings,
+            regulatory submissions, due-diligence documentation, and any context where
+            the integrity assessment must be permanently verifiable against a snapshot.
+            Certificates are stored in the Cert Vault permanently — no expiration, user-controlled deletion.
+          </p>
+          <span class="tier-tag tier-cert">Per Certificate</span>
+        </div>
+      </div>
+
+      <div class="callout gold" style="margin-top:24px;">
+        <strong>What a Certificate is not:</strong> The Certificate is not a third analysis
+        layer. The analysis is in the Scan and the Report. The Certificate packages those
+        outputs into a non-modifiable record. Issuing a Certificate does not change the
+        scores — it freezes them permanently with full provenance metadata.
+      </div>
+    </section>
+
+    <!-- ═══════ FOUR GATES ═══════ -->
+    <section class="section" id="gates">
+      <div class="sec-label">The Engine</div>
+      <h2>The <span class="g">Four Gates</span></h2>
+      <p>
+        4CITE scores every document on four independent dimensions — G4, G6, G7, G8. Each gate is
+        scored 0–100 by a separate analysis pass, with no shared context between them. Gate
+        independence is not a shortcut: it is a design requirement. Each gate reads a different
+        property of the document's <strong>channel capacity</strong> — the actual information
+        density the source had to transmit. The composite of the four gate scores determines the
+        Integrity Tier.
+      </p>
+
+      <div class="independence-note">
+        <strong>Why gate independence matters:</strong> Accountability theater scores high on
+        surface gates (a fabricated brief can look well-structured) while scoring low on
+        foundational gates (the underlying reasoning does not hold). If the gates shared
+        context, the surface performance could mask the foundational failure. Separate
+        evaluation is what exposes the gap between what the channel claims to carry and what
+        it actually can.
+      </div>
+
+      <div class="gates-grid" style="margin-top:24px;">
+        <div class="gate-card foundational">
+          <div class="gate-id">G4 · Foundational Gate</div>
+          <h3 class="gate-name">Paradox Resolution</h3>
+          <p class="gate-desc">
+            Does the document genuinely engage with contradiction, or does it route around
+            the hard questions it raises? G4 measures multi-directional accountability — whether
+            the reasoning holds under the weight the document places on it. A high-bandwidth
+            source can hold paradox and resolve it from within. A low-bandwidth source produces
+            the appearance of resolution without the structural depth to support it. G4 scored
+            the Mata v. Avianca fabricated brief at near-zero structural depth.
+          </p>
+          <div class="gate-measures">Measures: Engagement with contradiction · foundational depth</div>
+          <span class="gate-tag">Cannot be faked</span>
+        </div>
+        <div class="gate-card foundational">
+          <div class="gate-id">G6 · Foundational Gate</div>
+          <h3 class="gate-name">Latent Intent</h3>
+          <p class="gate-desc">
+            What is the document's structural purpose, as distinct from its stated purpose?
+            G6 measures the gap between acknowledged motive and concealed motive — whether the
+            stakeholders, dependencies, and extraction incentives behind the document are
+            disclosed or hidden. High divergence between stated intent and structural intent
+            is the defining signature of accountability theater, and the hardest property to
+            construct convincingly without a genuine source.
+          </p>
+          <div class="gate-measures">Measures: Acknowledged vs. concealed motive · stake disclosure</div>
+          <span class="gate-tag">Cannot be faked</span>
+        </div>
+        <div class="gate-card surface">
+          <div class="gate-id">G7 · Surface Gate</div>
+          <h3 class="gate-name">Argumentative Structure</h3>
+          <p class="gate-desc">
+            Is the explicit reasoning chain actually valid? G7 scores whether the document's
+            internal logic is self-consistent under scrutiny. Authentic writing holds together
+            because it comes from a single coherent reasoning source. AI-generated content
+            develops internal contradictions because different sections were generated by
+            different probability paths, not by one genuine source. Inconsistency is noise
+            in the channel.
+          </p>
+          <div class="gate-measures">Measures: Reasoning chain validity · surface accountability</div>
+          <span class="gate-tag">Surface signal</span>
+        </div>
+        <div class="gate-card surface">
+          <div class="gate-id">G8 · Surface Gate</div>
+          <h3 class="gate-name">Rhetorical Architecture</h3>
+          <p class="gate-desc">
+            Is the rhetorical surface open to scrutiny, or does it install belief? G8 measures
+            epistemic openness vs. belief-installation intent — whether rhetoric is an
+            <em>expression</em> of underlying reasoning density, or <em>compensation</em> for
+            its absence. Surface quality that scores high here while G4 is low is the classic
+            Paper Doll signature: polished exterior, hollow underneath.
+          </p>
+          <div class="gate-measures">Measures: Epistemic openness · rhetoric as expression vs. cover</div>
+          <span class="gate-tag">Surface signal</span>
+        </div>
+      </div>
+
+      <div class="callout red" style="margin-top:20px;">
+        <strong>The Accountability Theater Signature:</strong> When surface gates (G7, G8)
+        score high while foundational gates (G4, G6) score low, the engine flags
+        Accountability Theater — documents that look structured but lack genuine engagement.
+        This is the precise structural signature of AI-hallucinated briefs, corporate
+        accountability-theater disclosures, and testimony that performs accountability
+        without exhibiting it.
+      </div>
+    </section>
+
+    <!-- ═══════ OMS ═══════ -->
+    <section class="section" id="oms">
+      <div class="sec-label">Composite Metric</div>
+      <h2>The Outcome Misalignment <span class="g">Score (OMS)</span></h2>
+      <p>
+        The Outcome Misalignment Score is a composite metric measuring the gap between
+        a document's stated purpose and its structural evidence. It is computed from the
+        four gate scores with a weighting that emphasizes G4 (Paradox Resolution) and G6
+        (Latent Intent) — the two foundational gates that measure the deepest structural
+        properties and are the hardest to fabricate.
+      </p>
+      <p>
+        A low OMS means the document is doing what it says it is doing. Stated goals and
+        structural reality are aligned. A high OMS means the gap is measurable and
+        significant — the document claims to be one thing while its structure reveals it
+        is another.
+      </p>
+      <p>
+        The OMS is used in longitudinal analysis to track whether an entity's structural
+        integrity is improving, stable, or declining across time. Apple Inc.'s OMS has
+        been stable across 30 scored documents. SVB's OMS showed a structural divergence
+        pattern in its final year of filings that preceded the bank's failure.
+      </p>
+    </section>
+
+    <!-- ═══════ TIER SCALE ═══════ -->
+    <section class="section" id="tiers">
+      <div class="sec-label">Classification</div>
+      <h2>The Integrity <span class="g">Tier Scale</span></h2>
+      <p>
+        Every document receives a composite score (0–100) and an Integrity Tier
+        classification. The scale is domain-agnostic — the same framework scores
+        legal briefs, SEC filings, and congressional testimony. Real-world examples
+        from the 4CITE corpus are shown for each tier.
+      </p>
+      <table style="margin-top:20px;">
+        <thead>
+          <tr>
+            <th>Tier</th>
+            <th>Score</th>
+            <th>Designation</th>
+            <th>Profile</th>
+            <th>Examples from Corpus</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><span class="tb t1b">T1</span></td>
+            <td style="color:var(--white);font-weight:700;white-space:nowrap;">67 – 100</td>
+            <td style="color:var(--text);">Real Deal</td>
+            <td style="color:var(--steel);font-size:13px;">Channel capacity matches or exceeds the claimed signal. All four gates score high. Reasoning holds. Stated purpose and structural evidence aligned.</td>
+            <td style="color:var(--muted);font-size:12px;">Federalist No. 51 (91) · Gettysburg Address (89) · BRK.A Letter 2023 (87) · Sanctions Opinion (88) · AAPL 10-K FY24 (82)</td>
+          </tr>
+          <tr>
+            <td><span class="tb t2b">T2</span></td>
+            <td style="color:var(--white);font-weight:700;white-space:nowrap;">50 – 66</td>
+            <td style="color:var(--text);">Good Faith</td>
+            <td style="color:var(--steel);font-size:13px;">Channel capacity mostly sufficient. Some signal compression visible but non-critical. One or more gates show moderate divergence; structurally sound in most respects.</td>
+            <td style="color:var(--muted);font-size:12px;">GOOGL Q4 Q&A (62) · SotU 2001 (59) · Volcker Senate testimony 1981 (78 — strong T2/T1 boundary)</td>
+          </tr>
+          <tr>
+            <td><span class="tb t3b">T3</span></td>
+            <td style="color:var(--white);font-weight:700;white-space:nowrap;">30 – 49</td>
+            <td style="color:var(--text);">Thin Ice</td>
+            <td style="color:var(--steel);font-size:13px;">Channel capacity insufficient in identifiable dimensions — the gap is measurable and locatable. Multiple gates show significant divergence. Stated purpose and structural reality in meaningful tension. Not necessarily fraudulent; warrants scrutiny before reliance.</td>
+            <td style="color:var(--muted);font-size:12px;">Citizens United opinion (44) · SotU 2025 (44) · Zuckerberg Senate testimony (40) · META FY22 10-K (41) · Bush v. Gore (41)</td>
+          </tr>
+          <tr>
+            <td><span class="tb t4b">T4</span></td>
+            <td style="color:var(--white);font-weight:700;white-space:nowrap;">0 – 29</td>
+            <td style="color:var(--text);">Paper Doll</td>
+            <td style="color:var(--steel);font-size:13px;">Channel capacity catastrophically below the claimed signal. Dressed-up surface, hollow underneath. The signature of accountability theater. AI-fabricated documents consistently score T4.</td>
+            <td style="color:var(--muted);font-size:12px;">Mata v. Avianca fabricated brief (7) · Iraq WMD Senate hearing (21) · SVB FY22 Risk disclosures (22) · Enron FY00 10-K (8)</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- ═══════ LONGITUDINAL ═══════ -->
+    <section class="section" id="longitudinal">
+      <div class="sec-label">Temporal Analysis</div>
+      <h2>Longitudinal <span class="g">Tracking</span></h2>
+      <p>
+        For entities with multiple documents in the corpus over time, 4CITE computes
+        longitudinal integrity metrics across four dimensions (L1–L4): trajectory
+        (whether integrity is improving or declining), foundation-surface divergence over
+        time, crisis pattern detection, and recovery authenticity.
+      </p>
+      <p>
+        Longitudinal tracking is currently live for the 4CITE⁴biz vertical, where
+        12-quarter tracking per company is the standard. Apple Inc.'s trajectory across
+        30 scored documents is classified as stable high integrity. SVB's trajectory
+        showed a structural collapse pattern in its final year of filings before the
+        bank's failure in March 2023.
+      </p>
+      <p>
+        The longitudinal layer is the most powerful predictive feature of the 4CITE engine.
+        A single document tells you whether the reasoning holds today. The longitudinal
+        layer tells you whether the organization is getting more or less honest over time —
+        before the structural failure becomes public.
+      </p>
+    </section>
+
+    <!-- ═══════ CTA ═══════ -->
+    <section class="section" style="text-align:center;">
+      <h2 style="margin-bottom:12px;">See it in <span class="g">action</span></h2>
+      <p style="max-width:500px;margin:0 auto 28px;font-size:15px;">4CITE is in closed beta. The engine is live and scoring across all three verticals. Join the waitlist for priority access.</p>
+      <a href="/#waitlist" style="display:inline-block;background:linear-gradient(135deg,#D89A0B,#8B5E00);border:1px solid rgba(216,154,11,0.6);color:#07152E;font-size:12px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:14px 32px;border-radius:8px;text-decoration:none;border-bottom:none;">Join the Waitlist →</a>
+      <p style="margin-top:14px;font-size:12px;color:var(--muted);">No card required · Law · Business · Government</p>
+    </section>
+
+  </div><!-- end .content -->
+</main>
+
+<footer>
+  <div class="fb"><span class="n4">4</span><span class="nc">CITE</span><span class="na">.ai</span></div>
+  <div class="fl">
+    <a href="/about">About</a>
+    <a href="/contact">Contact</a>
+    <a href="/privacy">Privacy</a>
+    <a href="/terms">Terms</a>
+  </div>
+  <div class="fr">© 2026 4 SHIELD LLC · All Rights Reserved</div>
+</footer>
+
+</body>
+</html>

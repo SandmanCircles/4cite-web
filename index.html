@@ -57,7 +57,7 @@ body { background:var(--midnight); color:var(--text); font-family:'Space Grotesk
 
 /* ── NAV ── */
 nav { position:fixed; top:0; left:0; right:0; z-index:200; background:rgba(7,21,46,0.95); backdrop-filter:blur(16px); border-bottom:1px solid var(--border); padding:0 60px; height:62px; display:flex; align-items:center; gap:40px; }
-.nav-brand { font-size:22px; font-weight:700; margin-right:auto; letter-spacing:-0.5px; }
+.nav-brand { font-size:22px; font-weight:700; margin-right:auto; letter-spacing:-0.5px; text-transform:none; }
 .nav-brand .n4 { color:var(--goldf); }
 .nav-brand .nc { color:var(--white); }
 .nav-brand .na { color:var(--cyan); font-weight:300; }
@@ -279,11 +279,12 @@ footer { background:#030710; border-top:1px solid var(--border); padding:40px 80
 <!-- NAV -->
 <nav>
   <a href="/" class="nav-brand" style="text-decoration:none;"><span class="n4">4</span><span class="nc">CITE</span><span class="na">.ai</span></a>
-  <a href="#waitlist" class="nav-beta">Join Beta</a>
-  <a href="#how">How It Works</a>
-  <a href="#verticals">Verticals</a>
-  <a href="#evidence">Evidence</a>
-  <a href="#waitlist" class="nav-cta">Join the Waitlist</a>
+  <a href="/how-it-works">How It Works</a>
+  <a href="/verticals/">Verticals</a>
+  <a href="/pricing">Pricing</a>
+  <a href="/research/">Research</a>
+  <a href="/faq">FAQ</a>
+  <a href="#waitlist" class="nav-cta">Join Beta →</a>
 </nav>
 
 <!-- HERO -->
@@ -304,14 +305,15 @@ footer { background:#030710; border-top:1px solid var(--border); padding:40px 80
     <a href="#waitlist" class="btn-g">Join the Beta Waitlist →</a>
     <a href="#how" class="btn-s">See how it works →</a>
   </div>
-  <div class="stats" id="heroStats">
-    <div><div class="stat-n g" id="hs-docs">—</div><div class="stat-l">Documents<br>in corpus</div></div>
+  <!-- Corpus stats — live-updated by JS; static fallback values shown until API responds -->
+  <div class="stats" id="heroStats" aria-label="Live corpus statistics">
+    <div><div class="stat-n g" id="hs-docs">16K+</div><div class="stat-l">Documents<br>in corpus</div></div>
     <div class="stat-div"></div>
-    <div><div class="stat-n g" id="hs-entities">—</div><div class="stat-l">Entities<br>tracked</div></div>
+    <div><div class="stat-n g" id="hs-entities">431+</div><div class="stat-l">Entities<br>tracked</div></div>
     <div class="stat-div"></div>
-    <div><div class="stat-n g" id="hs-exams">—</div><div class="stat-l">Structural<br>exams run</div></div>
+    <div><div class="stat-n g" id="hs-exams">30+</div><div class="stat-l">Structural<br>exams run</div></div>
     <div class="stat-div"></div>
-    <div><div class="stat-n g" id="hs-pct">—</div><div class="stat-l">Corpus<br>scored</div></div>
+    <div><div class="stat-n g" id="hs-pct">Growing</div><div class="stat-l">Corpus<br>scored</div></div>
   </div>
   <script>
   (function(){
@@ -399,7 +401,7 @@ footer { background:#030710; border-top:1px solid var(--border); padding:40px 80
           <div class="mp-tile t3" style="animation-delay:390ms"><div class="mp-tile-tier">T3</div><div class="mp-tile-name">XOM Climate Risk<div class="mp-theater"></div></div><div class="mp-tile-score">43</div></div>
           <div class="mp-tile t3" style="animation-delay:450ms"><div class="mp-tile-tier">T3</div><div class="mp-tile-name">GS Proxy DEF 14A<div class="mp-theater"></div></div><div class="mp-tile-score">37</div></div>
           <div class="mp-tile t4" style="animation-delay:510ms"><div class="mp-tile-tier">T4</div><div class="mp-tile-name">SVB FY22 Risk<div class="mp-theater"></div></div><div class="mp-tile-score">22</div></div>
-          <div class="mp-tile t5" style="animation-delay:570ms"><div class="mp-tile-tier">T5</div><div class="mp-tile-name">ENRN FY00 10-K<div class="mp-theater"></div></div><div class="mp-tile-score">8</div></div>
+          <div class="mp-tile t4" style="animation-delay:570ms"><div class="mp-tile-tier">T4</div><div class="mp-tile-name">ENRN FY00 10-K<div class="mp-theater"></div></div><div class="mp-tile-score">8</div></div>
         </div>
       </div>
 
@@ -456,7 +458,7 @@ footer { background:#030710; border-top:1px solid var(--border); padding:40px 80
 <!-- HOW IT WORKS -->
 <div class="sec" id="how">
   <div class="sec-lbl">How It Works</div>
-  <div class="sec-t">The <span class="g">Four-Gate</span> Architecture</div>
+  <h2 class="sec-t">The <span class="g">Four-Gate</span> Architecture</h2>
   <p class="sec-s">4CITE measures structural integrity across four detection gates. Two are foundational — they cannot be passed without genuine accountability. Two are surface — they can be constructed without it. The asymmetry between them is where accountability theater lives.</p>
   <div class="gates">
     <div class="gc f">
@@ -503,16 +505,15 @@ footer { background:#030710; border-top:1px solid var(--border); padding:40px 80
 <!-- TIER TAXONOMY -->
 <div class="sec" style="padding-top:80px;">
   <div class="sec-lbl">Scoring Framework</div>
-  <div class="sec-t">The Integrity <span class="g">Tier Scale</span></div>
-  <p class="sec-s">Every document receives a composite score (0–100) and a Tier classification (T1–T5). The framework is domain-agnostic — the same scale that scores a legal brief scores a regulatory filing, a corporate earnings call, or congressional testimony.</p>
+  <h2 class="sec-t">The Integrity <span class="g">Tier Scale</span></h2>
+  <p class="sec-s">Every document receives a composite score (0–100) and an Integrity Tier classification (T1–T4). The framework is domain-agnostic — the same scale that scores a legal brief scores a regulatory filing, a corporate earnings call, or congressional testimony.</p>
   <table class="t-tbl">
     <thead><tr><th>Tier</th><th>Score Range</th><th>Designation</th><th>Profile</th></tr></thead>
     <tbody>
-      <tr><td><span class="tb t1">T1</span></td><td class="t-sc">67 – 100</td><td class="t-d">High Integrity</td><td class="t-d">Genuine human authorship or AI-assisted with full human review and accountability architecture intact.</td></tr>
-      <tr><td><span class="tb t2">T2</span></td><td class="t-sc">50 – 66</td><td class="t-d">Assisted, Well-Reviewed</td><td class="t-d">AI-assisted with substantive human review. Surface clarity present; foundational signals show engagement.</td></tr>
-      <tr><td><span class="tb t3">T3</span></td><td class="t-sc">30 – 49</td><td class="t-d">Surface-Clean, Structurally Weak</td><td class="t-d">AI-generated with minimal review. Citation format may be correct; argument structure is hollow.</td></tr>
-      <tr><td><span class="tb t4">T4</span></td><td class="t-sc">5 – 30</td><td class="t-d">Hallucinated / Fabricated</td><td class="t-d">Near-total absence of structural integrity signals. Subtype T4E: all three absence gates collapse simultaneously.</td></tr>
-      <tr><td><span class="tb t5">T5</span></td><td class="t-sc">0 – 15</td><td class="t-d">Formulaic / Boilerplate</td><td class="t-d">No genuine engagement detected across any gate. Template text with accountability structure completely absent.</td></tr>
+      <tr><td><span class="tb t1">T1</span></td><td class="t-sc">67 – 100</td><td class="t-d">Real Deal</td><td class="t-d">Channel capacity matches or exceeds the claimed signal. Genuine human authorship, or AI-assisted with full human review and accountability architecture intact.</td></tr>
+      <tr><td><span class="tb t2">T2</span></td><td class="t-sc">50 – 66</td><td class="t-d">Good Faith</td><td class="t-d">Channel capacity mostly sufficient. Honest effort with identifiable gaps; surface clarity present, foundational signals show engagement.</td></tr>
+      <tr><td><span class="tb t3">T3</span></td><td class="t-sc">30 – 49</td><td class="t-d">Thin Ice</td><td class="t-d">Channel capacity insufficient in identifiable dimensions. Citation format may be correct; argument structure is structurally weak. Warrants scrutiny before reliance.</td></tr>
+      <tr><td><span class="tb t4">T4</span></td><td class="t-sc">0 – 29</td><td class="t-d">Paper Doll</td><td class="t-d">Channel capacity catastrophically below the claimed signal. Dressed-up surface, hollow underneath. Near-total absence of structural integrity signals; the signature of accountability theater.</td></tr>
     </tbody>
   </table>
 </div>
@@ -522,7 +523,7 @@ footer { background:#030710; border-top:1px solid var(--border); padding:40px 80
 <!-- VERTICALS -->
 <div class="sec" id="verticals">
   <div class="sec-lbl">Deployment Architecture</div>
-  <div class="sec-t">One Engine. <span class="g">Three Branches.</span></div>
+  <h2 class="sec-t">One Engine. <span class="g">Three Branches.</span></h2>
   <p class="sec-s">4CITE is a domain-agnostic structural integrity engine that deploys into domain-specific verticals. Law, business, and government — the three institutional pillars where document integrity carries the highest public consequence.</p>
   <div class="verts">
     <div class="vc law">
@@ -551,7 +552,7 @@ footer { background:#030710; border-top:1px solid var(--border); padding:40px 80
 <!-- EVIDENCE -->
 <div class="sec" id="evidence">
   <div class="sec-lbl">Empirical Foundation</div>
-  <div class="sec-t">Validated. <span class="g">Measurable. Real.</span></div>
+  <h2 class="sec-t">Validated. <span class="g">Measurable. Real.</span></h2>
   <p class="sec-s">4CITE's scoring architecture is not theoretical. Every gate and every scoring delta has been validated against real documents in controlled cross-domain studies.</p>
   <div class="evgrid">
     <div class="ec"><div class="en">81</div><div class="el">Point integrity gap — real vs. fabricated legal opinion</div><div class="ed">A genuine federal sanctions opinion scored 88. The fabricated ChatGPT brief at the center of <em>Mata v. Avianca</em> scored 7. The 81-point gap is the structural fingerprint of hallucinated accountability.</div><div class="es">WP7 — The Absence Detector</div></div>
@@ -573,11 +574,10 @@ footer { background:#030710; border-top:1px solid var(--border); padding:40px 80
 <footer>
   <div class="fb"><span class="n4">4</span><span class="nc">CITE</span><span class="na">.ai</span></div>
   <div class="fl">
-    <a href="#waitlist">Join Beta</a>
-    <a href="#how">How It Works</a>
-    <a href="#verticals">Verticals</a>
-    <a href="#evidence">Evidence</a>
-    <a href="integrity-map-demo.html">Integrity Map</a>
+    <a href="/about">About</a>
+    <a href="/contact">Contact</a>
+    <a href="/privacy">Privacy</a>
+    <a href="/terms">Terms</a>
   </div>
   <div class="fr">© 2026 4 SHIELD LLC · All Rights Reserved</div>
 </footer>

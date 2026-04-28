@@ -70,7 +70,7 @@ nav {
   height: 56px;
   display: flex; align-items: center; gap: 32px;
 }
-.nav-brand { font-size:20px; font-weight:700; letter-spacing:-0.5px; margin-right:auto; }
+.nav-brand { font-size:20px; font-weight:700; letter-spacing:-0.5px; margin-right:auto; text-transform:none; }
 .nav-brand .n4 { color:var(--goldf); }
 .nav-brand .nc { color:var(--white); }
 .nav-brand .na { color:var(--cyan); font-weight:300; }
@@ -379,11 +379,13 @@ nav {
 
 <!-- NAV -->
 <nav>
-  <a href="index.html" class="nav-brand" style="text-decoration:none;"><span class="n4">4</span><span class="nc">CITE</span><span class="na">.ai</span></a>
-  <a href="index.html" class="nav-link active">Integrity Map</a>
-  <a href="index.html#verticals" class="nav-link">Verticals</a>
-  <a href="index.html#evidence" class="nav-link">Evidence</a>
-  <a href="index.html#waitlist" class="nav-link" style="color:var(--goldf);">Join Beta</a>
+  <a href="/" class="nav-brand" style="text-decoration:none;"><span class="n4">4</span><span class="nc">CITE</span><span class="na">.ai</span></a>
+  <a href="/how-it-works" class="nav-link">How It Works</a>
+  <a href="/verticals/" class="nav-link">Verticals</a>
+  <a href="/pricing" class="nav-link">Pricing</a>
+  <a href="/research/" class="nav-link">Research</a>
+  <a href="/faq" class="nav-link">FAQ</a>
+  <a href="/#waitlist" class="nav-link" style="color:var(--goldf);">Join Beta →</a>
 </nav>
 
 <!-- HERO STRIP -->
@@ -589,9 +591,9 @@ const TILES = {
   ],
 
   'biz-hist': [
-    { entity:'ENRN', doc:'10-K FY2000 · MD&A', tier:'t5', score:8, g4:6, g6:4, g7:72, g8:78, arch:'Structural Collapse', theater:true, note:'Archive reference. Filed February 2001, 10 months before bankruptcy. G4/G6 complete collapse. Maximum theater.' },
+    { entity:'ENRN', doc:'10-K FY2000 · MD&A', tier:'t4', score:8, g4:6, g6:4, g7:72, g8:78, arch:'Structural Collapse', theater:true, note:'Archive reference. Filed February 2001, 10 months before bankruptcy. G4/G6 complete collapse. Maximum theater.' },
     { entity:'LTCM', doc:'Investor Letter 1998', tier:'t4', score:18, g4:14, g6:9, g7:76, g8:80, arch:'Model Confidence Theater', theater:true, note:'Pre-collapse letter. G6 near-zero — leverage position never disclosed relative to stated confidence.' },
-    { entity:'Lehman Brothers', doc:'FY2007 10-K MD&A', tier:'t3', score:34, g4:27, g6:18, g7:85, g8:84, arch:'Accountability Theater', theater:true, note:'Filed 9 months before collapse. T3 on new Scan architecture. Known T5 theater.' },
+    { entity:'Lehman Brothers', doc:'FY2007 10-K MD&A', tier:'t3', score:34, g4:27, g6:18, g7:85, g8:84, arch:'Accountability Theater', theater:true, note:'Filed 9 months before collapse. T3 on new Scan architecture. Known accountability-theater archetype.' },
     { entity:'Theranos', doc:'Investor Letter 2015', tier:'t4', score:11, g4:8, g6:5, g7:66, g8:72, arch:'Structural Collapse', theater:false, note:'Post-conviction reference. Claim-to-evidence ratio: 14:1. G4/G6 complete collapse.' },
   ],
 

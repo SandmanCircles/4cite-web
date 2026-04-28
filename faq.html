@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FAQ — 4CITE.ai Frequently Asked Questions</title>
+<meta name="description" content="Frequently asked questions about 4CITE.ai — what structural integrity analysis is, how it differs from citation checking, what the Integrity Tiers mean, and how Certificates work.">
+<meta name="theme-color" content="#07152E">
+<link rel="apple-touch-icon" href="icons/icon-192.png">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --midnight: #07152E; --navy: #0B2358; --card: #0C1628; --border: #1A3060;
+  --blue: #2B63D9; --cyan: #7DEBFF; --gold: #D89A0B; --goldf: #F7D85D;
+  --steel: #7A9ABE; --muted: #3A5A80; --text: #C8D8EE; --white: #FFFFFF;
+  --green: #22C97A; --amber: #F0A020; --red: #E05050;
+  --law: #C42840; --biz: #1A7ABF; --gov: #3A7A52;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior:smooth; }
+body { background:var(--midnight); color:var(--text); font-family:'Space Grotesk',-apple-system,sans-serif; line-height:1.7; font-size:16px; overflow-x:hidden; }
+nav { position:fixed; top:0; left:0; right:0; z-index:200; background:rgba(7,21,46,0.95); backdrop-filter:blur(16px); border-bottom:1px solid var(--border); padding:0 60px; height:62px; display:flex; align-items:center; gap:32px; }
+.nav-brand { font-size:22px; font-weight:700; margin-right:auto; letter-spacing:-0.5px; text-decoration:none; text-transform:none; }
+.nav-brand .n4 { color:var(--goldf); } .nav-brand .nc { color:var(--white); } .nav-brand .na { color:var(--cyan); font-weight:300; }
+nav a { color:var(--steel); text-decoration:none; font-size:12px; font-weight:500; letter-spacing:2px; text-transform:uppercase; transition:color 0.2s; }
+nav a:hover { color:var(--goldf); }
+.nav-cta { background:linear-gradient(135deg,#2B63D9,#0A2E80); border:1px solid rgba(43,99,217,0.6); color:var(--white) !important; padding:8px 20px; border-radius:6px; }
+main { padding-top:62px; }
+.page-hero { padding:80px 80px 60px; max-width:900px; margin:0 auto; }
+.page-eyebrow { font-size:10px; font-weight:700; letter-spacing:5px; color:var(--muted); text-transform:uppercase; margin-bottom:16px; display:flex; align-items:center; gap:12px; }
+.page-eyebrow::before { content:''; display:block; width:32px; height:1px; background:var(--muted); }
+h1 { font-size:clamp(28px,4vw,48px); font-weight:700; color:var(--white); line-height:1.1; margin-bottom:16px; }
+h1 .g { color:var(--goldf); }
+.page-lead { font-size:17px; color:var(--steel); line-height:1.8; font-weight:300; }
+.content { max-width:900px; margin:0 auto; padding:0 80px 100px; }
+.faq-group { padding:44px 0; border-top:1px solid rgba(26,48,96,0.4); }
+h2 { font-size:13px; font-weight:700; letter-spacing:4px; text-transform:uppercase; color:var(--muted); margin-bottom:28px; }
+.faq-item { margin-bottom:32px; }
+.faq-item:last-child { margin-bottom:0; }
+h3 { font-size:18px; font-weight:700; color:var(--white); margin-bottom:12px; line-height:1.3; }
+p { color:var(--steel); line-height:1.8; margin-bottom:12px; font-size:15px; }
+p:last-child { margin-bottom:0; }
+p strong { color:var(--text); font-weight:600; }
+a { color:var(--cyan); text-decoration:none; border-bottom:1px solid rgba(125,235,255,0.25); padding-bottom:1px; }
+a:hover { color:var(--white); border-color:rgba(125,235,255,0.5); }
+.tier-inline { display:inline-block; font-size:11px; font-weight:700; padding:2px 10px; border-radius:12px; letter-spacing:1px; vertical-align:middle; margin:0 2px; }
+.t1i { background:rgba(34,201,122,0.15); color:#22C97A; border:1px solid rgba(34,201,122,0.3); }
+.t2i { background:rgba(125,235,255,0.12); color:#7DEBFF; border:1px solid rgba(125,235,255,0.3); }
+.t3i { background:rgba(240,160,32,0.12); color:#F0A020; border:1px solid rgba(240,160,32,0.3); }
+.t4i { background:rgba(224,80,80,0.12); color:#E05050; border:1px solid rgba(224,80,80,0.3); }
+.callout { border-radius:10px; padding:20px 24px; margin:16px 0; font-size:14px; line-height:1.75; background:rgba(43,99,217,0.07); border:1px solid rgba(43,99,217,0.2); }
+footer { background:#030710; border-top:1px solid var(--border); padding:36px 80px; display:flex; align-items:center; justify-content:space-between; }
+.fb { font-size:20px; font-weight:700; }
+.fb .n4{color:var(--goldf);} .fb .nc{color:var(--white);} .fb .na{color:var(--cyan);font-weight:300;}
+.fl { display:flex; gap:28px; flex-wrap:wrap; }
+.fl a { font-size:12px; color:var(--muted); text-decoration:none; letter-spacing:1px; transition:color 0.2s; border:none; padding:0; }
+.fl a:hover { color:var(--steel); }
+.fr { font-size:11px; color:var(--muted); letter-spacing:1px; }
+@media (max-width:960px) {
+  nav { padding:0 24px; gap:16px; }
+  nav a:not(.nav-brand):not(.nav-cta) { display:none; }
+  .page-hero { padding:60px 28px 40px; }
+  .content { padding:0 28px 80px; }
+  footer { flex-direction:column; gap:20px; text-align:center; padding:28px; }
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="/" class="nav-brand"><span class="n4">4</span><span class="nc">CITE</span><span class="na">.ai</span></a>
+  <a href="/how-it-works">How It Works</a>
+  <a href="/verticals/">Verticals</a>
+  <a href="/pricing">Pricing</a>
+  <a href="/research/">Research</a>
+  <a href="/faq">FAQ</a>
+  <a href="/#waitlist" class="nav-cta">Join Beta →</a>
+</nav>
+
+<main>
+
+  <header class="page-hero">
+    <div class="page-eyebrow">FAQ</div>
+    <h1>Frequently Asked <span class="g">Questions</span></h1>
+    <p class="page-lead">
+      4CITE.ai measures structural integrity — whether the reasoning in a document
+      actually holds — across legal, business, and government documents. Here are
+      the questions we hear most often.
+    </p>
+  </header>
+
+  <div class="content">
+
+    <!-- ═══════ GROUP: THE BASICS ═══════ -->
+    <section class="faq-group" id="basics">
+      <h2>The Basics</h2>
+
+      <article class="faq-item" id="what-does-4cite-do">
+        <h3>What does 4CITE do?</h3>
+        <p>
+          4CITE measures structural integrity — whether the reasoning in a document
+          actually holds. It scores documents across four independent gates
+          (G4 Paradox Resolution, G6 Latent Intent, G7 Argumentative Structure, G8
+          Rhetorical Architecture) and produces an Integrity Tier classification
+          (T1 Real Deal through T4 Paper Doll) and an Outcome Misalignment Score (OMS).
+        </p>
+        <p>
+          The input can be any institutional document: a legal brief, an SEC 10-K filing,
+          a congressional testimony, a regulatory notice. The output tells you whether the
+          document's stated purpose and its structural reality are aligned — or whether
+          there is measurable divergence between what it says it is doing and what its
+          structure reveals it is actually doing.
+        </p>
+      </article>
+
+      <article class="faq-item" id="not-a-citation-checker">
+        <h3>How is 4CITE different from Westlaw or LexisNexis?</h3>
+        <p>
+          Westlaw and LexisNexis verify citations — they check whether the cases you
+          cite exist and say what you claim. That is Layer 2 analysis: reference
+          verification. 4CITE operates at Layer 3: it measures whether the reasoning
+          built on those citations holds.
+        </p>
+        <p>
+          A document can have perfectly accurate citations — every case real, every
+          quote correct — and still score T4 on 4CITE if the argument built on them is
+          incoherent, internally contradictory, or structurally misaligned with stated
+          purpose. The two tools are sequential layers, not competitors. You need your
+          citations to be real (Layer 2) before it matters whether your argument holds
+          (Layer 3).
+        </p>
+        <p>
+          <strong>There is currently no direct competitor to 4CITE at Layer 3.</strong>
+        </p>
+      </article>
+
+      <article class="faq-item" id="what-is-structural-integrity">
+        <h3>What is structural integrity, exactly?</h3>
+        <p>
+          Structural integrity, as 4CITE defines it, is the property of a document in
+          which the stated purpose, foundational claims, surface language, engagement
+          with complexity, and apparent intent are all mutually consistent and
+          mutually supporting.
+        </p>
+        <p>
+          A document has high structural integrity when: it does what it says it does;
+          it builds on what it claims to build on; it engages honestly with what it
+          does not know or does not say; and it reveals no significant gap between
+          its stated purpose and its actual structural behavior.
+        </p>
+        <p>
+          A document has low structural integrity when it performs coherence without
+          exhibiting it — when the surface features of rigorous reasoning are present
+          (formal language, citations, structured argument) but the underlying reasoning
+          structure does not hold. 4CITE calls this <strong>accountability theater.</strong>
+        </p>
+      </article>
+
+      <article class="faq-item" id="what-is-accountability-theater">
+        <h3>What is accountability theater?</h3>
+        <p>
+          Accountability theater is 4CITE's term for documents that have the surface
+          features of rigorous reasoning without the structural substance. They look
+          like arguments. They cite real sources. They use formal language. But under
+          structural analysis, the reasoning does not hold: premises are contradicted,
+          complexity is avoided rather than engaged, the stated purpose diverges from
+          the structural behavior.
+        </p>
+        <p>
+          AI-generated institutional documents are systematic producers of accountability
+          theater. The Mata v. Avianca fabricated brief — submitted by attorneys using
+          ChatGPT — is the canonical example. It had the form of a legal brief. The
+          citations were fabricated, but that was a Layer 2 failure. The Layer 3 failure
+          was independent: the document scored 7 out of 100 on the 4CITE engine because
+          its reasoning structure did not hold. A genuine federal opinion in the same
+          subject area scored 88.
+        </p>
+      </article>
+
+      <article class="faq-item" id="why-it-works-shannon">
+        <h3>Why can structural integrity be measured in the first place?</h3>
+        <p>
+          In 1948, Claude Shannon established that every communication channel has a
+          maximum capacity for genuine information. A signal that claims to carry more
+          information than its channel can support <em>degrades</em> — and the degradation
+          is structurally predictable, not random.
+        </p>
+        <p>
+          Applied to AI: a hallucinating AI is a <strong>low-bandwidth channel impersonating
+          a high-bandwidth signal</strong>. The surface can approximate the form of expert
+          authority — confident framing, domain vocabulary, polished structure — but the
+          information density at the structural layer is bounded by the source. A human
+          expert's reservoir is deep, unique, and accountable. A language model's reservoir
+          is broad but shallow. The gap between the two is detectable, and the four 4CITE
+          gates are the instrument that measures it.
+        </p>
+        <p>
+          The empirical evidence backs the theory: a controlled study of 20 matched responses
+          (10 genuine, 10 hallucinated, across five domains) produced a <strong>71-point
+          average discrimination delta</strong>. Genuine responses averaged 82.4 (all T1
+          Real Deal). Hallucinated responses averaged 11.4 (all T4 Paper Doll). Zero overlap.
+          The gap is the tell.
+        </p>
+        <p>
+          Full theoretical treatment: <a href="/research/wp16">WP-16: The Hallucination Gap</a>.
+        </p>
+      </article>
+
+      <article class="faq-item" id="three-layer-stack">
+        <h3>What is the "three-layer integrity stack"?</h3>
+        <p>
+          Complete document integrity requires three independent layers of measurement:
+        </p>
+        <p>
+          <strong>Layer 1 — Provenance.</strong> Who sent this signal? Authorship verification,
+          watermarking, metadata provenance. Answers whether the source is who it claims to be.
+        </p>
+        <p>
+          <strong>Layer 2 — Citation &amp; factual verification.</strong> Are the data points
+          in the signal correct? Tools: Westlaw, LexisNexis, RAG, citation checkers. Answers
+          whether the claims are accurate.
+        </p>
+        <p>
+          <strong>Layer 3 — Structural integrity.</strong> Does the channel have the capacity
+          to carry what this signal claims to contain? Tools: 4CITE. Answers whether the
+          reasoning holds.
+        </p>
+        <p>
+          Each layer is necessary. None is sufficient alone. A document can pass every
+          accuracy check (real citations, true facts) while transmitting at a bandwidth far
+          below what its surface claims — this is the document that is accurate and empty,
+          and only Layer 3 detects it.
+        </p>
+      </article>
+
+    </section>
+
+    <!-- ═══════ GROUP: SCORING ═══════ -->
+    <section class="faq-group" id="scoring">
+      <h2>The Scoring System</h2>
+
+      <article class="faq-item" id="what-are-the-tiers">
+        <h3>What do the Integrity Tiers mean?</h3>
+        <p>
+          Every document receives a composite score (0–100) and an Integrity Tier
+          classification. There are four tiers:
+        </p>
+        <p>
+          <span class="tier-inline t1i">T1</span> <strong>Real Deal (67–100).</strong>
+          Channel capacity matches or exceeds what the document claims. All four gates score
+          high. The reasoning holds. Stated purpose and structural evidence are aligned.
+          Examples: Federalist No. 51 (91), Berkshire Hathaway Annual Letter 2023 (87),
+          genuine federal sanctions opinion (88).
+        </p>
+        <p>
+          <span class="tier-inline t2i">T2</span> <strong>Good Faith (50–66).</strong>
+          Channel capacity mostly sufficient. One or more gates show moderate divergence.
+          Structurally sound in most respects but with detectable inconsistency. Honest
+          effort, identifiable gaps.
+        </p>
+        <p>
+          <span class="tier-inline t3i">T3</span> <strong>Thin Ice (30–49).</strong>
+          Channel capacity insufficient in identifiable dimensions. Multiple gates show
+          significant divergence. Stated purpose and structural reality are in meaningful
+          tension. T3 is not necessarily fraudulent — institutional constraints and genuine
+          complexity can produce T3 — but the divergence is measurable and significant.
+          Examples: Citizens United opinion (44), SotU 2025 (44), Zuckerberg Senate
+          testimony (40).
+        </p>
+        <p>
+          <span class="tier-inline t4i">T4</span> <strong>Paper Doll (0–29).</strong>
+          Channel capacity catastrophically below what the document claims to transmit.
+          Dressed-up surface, hollow underneath. The signature of accountability theater.
+          Examples: Mata v. Avianca fabricated brief (7), SVB FY2022 risk disclosures (22),
+          Iraq WMD Senate hearing (21), Enron FY2000 10-K (8).
+        </p>
+      </article>
+
+      <article class="faq-item" id="what-are-the-gates">
+        <h3>What are the four scoring gates?</h3>
+        <p>
+          Every document is scored on four independent dimensions. The gates have no
+          shared context — each is evaluated independently. Gate independence is a design
+          requirement, not a shortcut: it ensures that a high score on surface language
+          cannot compensate for a structural failure in foundational coherence.
+        </p>
+        <p>
+          <strong>G4 — Paradox Resolution.</strong> Does the document genuinely engage with
+          contradiction, or does it route around the hard questions it raises? G4 measures
+          multi-directional accountability — foundational depth. It scored the Mata v. Avianca
+          fabricated brief at near-zero structural depth.
+        </p>
+        <p>
+          <strong>G6 — Latent Intent.</strong> What is the document's structural purpose, as
+          distinct from its stated purpose? G6 measures the gap between acknowledged motive
+          and concealed motive — stake disclosure. High divergence is the defining signature
+          of accountability theater.
+        </p>
+        <p>
+          <strong>G7 — Argumentative Structure.</strong> Is the explicit reasoning chain
+          valid under scrutiny? G7 scores whether the document's internal logic is
+          self-consistent. AI-generated content develops internal contradictions because
+          different sections are generated by different probability paths.
+        </p>
+        <p>
+          <strong>G8 — Rhetorical Architecture.</strong> Is the rhetorical surface open to
+          scrutiny, or does it install belief? G8 measures epistemic openness vs.
+          belief-installation intent — rhetoric as expression of underlying density vs.
+          rhetoric as cover for its absence.
+        </p>
+        <p style="font-size:13px;color:var(--muted);margin-top:8px;">
+          Gate numbering is non-sequential (G4, G6, G7, G8) because G1, G2, G3, and the
+          original G5 were retired earlier in 4CITE's research history. The surviving gates
+          are the measurement instruments that made it through validation. The numbering
+          is preserved as part of the research record.
+        </p>
+      </article>
+
+      <article class="faq-item" id="what-is-oms">
+        <h3>What is the Outcome Misalignment Score (OMS)?</h3>
+        <p>
+          The OMS is a composite metric measuring the gap between a document's stated
+          purpose and its structural evidence. It is computed from the four gate scores
+          with a weighting that emphasizes G4 (Paradox Resolution) and G6 (Latent Intent) —
+          the two foundational gates that measure the deepest structural properties and
+          are the hardest to fabricate.
+        </p>
+        <p>
+          A low OMS means the document is doing what it says it is doing. A high OMS means
+          the document's stated goals and structural reality are misaligned — the document
+          claims to be one thing while its structure reveals it is another. High OMS is the
+          quantitative signature of accountability theater.
+        </p>
+      </article>
+
+      <article class="faq-item" id="can-4cite-detect-ai">
+        <h3>Can 4CITE detect AI-generated content?</h3>
+        <p>
+          Not directly — 4CITE is not an AI-detection tool. It does not identify AI
+          authorship. What it does is measure structural integrity, and AI-generated
+          institutional documents consistently produce structural signatures that score
+          T3 or T4 on the 4CITE engine.
+        </p>
+        <p>
+          The reason: AI systems optimize for surface coherence — documents that look
+          like good arguments. They do not optimize for structural coherence — documents
+          that are good arguments. Surface coherence and structural coherence are not the
+          same thing. The 4CITE engine measures the difference.
+        </p>
+        <p>
+          The Mata v. Avianca fabricated brief scored 7. A genuine federal opinion in the
+          same subject area scored 88. The 81-point gap is not a measurement of AI
+          authorship — it is a measurement of structural integrity. The fact that
+          AI-generated documents consistently occupy the low end of that scale is a
+          property of how those documents are generated, not a feature that 4CITE
+          was designed to detect.
+        </p>
+      </article>
+
+    </section>
+
+    <!-- ═══════ GROUP: THE PRODUCT ═══════ -->
+    <section class="faq-group" id="product">
+      <h2>The Product</h2>
+
+      <article class="faq-item" id="scan-report-certify">
+        <h3>What is the difference between Scan, Report, and Certify?</h3>
+        <p>
+          <strong>Scan</strong> is a single-call structural reconnaissance. It does not score.
+          It returns output in three acts: <em>observations</em> (counts and verbatim examples
+          of belief phrases, unquantified risk references, reframed metrics, forward-looking
+          reassurance, and self-claims of prudence), <em>secondary questions</em> (three to
+          four document-specific questions the document does not address), and
+          <em>THE BIG QUESTION</em> — the single most load-bearing unanswered question. The
+          Scan asks the questions. The Report answers them.
+        </p>
+        <p>
+          <strong>Report</strong> is the full structural integrity analysis. The document is
+          scored across four independent gates (G4, G6, G7, G8) with evidence arrays, a
+          composite score and Integrity Tier, a Synthesis pass that maps the Scan's questions
+          to the gate evidence (answered, partially answered, or structurally unanswered),
+          longitudinal context where available, and the Outcome Misalignment Score. The
+          Report is the subscriber-level product.
+        </p>
+        <p>
+          <strong>Certify</strong> packages the Scan output, the full Report, and cert-specific
+          metadata (cert ID, timestamp, vertical, document hash, attestation text) into a
+          single immutable bundle frozen at issuance. Once issued, nothing inside the bundle
+          is modifiable. Certificates are stored in the Cert Vault permanently — no expiration,
+          user-controlled deletion.
+        </p>
+
+        <div class="callout">
+          The Certificate is not a third analysis layer. The analysis is in the Scan and the
+          Report. The Certificate packages those outputs into a non-modifiable record. Issuing
+          a Certificate does not change the scores — it freezes them permanently with full
+          provenance metadata.
+        </div>
+      </article>
+
+      <article class="faq-item" id="what-verticals">
+        <h3>What verticals does 4CITE serve?</h3>
+        <p>
+          Currently three: <strong>4CITE⁴law</strong> (legal documents — PACER and
+          CourtListener data), <strong>4CITE⁴biz</strong> (corporate SEC filings — EDGAR
+          data, 431+ companies in corpus), and <strong>4CITE⁴gov</strong> (legislative and
+          regulatory records — Congress.gov, Federal Register, FEC).
+        </p>
+        <p>
+          Each vertical corresponds to one branch of American institutional power and is
+          grounded in a public data source. The engine is the same across all three; the
+          calibration, document classes, and archetype libraries are vertical-specific.
+        </p>
+        <p>
+          A fourth vertical, <strong>4CITE⁴one</strong> (personal integrity analysis), is
+          planned as a long-term product. It will be built last, informed by everything
+          the three institutional verticals establish.
+        </p>
+      </article>
+
+      <article class="faq-item" id="what-documents">
+        <h3>What types of documents can 4CITE analyze?</h3>
+        <p>
+          Any text-based institutional document. Current document classes in the 4CITE
+          library span 25 types across three verticals:
+        </p>
+        <p>
+          <strong>Law:</strong> Judicial opinions, legal briefs, sanctions orders, regulatory
+          findings, compliance reports, contracts, court filings.
+        </p>
+        <p>
+          <strong>Business:</strong> 10-K annual reports, 10-Q quarterly reports, proxy
+          statements (DEF 14A), earnings call transcripts, 8-K current reports, shareholder
+          letters, press releases, investor presentations.
+        </p>
+        <p>
+          <strong>Government:</strong> Bills, committee testimony, floor statements,
+          presidential addresses (State of the Union, inaugural, farewell), Federal Register
+          notices, FEC filings, regulatory impact assessments.
+        </p>
+      </article>
+
+      <article class="faq-item" id="longitudinal">
+        <h3>What is longitudinal scoring?</h3>
+        <p>
+          For entities with multiple documents in the corpus over time — a company with
+          ten years of 10-Ks, or a public official with multiple testimony records —
+          4CITE computes longitudinal integrity metrics: whether structural integrity is
+          improving, declining, or stable across the timeline.
+        </p>
+        <p>
+          The longitudinal layer (L1–L4) measures: trajectory (improving or declining),
+          foundation-surface divergence over time, crisis pattern detection, and recovery
+          authenticity. Apple Inc.'s trajectory is currently scored as stable high
+          integrity. SVB's trajectory showed a structural collapse pattern in its final
+          year of filings before the bank's failure.
+        </p>
+      </article>
+
+    </section>
+
+    <!-- ═══════ GROUP: PRICING & ACCESS ═══════ -->
+    <section class="faq-group" id="pricing-access">
+      <h2>Pricing and Access</h2>
+
+      <article class="faq-item" id="how-much">
+        <h3>How much does 4CITE cost?</h3>
+        <p>
+          4CITE is currently in closed beta. Pricing during beta:
+        </p>
+        <p>
+          <strong>Scan — Free (limited).</strong> Initial structural analysis, tier
+          classification, and summary gate scores. Available to waitlist members during beta.
+        </p>
+        <p>
+          <strong>Report — Subscription.</strong> Full four-gate scoring with narrative,
+          longitudinal data where available, archetype classification, and OMS breakdown.
+          Priced per vertical or as a cross-vertical subscription. Pricing details will
+          be published at <a href="/pricing">/pricing</a> when beta opens.
+        </p>
+        <p>
+          <strong>Certificate — Per issuance.</strong> Immutable archived record of
+          Scan and Report findings. Volume pricing available for institutional users.
+        </p>
+        <p>
+          <strong>Enterprise / Institutional.</strong> Site license pricing available for
+          law firms, investment banks, government agencies, and academic institutions.
+          <a href="/contact">Contact us</a> for details.
+        </p>
+      </article>
+
+      <article class="faq-item" id="how-to-access">
+        <h3>How do I get access?</h3>
+        <p>
+          4CITE is in closed beta. Join the waitlist at <a href="/#waitlist">4cite.ai</a>.
+          We are opening access by vertical — law, business, and government — and will
+          notify waitlist members when their vertical opens.
+        </p>
+      </article>
+
+    </section>
+
+    <!-- ═══════ GROUP: ABOUT THE COMPANY ═══════ -->
+    <section class="faq-group" id="company">
+      <h2>About the Company</h2>
+
+      <article class="faq-item" id="who-built-4cite">
+        <h3>Who built 4CITE?</h3>
+        <p>
+          4CITE was built by 4 SHIELD LLC, a Wyoming Benefit LLC founded by Michael S.
+          Massey. Michael is a U.S. Navy nuclear propulsion officer and service-disabled
+          veteran. 4CITE.ai is the first product under the 4 SHIELD LLC umbrella.
+        </p>
+        <p>
+          The company's benefit purpose is to restore public trust across all domains
+          through structural integrity measurement. <a href="/about">Learn more about the company →</a>
+        </p>
+      </article>
+
+      <article class="faq-item" id="what-is-4-shield">
+        <h3>What is 4 SHIELD LLC?</h3>
+        <p>
+          4 SHIELD LLC is the parent entity of 4CITE.ai. It is a Wyoming Benefit LLC,
+          confirmed April 3, 2026. Single-member managed. Member: Michael S. Massey (100%).
+          EIN acquired April 7, 2026. The "Benefit LLC" designation means the company has
+          a legally recognized public benefit purpose alongside its commercial activities.
+        </p>
+      </article>
+
+    </section>
+
+  </div><!-- end .content -->
+</main>
+
+<footer>
+  <div class="fb"><span class="n4">4</span><span class="nc">CITE</span><span class="na">.ai</span></div>
+  <div class="fl">
+    <a href="/about">About</a>
+    <a href="/contact">Contact</a>
+    <a href="/privacy">Privacy</a>
+    <a href="/terms">Terms</a>
+  </div>
+  <div class="fr">© 2026 4 SHIELD LLC · All Rights Reserved</div>
+</footer>
+
+</body>
+</html>

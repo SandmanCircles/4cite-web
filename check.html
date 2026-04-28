@@ -1,0 +1,757 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>4CITE.ai — Integrity Check</title>
+<meta name="description" content="Paste any document. 4CITE runs a full structural integrity analysis — Scan, Report, and optional Certificate.">
+<meta name="theme-color" content="#07152E">
+<link rel="apple-touch-icon" href="icons/icon-192.png">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<style>
+:root {
+  --midnight: #07152E;
+  --navy:     #0B2358;
+  --card:     #0C1628;
+  --border:   #1A3060;
+  --blue:     #2B63D9;
+  --cyan:     #7DEBFF;
+  --gold:     #D89A0B;
+  --goldf:    #F7D85D;
+  --steel:    #7A9ABE;
+  --muted:    #3A5A80;
+  --text:     #C8D8EE;
+  --white:    #FFFFFF;
+  --green:    #22C97A;
+  --amber:    #F0A020;
+  --red:      #E05050;
+  --law:      #C42840;
+  --biz:      #1A7ABF;
+  --gov:      #3A7A52;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior:smooth; }
+body { background:var(--midnight); color:var(--text); font-family:'Space Grotesk',-apple-system,sans-serif; line-height:1.65; font-size:16px; min-height:100vh; }
+
+/* ── NAV ── */
+nav { display:flex; align-items:center; justify-content:space-between; padding:20px 40px; border-bottom:1px solid var(--border); }
+.nav-logo { font-size:18px; font-weight:700; color:var(--white); text-decoration:none; letter-spacing:1px; }
+.nav-logo span { color:var(--goldf); }
+.nav-back { font-size:12px; color:var(--steel); text-decoration:none; letter-spacing:1.5px; text-transform:uppercase; transition:color 0.2s; }
+.nav-back:hover { color:var(--text); }
+
+/* ── MAIN ── */
+main { max-width:760px; margin:0 auto; padding:48px 24px 80px; }
+.page-ey  { font-size:11px; font-weight:600; letter-spacing:3px; text-transform:uppercase; color:var(--muted); margin-bottom:14px; }
+.page-h1  { font-size:32px; font-weight:700; color:var(--white); line-height:1.2; margin-bottom:10px; }
+.page-sub { font-size:15px; color:var(--steel); margin-bottom:40px; max-width:560px; }
+
+/* ── STEP INDICATOR ── */
+.steps { display:flex; align-items:center; gap:0; margin-bottom:36px; }
+.step { display:flex; align-items:center; gap:8px; font-size:11px; font-weight:600; letter-spacing:2px; text-transform:uppercase; color:var(--muted); }
+.step-num { width:22px; height:22px; border-radius:50%; border:1.5px solid var(--border); display:flex; align-items:center; justify-content:center; font-size:10px; font-weight:700; flex-shrink:0; }
+.step.active .step-num { background:var(--blue); border-color:var(--blue); color:#fff; }
+.step.active { color:var(--text); }
+.step.done .step-num { background:var(--green); border-color:var(--green); color:#fff; }
+.step.done { color:var(--muted); }
+.step-line { flex:1; height:1px; background:var(--border); margin:0 12px; min-width:24px; }
+
+/* ── CARDS ── */
+.card { background:var(--card); border:1px solid var(--border); border-radius:16px; padding:32px; margin-bottom:12px; }
+.field-label { font-size:10px; font-weight:600; letter-spacing:3px; text-transform:uppercase; color:var(--muted); margin-bottom:10px; display:block; }
+textarea { width:100%; height:220px; background:rgba(255,255,255,0.03); border:1px solid var(--border); border-radius:10px; color:var(--text); font-family:'Space Grotesk',sans-serif; font-size:14px; line-height:1.6; padding:16px; resize:vertical; outline:none; transition:border-color 0.2s; }
+textarea:focus { border-color:var(--blue); }
+textarea::placeholder { color:var(--muted); }
+.char-row { display:flex; justify-content:flex-end; margin-top:6px; margin-bottom:22px; }
+.char-count { font-size:11px; color:var(--muted); }
+.char-count.warn { color:var(--amber); }
+.char-count.over { color:var(--red); }
+.row { display:flex; gap:16px; align-items:flex-end; }
+.field { flex:1; }
+select.field-select { width:100%; background:rgba(255,255,255,0.03); border:1px solid var(--border); border-radius:10px; color:var(--text); font-family:'Space Grotesk',sans-serif; font-size:14px; padding:12px 16px; outline:none; transition:border-color 0.2s; -webkit-appearance:none; cursor:pointer; }
+select.field-select:focus { border-color:var(--blue); }
+select.field-select option { background:#0C1628; }
+
+/* ── BUTTONS ── */
+.btn-primary { background:linear-gradient(135deg,#2B63D9,#0A2E80); border:1px solid rgba(43,99,217,0.6); color:var(--white); font-family:'Space Grotesk',sans-serif; font-size:12px; font-weight:700; letter-spacing:2px; text-transform:uppercase; padding:13px 28px; border-radius:10px; cursor:pointer; transition:all 0.2s; white-space:nowrap; flex-shrink:0; }
+.btn-primary:hover:not(:disabled) { background:linear-gradient(135deg,#3570E8,#1035A0); box-shadow:0 6px 24px rgba(43,99,217,0.35); }
+.btn-primary:disabled { opacity:0.4; cursor:not-allowed; }
+.btn-gold { background:linear-gradient(135deg,#C8880A,#8A5C00); border:1px solid rgba(200,136,10,0.5); color:var(--white); font-family:'Space Grotesk',sans-serif; font-size:12px; font-weight:700; letter-spacing:2px; text-transform:uppercase; padding:13px 28px; border-radius:10px; cursor:pointer; transition:all 0.2s; white-space:nowrap; }
+.btn-gold:hover { background:linear-gradient(135deg,#D89A0B,#9A6800); box-shadow:0 6px 24px rgba(200,136,10,0.3); }
+.btn-outline { background:transparent; border:1px solid var(--border); color:var(--steel); font-family:'Space Grotesk',sans-serif; font-size:11px; font-weight:600; letter-spacing:2px; text-transform:uppercase; padding:10px 20px; border-radius:8px; cursor:pointer; transition:all 0.2s; }
+.btn-outline:hover { border-color:var(--blue); color:var(--text); }
+.btn-reset { background:transparent; border:none; color:var(--muted); font-family:'Space Grotesk',sans-serif; font-size:12px; letter-spacing:1.5px; text-transform:uppercase; cursor:pointer; transition:color 0.2s; display:block; text-align:center; width:100%; padding:8px; margin-top:16px; }
+.btn-reset:hover { color:var(--steel); }
+
+/* ── LOADING ── */
+.loading-wrap { text-align:center; padding:40px 0; }
+.loading-label { font-size:12px; letter-spacing:2px; text-transform:uppercase; color:var(--muted); margin-bottom:20px; }
+.gate-dots { display:flex; gap:10px; justify-content:center; margin-bottom:8px; }
+.gdot { width:9px; height:9px; border-radius:50%; background:var(--border); animation:gp 1.4s ease-in-out infinite; }
+.gdot:nth-child(1){animation-delay:0s} .gdot:nth-child(2){animation-delay:.2s} .gdot:nth-child(3){animation-delay:.4s} .gdot:nth-child(4){animation-delay:.6s}
+@keyframes gp{0%,80%,100%{background:var(--border);transform:scale(1)}40%{background:var(--blue);transform:scale(1.4)}}
+.loading-sub { font-size:11px; color:var(--muted); }
+
+/* ── WARMING / ERROR ── */
+.info-card { border-radius:12px; padding:24px 28px; }
+.info-card.warming { background:rgba(43,99,217,0.06); border:1px solid rgba(43,99,217,0.2); text-align:center; }
+.info-card.error   { background:rgba(224,80,80,0.07); border:1px solid rgba(224,80,80,0.25); }
+.info-icon  { font-size:28px; margin-bottom:12px; }
+.info-title { font-size:14px; font-weight:700; color:var(--white); margin-bottom:8px; }
+.info-msg   { font-size:13px; color:var(--steel); line-height:1.7; }
+.info-card.error .info-title { color:var(--red); }
+
+/* ── SCAN RESULTS ── */
+.scan-card { background:var(--card); border:1px solid var(--border); border-radius:16px; overflow:hidden; margin-bottom:16px; }
+.scan-header { padding:20px 28px; border-bottom:1px solid var(--border); display:flex; align-items:center; justify-content:space-between; }
+.scan-badge { font-size:10px; font-weight:700; letter-spacing:2.5px; text-transform:uppercase; color:var(--green); background:rgba(34,201,122,0.08); border:1px solid rgba(34,201,122,0.2); border-radius:20px; padding:4px 12px; }
+.scan-label { font-size:13px; color:var(--muted); }
+.scan-body { padding:24px 28px; }
+.scan-section { margin-bottom:22px; }
+.scan-section:last-child { margin-bottom:0; }
+.scan-section-title { font-size:10px; font-weight:600; letter-spacing:3px; text-transform:uppercase; color:var(--muted); margin-bottom:12px; }
+.obs-item { font-size:13px; color:var(--text); padding:7px 12px 7px 16px; border-left:2px solid var(--border); margin-bottom:6px; line-height:1.5; }
+.obs-item strong { color:var(--white); }
+.q-item { background:rgba(255,255,255,0.02); border:1px solid var(--border); border-radius:8px; padding:12px 16px; margin-bottom:8px; font-size:13px; color:var(--text); line-height:1.6; }
+.big-q-block { background:rgba(43,99,217,0.07); border:1px solid rgba(43,99,217,0.25); border-radius:10px; padding:18px 20px; }
+.big-q-eyebrow { font-size:10px; font-weight:700; letter-spacing:2px; text-transform:uppercase; color:var(--blue); margin-bottom:8px; }
+.big-q-text { font-size:15px; color:var(--white); line-height:1.65; font-style:italic; }
+.big-q-null { font-size:13px; color:var(--steel); font-style:italic; }
+.scan-footer { padding:16px 28px; border-top:1px solid var(--border); display:flex; align-items:center; justify-content:space-between; gap:16px; }
+.scan-footer-note { font-size:11px; color:var(--muted); }
+
+/* ── REPORT RESULTS ── */
+.report-card { background:var(--card); border:1px solid var(--border); border-radius:16px; overflow:hidden; margin-bottom:16px; }
+.report-header { padding:28px 32px; border-bottom:1px solid var(--border); display:flex; align-items:center; gap:24px; }
+.composite-ring { width:80px; height:80px; flex-shrink:0; position:relative; }
+.composite-ring svg { width:80px; height:80px; transform:rotate(-90deg); }
+.ring-bg   { fill:none; stroke:var(--border); stroke-width:6; }
+.ring-fill { fill:none; stroke-width:6; stroke-linecap:round; transition:stroke-dashoffset 1s ease; }
+.ring-text { position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; }
+.ring-score { font-size:22px; font-weight:700; color:var(--white); line-height:1; }
+.ring-max   { font-size:10px; color:var(--muted); }
+.result-meta {}
+.result-tier { font-size:11px; font-weight:700; letter-spacing:3px; text-transform:uppercase; margin-bottom:6px; }
+.result-tier.t1{color:var(--goldf)} .result-tier.t2{color:var(--cyan)} .result-tier.t3{color:var(--amber)} .result-tier.t4{color:var(--red)} .result-tier.t5{color:var(--steel)}
+.result-desc { font-size:14px; color:var(--text); font-weight:500; }
+.theater-badge { display:inline-flex; align-items:center; gap:6px; margin-top:8px; background:rgba(224,80,80,0.1); border:1px solid rgba(224,80,80,0.3); border-radius:20px; padding:4px 12px; font-size:11px; font-weight:700; letter-spacing:1.5px; text-transform:uppercase; color:var(--red); }
+.gates-section { padding:24px 32px; border-bottom:1px solid var(--border); }
+.section-title { font-size:10px; font-weight:600; letter-spacing:3px; text-transform:uppercase; color:var(--muted); margin-bottom:18px; }
+.gate-row { margin-bottom:16px; }
+.gate-row:last-child { margin-bottom:0; }
+.gate-top { display:flex; justify-content:space-between; align-items:baseline; margin-bottom:6px; }
+.gate-name  { font-size:13px; font-weight:600; color:var(--text); }
+.gate-score { font-size:13px; font-weight:700; color:var(--white); }
+.gate-bar-bg   { height:5px; background:var(--border); border-radius:3px; overflow:hidden; }
+.gate-bar-fill { height:100%; border-radius:3px; transition:width 0.8s ease; }
+.gate-evidence { margin-top:8px; }
+.ev-item { font-size:12px; color:var(--steel); padding:6px 10px; background:rgba(255,255,255,0.02); border-left:2px solid var(--border); border-radius:0 4px 4px 0; margin-bottom:4px; line-height:1.5; }
+.synth-section { padding:24px 32px; border-bottom:1px solid var(--border); }
+.synth-row { margin-bottom:8px; padding:12px 16px; background:rgba(255,255,255,0.02); border-radius:8px; border:1px solid var(--border); }
+.synth-q { font-size:13px; color:var(--text); margin-bottom:4px; }
+.synth-disp { font-size:10px; font-weight:700; letter-spacing:1.5px; text-transform:uppercase; }
+.synth-disp.answered{color:var(--green)} .synth-disp.partial{color:var(--amber)} .synth-disp.unanswered{color:var(--red)}
+.report-footer { padding:16px 32px; border-top:1px solid var(--border); display:flex; align-items:center; justify-content:space-between; gap:16px; }
+.report-footer-note { font-size:11px; color:var(--muted); }
+
+/* ── FILE UPLOAD ── */
+.drop-zone { border:2px dashed var(--border); border-radius:12px; padding:32px 24px; text-align:center; cursor:pointer; transition:all 0.2s; margin-bottom:20px; position:relative; }
+.drop-zone:hover, .drop-zone.drag-over { border-color:var(--blue); background:rgba(43,99,217,0.05); }
+.drop-icon { font-size:28px; margin-bottom:10px; }
+.drop-title { font-size:14px; font-weight:600; color:var(--white); margin-bottom:6px; }
+.drop-sub { font-size:12px; color:var(--muted); margin-bottom:14px; }
+.drop-types { font-size:10px; letter-spacing:2px; text-transform:uppercase; color:var(--muted); }
+.drop-browse { background:transparent; border:1px solid var(--border); color:var(--steel); font-family:'Space Grotesk',sans-serif; font-size:11px; font-weight:600; letter-spacing:2px; text-transform:uppercase; padding:8px 20px; border-radius:8px; cursor:pointer; transition:all 0.2s; margin-bottom:12px; display:inline-block; }
+.drop-browse:hover { border-color:var(--blue); color:var(--text); }
+#fileInput { display:none; }
+.file-loaded { display:flex; align-items:center; gap:12px; background:rgba(34,201,122,0.07); border:1px solid rgba(34,201,122,0.2); border-radius:10px; padding:12px 16px; margin-bottom:16px; }
+.file-loaded-name { font-size:13px; color:var(--green); font-weight:600; flex:1; }
+.file-loaded-size { font-size:11px; color:var(--muted); }
+.file-clear { background:transparent; border:none; color:var(--muted); cursor:pointer; font-size:16px; padding:0 4px; transition:color 0.2s; }
+.file-clear:hover { color:var(--red); }
+.extract-progress { font-size:12px; color:var(--muted); text-align:center; padding:12px 0; }
+.divider-or { display:flex; align-items:center; gap:12px; margin:16px 0; }
+.divider-or span { font-size:11px; color:var(--muted); text-transform:uppercase; letter-spacing:2px; white-space:nowrap; }
+.divider-or::before, .divider-or::after { content:''; flex:1; height:1px; background:var(--border); }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="/" class="nav-logo">4CITE<span>.ai</span></a>
+  <a href="/" class="nav-back">← Back to site</a>
+</nav>
+
+<main>
+  <div class="page-ey">One-off Document Check</div>
+  <h1 class="page-h1">Structural integrity,<br>one document at a time.</h1>
+  <p class="page-sub">Upload or paste any document. 4CITE runs an Integrity Scan, then a full four-gate Report. Certify when you need a permanent record.</p>
+
+  <!-- STEP INDICATOR -->
+  <div class="steps" id="stepIndicator">
+    <div class="step active" id="step1"><div class="step-num">1</div>Scan</div>
+    <div class="step-line"></div>
+    <div class="step" id="step2"><div class="step-num">2</div>Report</div>
+    <div class="step-line"></div>
+    <div class="step" id="step3"><div class="step-num">3</div>Certify</div>
+  </div>
+
+  <!-- ── STEP 1: INPUT ── -->
+  <div id="pane-input">
+    <div class="card">
+
+      <!-- Drop zone -->
+      <div class="drop-zone" id="dropZone" onclick="document.getElementById('fileInput').click()"
+           ondragover="onDragOver(event)" ondragleave="onDragLeave(event)" ondrop="onDrop(event)">
+        <div class="drop-icon">📄</div>
+        <div class="drop-title">Drop your document here</div>
+        <div class="drop-sub">or</div>
+        <span class="drop-browse">Browse files</span>
+        <div class="drop-types">PDF · DOCX · TXT</div>
+        <input type="file" id="fileInput" accept=".pdf,.docx,.doc,.txt" onchange="onFileSelect(event)">
+      </div>
+
+      <!-- File loaded indicator -->
+      <div class="file-loaded" id="fileLoaded" style="display:none">
+        <span style="font-size:20px">📎</span>
+        <span class="file-loaded-name" id="fileName">—</span>
+        <span class="file-loaded-size" id="fileSize">—</span>
+        <button class="file-clear" onclick="clearFile()" title="Remove file">✕</button>
+      </div>
+
+      <!-- Extraction progress -->
+      <div class="extract-progress" id="extractProgress" style="display:none">Extracting text…</div>
+
+      <!-- Divider -->
+      <div class="divider-or"><span>or paste text directly</span></div>
+
+      <label class="field-label" for="docText">Document text</label>
+      <textarea id="docText" placeholder="Paste your document here — legal brief, SEC filing, congressional testimony, or any text you want analyzed…" oninput="updateChar()"></textarea>
+      <div class="char-row"><span class="char-count" id="charCount">0 / 32,000</span></div>
+
+      <div class="row">
+        <div class="field">
+          <label class="field-label" for="verticalSel">Vertical</label>
+          <select id="verticalSel" class="field-select" onchange="updateChar()">
+            <option value="" disabled selected>Select Domain</option>
+            <option value="law">⁴law — Legal</option>
+            <option value="biz">⁴biz — Business / SEC</option>
+            <option value="gov">⁴gov — Government / Legislative</option>
+            <option value="generic">Other</option>
+          </select>
+        </div>
+        <button class="btn-primary" id="scanBtn" onclick="runScan()" disabled>Run Integrity Scan →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── LOADING (reused for both scan and report) ── -->
+  <div id="pane-loading" style="display:none">
+    <div class="card">
+      <div class="loading-wrap">
+        <div class="loading-label" id="loadingLabel">Running Integrity Scan…</div>
+        <div class="gate-dots">
+          <div class="gdot"></div><div class="gdot"></div><div class="gdot"></div><div class="gdot"></div>
+        </div>
+        <div class="loading-sub" id="loadingStep">Analyzing document structure…</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── WARMING UP ── -->
+  <div id="pane-warming" style="display:none">
+    <div class="card">
+      <div class="info-card warming">
+        <div class="info-icon">🛡</div>
+        <div class="info-title">Engine warming up</div>
+        <div class="info-msg">The 4CITE analysis engine is not yet available in this environment.<br>This page will work automatically once the engine is deployed.</div>
+      </div>
+    </div>
+    <button class="btn-reset" onclick="resetAll()">← Start over</button>
+  </div>
+
+  <!-- ── ERROR ── -->
+  <div id="pane-error" style="display:none">
+    <div class="card">
+      <div class="info-card error">
+        <div class="info-title">Analysis failed</div>
+        <div class="info-msg" id="errorMsg">An unexpected error occurred. Please try again.</div>
+        <div style="margin-top:16px"><button class="btn-outline" onclick="resetAll()">Try again</button></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── STEP 2: SCAN RESULT ── -->
+  <div id="pane-scan" style="display:none">
+    <div class="scan-card">
+      <div class="scan-header">
+        <span class="scan-label">Integrity Scan</span>
+        <span class="scan-badge">✓ Complete</span>
+      </div>
+      <div class="scan-body">
+
+        <!-- Observations -->
+        <div class="scan-section">
+          <div class="scan-section-title">Observations</div>
+          <div id="scanObservations"></div>
+        </div>
+
+        <!-- Secondary Questions -->
+        <div class="scan-section" id="scanQSection">
+          <div class="scan-section-title">Questions this document raises</div>
+          <div id="scanQuestions"></div>
+        </div>
+
+        <!-- Big Question -->
+        <div class="scan-section">
+          <div class="scan-section-title">The Big Question</div>
+          <div id="scanBigQ"></div>
+        </div>
+
+      </div>
+      <div class="scan-footer">
+        <span class="scan-footer-note">Scan complete — no score or verdict at this stage.</span>
+        <button class="btn-primary" onclick="runReport()">Generate Integrity Report →</button>
+      </div>
+    </div>
+    <button class="btn-reset" onclick="resetAll()">← Start over</button>
+  </div>
+
+  <!-- ── STEP 3: REPORT RESULT ── -->
+  <div id="pane-report" style="display:none">
+
+    <!-- Scan collapsed -->
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;padding:0 4px;">
+      <span style="font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--green);font-weight:700;">✓ Integrity Scan</span>
+      <button class="btn-outline" onclick="toggleScanDetail()" id="scanToggle" style="font-size:10px;padding:6px 14px;">Show Scan</button>
+    </div>
+    <div id="scanDetail" style="display:none;margin-bottom:16px;">
+      <div class="scan-card">
+        <div class="scan-body">
+          <div class="scan-section">
+            <div class="scan-section-title">Observations</div>
+            <div id="scanObservations2"></div>
+          </div>
+          <div class="scan-section" id="scanQSection2">
+            <div class="scan-section-title">Questions raised</div>
+            <div id="scanQuestions2"></div>
+          </div>
+          <div class="scan-section">
+            <div class="scan-section-title">The Big Question</div>
+            <div id="scanBigQ2"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Report card -->
+    <div class="report-card">
+      <div class="report-header">
+        <div class="composite-ring">
+          <svg viewBox="0 0 80 80">
+            <circle class="ring-bg" cx="40" cy="40" r="34"/>
+            <circle class="ring-fill" id="ringFill" cx="40" cy="40" r="34" stroke-dasharray="213.6" stroke-dashoffset="213.6"/>
+          </svg>
+          <div class="ring-text">
+            <span class="ring-score" id="resComposite">—</span>
+            <span class="ring-max">/100</span>
+          </div>
+        </div>
+        <div class="result-meta">
+          <div class="result-tier" id="resTierLabel">—</div>
+          <div class="result-desc" id="resTierDesc">—</div>
+          <div id="theaterBadge" class="theater-badge" style="display:none">⚠ Accountability Theater</div>
+        </div>
+      </div>
+
+      <div class="gates-section">
+        <div class="section-title">Gate Scores</div>
+        <div class="gate-row">
+          <div class="gate-top"><span class="gate-name">G4 — Paradox Resolution</span><span class="gate-score" id="g4score">—</span></div>
+          <div class="gate-bar-bg"><div class="gate-bar-fill" id="g4bar" style="width:0%"></div></div>
+          <div class="gate-evidence" id="g4ev"></div>
+        </div>
+        <div class="gate-row">
+          <div class="gate-top"><span class="gate-name">G6 — Latent Intent</span><span class="gate-score" id="g6score">—</span></div>
+          <div class="gate-bar-bg"><div class="gate-bar-fill" id="g6bar" style="width:0%"></div></div>
+          <div class="gate-evidence" id="g6ev"></div>
+        </div>
+        <div class="gate-row">
+          <div class="gate-top"><span class="gate-name">G7 — Argumentative Structure</span><span class="gate-score" id="g7score">—</span></div>
+          <div class="gate-bar-bg"><div class="gate-bar-fill" id="g7bar" style="width:0%"></div></div>
+          <div class="gate-evidence" id="g7ev"></div>
+        </div>
+        <div class="gate-row">
+          <div class="gate-top"><span class="gate-name">G8 — Rhetorical Architecture</span><span class="gate-score" id="g8score">—</span></div>
+          <div class="gate-bar-bg"><div class="gate-bar-fill" id="g8bar" style="width:0%"></div></div>
+          <div class="gate-evidence" id="g8ev"></div>
+        </div>
+      </div>
+
+      <div class="synth-section" id="synthSection" style="display:none">
+        <div class="section-title">Questions Raised — Disposition</div>
+        <div id="bigQReport"></div>
+        <div id="synthRows"></div>
+      </div>
+
+      <div class="report-footer">
+        <span class="report-footer-note" id="reportModel">—</span>
+        <button class="btn-gold" onclick="goCertify()">Certify this Report →</button>
+      </div>
+    </div>
+
+    <button class="btn-reset" onclick="resetAll()">← Run another document</button>
+  </div>
+
+</main>
+
+<script>
+const API_BASE  = 'https://api.4cite.ai';
+const MAX_CHARS = 32000;
+
+const TIER_META = {
+  T1:{ label:'T1 — Real Deal',  cls:'t1', desc:'Channel capacity matches or exceeds the claimed signal. Foundational accountability present and detectable across all four gates. Rare across all domains.' },
+  T2:{ label:'T2 — Good Faith', cls:'t2', desc:'Channel capacity mostly sufficient. Foundation present; surface well-constructed; some compression visible but non-critical.' },
+  T3:{ label:'T3 — Thin Ice',   cls:'t3', desc:'Channel capacity insufficient in identifiable dimensions. Surface architecture intact; foundational accountability weak or structurally absent.' },
+  T4:{ label:'T4 — Paper Doll', cls:'t4', desc:'Channel capacity catastrophically below the claimed signal. Foundation absent; surface maintained. Accountability Theater flag likely.' },
+  // T5 retired as a tier (2026-04-19). Any legacy T5 response falls through to T4 presentation.
+  T5:{ label:'T5 — Paper Doll (legacy)', cls:'t4', desc:'Legacy T5 score — treated as T4 Paper Doll under the current T1–T4 taxonomy. No new T5 classifications are issued.' },
+};
+
+const RING_COLORS = { t1:'#F7D85D', t2:'#7DEBFF', t3:'#F0A020', t4:'#E05050', t5:'#7A9ABE' };
+
+let _savedText    = '';
+let _savedVertical= 'generic';
+let _savedScanOutput = null;
+let _scanDetailVisible = false;
+
+// ── Utilities ──────────────────────────────────────────────────────────────
+function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+function gateColor(s){ return s>=60?'#22C97A':s>=35?'#F0A020':'#E05050'; }
+
+function showPane(id){
+  ['pane-input','pane-loading','pane-warming','pane-error','pane-scan','pane-report']
+    .forEach(p=>{ document.getElementById(p).style.display=(p===id)?'block':'none'; });
+}
+
+function setStep(n){
+  [1,2,3].forEach(i=>{
+    const el = document.getElementById(`step${i}`);
+    el.className = 'step' + (i<n?' done':i===n?' active':'');
+  });
+}
+
+function updateChar(){
+  const t = document.getElementById('docText').value;
+  const n = t.length;
+  const el = document.getElementById('charCount');
+  el.textContent = `${n.toLocaleString()} / ${MAX_CHARS.toLocaleString()}`;
+  el.className = 'char-count'+(n>MAX_CHARS?' over':n>MAX_CHARS*.85?' warn':'');
+  const domain = document.getElementById('verticalSel').value;
+  document.getElementById('scanBtn').disabled = (n===0||n>MAX_CHARS||!domain);
+}
+
+function setLoading(label, step){
+  document.getElementById('loadingLabel').textContent = label;
+  document.getElementById('loadingStep').textContent  = step;
+}
+
+// ── API helpers ────────────────────────────────────────────────────────────
+async function apiPost(path, body){
+  const resp = await fetch(`${API_BASE}${path}`,{
+    method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(body)
+  });
+  if(resp.status===503||resp.status===0) throw Object.assign(new Error('warming'),{warming:true});
+  if(!resp.ok){
+    const j = await resp.json().catch(()=>({}));
+    throw new Error(j?.error?.message||`HTTP ${resp.status}`);
+  }
+  return resp.json();
+}
+
+// ── Step 1: Scan ───────────────────────────────────────────────────────────
+async function runScan(){
+  _savedText     = document.getElementById('docText').value.trim();
+  _savedVertical = document.getElementById('verticalSel').value;
+  if(!_savedText) return;
+
+  setStep(1);
+  showPane('pane-loading');
+  setLoading('Running Integrity Scan…','Analyzing document structure…');
+
+  try {
+    const data = await apiPost('/api/screen',{ text:_savedText, vertical:_savedVertical });
+    _savedScanOutput = data.scan;
+    renderScan(data.scan, 'scanObservations','scanQuestions','scanQSection','scanBigQ');
+    setStep(2);
+    showPane('pane-scan');
+  } catch(e){
+    if(e instanceof TypeError||e.warming){ showPane('pane-warming'); return; }
+    document.getElementById('errorMsg').textContent = e.message||'Scan failed. Please retry.';
+    showPane('pane-error');
+  }
+}
+
+function renderScan(scan, obsId, qId, qSecId, bqId){
+  // Observations
+  const obs = scan?.observations || [];
+  const obsEl = document.getElementById(obsId);
+  if(obs.length){
+    obsEl.innerHTML = obs.map(o=>`<div class="obs-item">${esc(typeof o==='string'?o:o.text||JSON.stringify(o))}</div>`).join('');
+  } else {
+    obsEl.innerHTML = '<div class="obs-item" style="color:var(--muted)">No observations returned.</div>';
+  }
+
+  // Secondary questions
+  const qs = scan?.secondary_questions || [];
+  const qEl = document.getElementById(qId);
+  if(qs.length){
+    document.getElementById(qSecId).style.display='block';
+    qEl.innerHTML = qs.map(q=>`<div class="q-item">${esc(typeof q==='string'?q:q.question||JSON.stringify(q))}</div>`).join('');
+  } else {
+    document.getElementById(qSecId).style.display='none';
+  }
+
+  // Big question
+  const bq = scan?.big_question;
+  const bqEl = document.getElementById(bqId);
+  const q = bq?.question||null;
+  const expl = bq?.explanation||null;
+  if(q){
+    bqEl.innerHTML=`<div class="big-q-block"><div class="big-q-eyebrow">The Big Question</div><div class="big-q-text">${esc(q)}</div></div>`;
+  } else {
+    bqEl.innerHTML=`<div class="big-q-block"><div class="big-q-eyebrow">The Big Question</div><div class="big-q-null">${esc(expl||'This document is structurally self-answering — no unresolved load-bearing question detected.')}</div></div>`;
+  }
+}
+
+// ── Step 2: Report ─────────────────────────────────────────────────────────
+async function runReport(){
+  setStep(2);
+  showPane('pane-loading');
+  setLoading('Generating Integrity Report…','Running G4 — Paradox Resolution…');
+
+  const reportSteps = [
+    [900, 'Running G6 — Latent Intent…'],
+    [1800,'Running G7 — Argumentative Structure…'],
+    [2700,'Running G8 — Rhetorical Architecture…'],
+    [3600,'Computing composite and synthesis…'],
+  ];
+  const timers = reportSteps.map(([ms,msg])=>setTimeout(()=>setLoading('Generating Integrity Report…',msg),ms));
+
+  try {
+    const data = await apiPost('/api/explain',{ text:_savedText, vertical:_savedVertical });
+    timers.forEach(clearTimeout);
+
+    // Mirror scan into collapsed view
+    if(_savedScanOutput){
+      renderScan(_savedScanOutput,'scanObservations2','scanQuestions2','scanQSection2','scanBigQ2');
+    }
+
+    renderReport(data);
+    setStep(3);
+    showPane('pane-report');
+  } catch(e){
+    timers.forEach(clearTimeout);
+    if(e instanceof TypeError||e.warming){ showPane('pane-warming'); return; }
+    document.getElementById('errorMsg').textContent = e.message||'Report generation failed. Please retry.';
+    showPane('pane-error');
+  }
+}
+
+function renderReport(d){
+  const composite = Math.round(d.composite);
+  const tier      = d.tier||'T3';
+  const meta      = TIER_META[tier]||TIER_META['T3'];
+
+  // Ring
+  document.getElementById('resComposite').textContent = composite;
+  const circ   = 2*Math.PI*34;
+  const offset = circ*(1-composite/100);
+  const fill   = document.getElementById('ringFill');
+  fill.style.stroke          = RING_COLORS[meta.cls]||'#7A9ABE';
+  fill.style.strokeDashoffset= circ;
+  setTimeout(()=>{ fill.style.strokeDashoffset=offset; },100);
+
+  // Tier
+  const tEl = document.getElementById('resTierLabel');
+  tEl.textContent = meta.label;
+  tEl.className   = `result-tier ${meta.cls}`;
+  document.getElementById('resTierDesc').textContent = meta.desc;
+  document.getElementById('theaterBadge').style.display = d.theater_flag?'inline-flex':'none';
+
+  // Gates
+  const gates = d.gates||{};
+  ['g4','g6','g7','g8'].forEach(g=>{
+    const gd    = gates[g]||{};
+    const score = Math.round(gd.score??0);
+    document.getElementById(`${g}score`).textContent = score;
+    const bar = document.getElementById(`${g}bar`);
+    bar.style.background = gateColor(score);
+    setTimeout(()=>{ bar.style.width=`${score}%`; },150);
+    const evEl = document.getElementById(`${g}ev`);
+    const ev   = gd.evidence||[];
+    evEl.innerHTML = ev.slice(0,2).map(e=>`<div class="ev-item">${esc(typeof e==='string'?e:e.text||e.quote||JSON.stringify(e))}</div>`).join('');
+  });
+
+  // Synthesis
+  const synth = d.synthesis_output;
+  if(synth?.synthesis?.length){
+    document.getElementById('synthSection').style.display='block';
+    const bigItem = synth.synthesis.find(s=>s.question_type==='big');
+    const bq = bigItem?.question||null;
+    document.getElementById('bigQReport').innerHTML = bq
+      ?`<div class="big-q-block" style="margin-bottom:14px"><div class="big-q-eyebrow">The Big Question</div><div class="big-q-text">${esc(bq)}</div></div>`:'';
+    const sec = synth.synthesis.filter(s=>s.question_type!=='big');
+    document.getElementById('synthRows').innerHTML = sec.map(s=>{
+      const disp = (s.disposition||'').toLowerCase();
+      const cls  = disp.includes('unanswered')?'unanswered':disp.includes('partial')?'partial':'answered';
+      return `<div class="synth-row"><div class="synth-q">${esc(s.question)}</div><div class="synth-disp ${cls}">${esc(s.disposition)}</div></div>`;
+    }).join('');
+  } else {
+    document.getElementById('synthSection').style.display='none';
+  }
+
+  document.getElementById('reportModel').textContent = `Model: ${d.model_version||'—'}`;
+}
+
+// ── Scan detail toggle ─────────────────────────────────────────────────────
+function toggleScanDetail(){
+  _scanDetailVisible = !_scanDetailVisible;
+  document.getElementById('scanDetail').style.display = _scanDetailVisible?'block':'none';
+  document.getElementById('scanToggle').textContent   = _scanDetailVisible?'Hide Scan':'Show Scan';
+}
+
+// ── Certify (placeholder) ──────────────────────────────────────────────────
+function goCertify(){
+  alert('Certification coming soon — this will package your Scan + Report into a permanent Integrity Certificate.');
+}
+
+// ── Reset ──────────────────────────────────────────────────────────────────
+function resetAll(){
+  _savedText=''; _savedVertical='generic'; _savedScanOutput=null; _scanDetailVisible=false;
+  document.getElementById('docText').value='';
+  document.getElementById('verticalSel').value='generic';
+  updateChar();
+  setStep(1);
+  showPane('pane-input');
+}
+
+updateChar();
+
+// ── PDF.js worker ──────────────────────────────────────────────────────────
+if(typeof pdfjsLib !== 'undefined'){
+  pdfjsLib.GlobalWorkerOptions.workerSrc =
+    'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+}
+
+// ── Drag + drop ────────────────────────────────────────────────────────────
+function onDragOver(e){ e.preventDefault(); document.getElementById('dropZone').classList.add('drag-over'); }
+function onDragLeave(e){ document.getElementById('dropZone').classList.remove('drag-over'); }
+function onDrop(e){
+  e.preventDefault();
+  document.getElementById('dropZone').classList.remove('drag-over');
+  const file = e.dataTransfer.files[0];
+  if(file) processFile(file);
+}
+function onFileSelect(e){ const file = e.target.files[0]; if(file) processFile(file); }
+
+// ── File processing ────────────────────────────────────────────────────────
+async function processFile(file){
+  const ext = file.name.split('.').pop().toLowerCase();
+  const allowed = ['pdf','docx','doc','txt'];
+  if(!allowed.includes(ext)){
+    alert(`Unsupported file type (.${ext}). Please use PDF, DOCX, or TXT.`);
+    return;
+  }
+
+  // Show loaded indicator
+  document.getElementById('fileLoaded').style.display='flex';
+  document.getElementById('fileName').textContent = file.name;
+  document.getElementById('fileSize').textContent = formatBytes(file.size);
+  document.getElementById('dropZone').style.display='none';
+  document.getElementById('extractProgress').style.display='block';
+  document.getElementById('docText').value='';
+  updateChar();
+
+  try {
+    let text = '';
+    if(ext==='txt'){
+      text = await readAsText(file);
+    } else if(ext==='docx'||ext==='doc'){
+      text = await extractDocx(file);
+    } else if(ext==='pdf'){
+      text = await extractPdf(file);
+    }
+
+    text = text.trim();
+    document.getElementById('docText').value = text;
+    updateChar();
+    document.getElementById('extractProgress').style.display='none';
+
+    if(!text){
+      showExtractError('No text could be extracted from this file. Try a different format or paste the text directly.');
+    }
+  } catch(err){
+    document.getElementById('extractProgress').style.display='none';
+    showExtractError('Could not read this file: ' + (err.message||'unknown error') + '. Try pasting the text directly.');
+  }
+}
+
+function showExtractError(msg){
+  document.getElementById('extractProgress').textContent = '⚠ ' + msg;
+  document.getElementById('extractProgress').style.display='block';
+  document.getElementById('extractProgress').style.color='var(--amber)';
+}
+
+function clearFile(){
+  document.getElementById('fileLoaded').style.display='none';
+  document.getElementById('dropZone').style.display='block';
+  document.getElementById('extractProgress').style.display='none';
+  document.getElementById('fileInput').value='';
+  document.getElementById('docText').value='';
+  updateChar();
+}
+
+function formatBytes(b){
+  if(b>1048576) return (b/1048576).toFixed(1)+' MB';
+  if(b>1024)    return (b/1024).toFixed(0)+' KB';
+  return b+' B';
+}
+
+// ── Extractors ─────────────────────────────────────────────────────────────
+function readAsText(file){
+  return new Promise((res,rej)=>{
+    const r = new FileReader();
+    r.onload  = e => res(e.target.result);
+    r.onerror = ()=> rej(new Error('FileReader error'));
+    r.readAsText(file);
+  });
+}
+
+async function extractDocx(file){
+  const buf = await file.arrayBuffer();
+  const result = await mammoth.extractRawText({ arrayBuffer: buf });
+  if(result.messages?.length){
+    console.warn('mammoth warnings:', result.messages);
+  }
+  return result.value;
+}
+
+async function extractPdf(file){
+  if(typeof pdfjsLib === 'undefined') throw new Error('PDF library not loaded');
+  const buf  = await file.arrayBuffer();
+  const pdf  = await pdfjsLib.getDocument({ data: buf }).promise;
+  const pages = [];
+  for(let i=1; i<=pdf.numPages; i++){
+    const page    = await pdf.getPage(i);
+    const content = await page.getTextContent();
+    const str     = content.items.map(it=>it.str).join(' ');
+    pages.push(str);
+  }
+  return pages.join('\n\n');
+}
+</script>
+</body>
+</html>
