@@ -162,6 +162,12 @@ footer { background:#030710; border-top:1px solid var(--border); padding:28px 40
       <h3>Your certificate request</h3>
 
       <div class="field">
+        <label for="attendantName">Your name</label>
+        <input id="attendantName" type="text" autocomplete="name" required maxlength="200" placeholder="Jane Smith">
+        <div class="field-helper">Name printed on the certificate as the certifying attendant.</div>
+      </div>
+
+      <div class="field">
         <label for="email">Email address</label>
         <input id="email" type="email" inputmode="email" autocomplete="email" required placeholder="you@example.com">
         <div class="field-helper">Your certificate PDF will be emailed here. We'll also send a magic link to retrieve it later.</div>
@@ -174,6 +180,7 @@ footer { background:#030710; border-top:1px solid var(--border); padding:28px 40
           <option value="law">4CITE⁴law (legal filings, briefs, opinions)</option>
           <option value="biz">4CITE⁴biz (SEC filings, earnings, disclosures)</option>
           <option value="gov">4CITE⁴gov (bills, regulations, hearings)</option>
+          <option value="generic">Other (general-purpose scoring)</option>
         </select>
         <div class="field-helper">Pick the vertical that best matches your document.</div>
       </div>
@@ -292,7 +299,7 @@ docText.addEventListener('input', updateCharCount);
 // Pre-fill vertical from URL ?vertical= if present
 const params = new URLSearchParams(window.location.search);
 const v = params.get('vertical');
-if (v && ['law','biz','gov'].includes(v)) {
+if (v && ['law','biz','gov','generic'].includes(v)) {
   document.getElementById('vertical').value = v;
 }
 
@@ -302,14 +309,28 @@ function showError(text) {
   setTimeout(() => errorMsg.classList.remove('visible'), 6000);
 }
 
+// Extract a readable message from FastAPI's various detail shapes:
+//   - string                            → use as-is
+//   - {error: {message, code}}          → error.message (custom HTTPException)
+//   - [{loc, msg, type}, ...]           → joined msgs (Pydantic 422)
+//   - undefined / unknown               → fall back to HTTP status
+function extractApiError(errBody, status) {
+  const d = errBody && errBody.detail;
+  if (typeof d === 'string') return d;
+  if (d && typeof d === 'object' && d.error && d.error.message) return d.error.message;
+  if (Array.isArray(d)) return d.map(x => x && x.msg).filter(Boolean).join('; ') || `HTTP ${status}`;
+  return `HTTP ${status}`;
+}
+
 certForm.addEventListener('submit', async (e) => {
   e.preventDefault();
+  const name = document.getElementById('attendantName').value.trim();
   const email = document.getElementById('email').value.trim();
   const vertical = document.getElementById('vertical').value;
-  const docTitle = document.getElementById('docTitle').value.trim();
   const text = docText.value.trim();
   const tos = document.getElementById('tosCheck').checked;
 
+  if (!name) return showError('Please enter your name.');
   if (!email || !email.includes('@')) return showError('Please enter a valid email address.');
   if (!vertical) return showError('Please pick a vertical.');
   if (text.length < 200) return showError('Please paste at least a few paragraphs of document text.');
@@ -321,23 +342,37 @@ certForm.addEventListener('submit', async (e) => {
   errorMsg.classList.remove('visible');
 
   try {
-    const res = await fetch(`${API_BASE}/api/checkout/cert`, {
+    // Step 1: create the pending cert request, receive request_id.
+    const reqRes = await fetch(`${API_BASE}/api/cert/request`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        email,
+        text,
         vertical,
-        document_title: docTitle || null,
-        document_text: text,
+        certifying_attendant: { name, email },
       }),
     });
-    if (!res.ok) {
-      const errBody = await res.json().catch(() => ({}));
-      throw new Error(errBody.detail || `HTTP ${res.status}`);
+    if (!reqRes.ok) {
+      const errBody = await reqRes.json().catch(() => ({}));
+      throw new Error(extractApiError(errBody, reqRes.status));
     }
-    const data = await res.json();
-    if (data.checkout_url) {
-      window.location.href = data.checkout_url;
+    const reqData = await reqRes.json();
+    const requestId = reqData.request_id;
+    if (!requestId) throw new Error('No request_id returned');
+
+    // Step 2: open Stripe Checkout for the $15 payment.
+    const payRes = await fetch(`${API_BASE}/api/checkout/cert`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, request_id: requestId }),
+    });
+    if (!payRes.ok) {
+      const errBody = await payRes.json().catch(() => ({}));
+      throw new Error(extractApiError(errBody, payRes.status));
+    }
+    const payData = await payRes.json();
+    if (payData.checkout_url) {
+      window.location.href = payData.checkout_url;
       return;
     }
     throw new Error('No checkout URL returned');
