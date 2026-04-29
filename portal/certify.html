@@ -149,7 +149,7 @@ footer { background:#030710; border-top:1px solid var(--border); padding:28px 40
   <div class="page-eyebrow">Pay-Per · One-Time</div>
   <h1>Get a <span class="g">4CITE Cert</span></h1>
   <p class="page-lead">
-    Upload or paste your document (up to 75 pages, ~40,000 words), pick the vertical, enter your email,
+    Upload or paste your document (up to ~10 pages, ~5,000 words), pick the vertical, enter your email,
     and complete payment with Stripe. The full <strong>Scan → Report → Certify</strong> pipeline
     runs once and produces an <strong>immutable Integrity Certificate</strong> that's emailed to
     you and recorded in the Public Registry.
@@ -209,7 +209,7 @@ footer { background:#030710; border-top:1px solid var(--border); padding:28px 40
         </div>
         <div class="extract-progress" id="extractProgress">Extracting text…</div>
         <div class="divider-or"><span>or paste below</span></div>
-        <textarea id="docText" required placeholder="Paste your document text here. Up to ~40,000 words (about 75 pages)."></textarea>
+        <textarea id="docText" required placeholder="Paste your document text here. Up to ~5,000 words (about 10 pages)."></textarea>
         <div class="charcount" id="charCount">0 characters · 0 words</div>
       </div>
 
@@ -283,8 +283,8 @@ const certForm = document.getElementById('certForm');
 const payBtn = document.getElementById('payBtn');
 const errorMsg = document.getElementById('errorMsg');
 
-const MAX_CHARS = 240000; // ~40,000 words at ~6 chars/word
-const WARN_AT = 200000;
+const MAX_CHARS = 32000;  // 32k-char ceiling matches backend (8K-token Grok context, api/routes_engine.py)
+const WARN_AT = 28000;
 
 function updateCharCount() {
   const text = docText.value;

@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cert Generating — 4CITE.ai</title>
+<meta name="description" content="Your 4CITE Integrity Certificate is being generated. The PDF will arrive by email shortly.">
+<meta name="theme-color" content="#07152E">
+<link rel="apple-touch-icon" href="/icons/icon-192.png">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --midnight:#07152E; --navy:#0B2358; --card:#0C1628; --border:#1A3060;
+  --blue:#2B63D9; --cyan:#7DEBFF; --gold:#D89A0B; --goldf:#F7D85D;
+  --steel:#7A9ABE; --muted:#3A5A80; --text:#C8D8EE; --white:#FFFFFF;
+  --green:#22C97A; --amber:#F0A020; --red:#E05050;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+html, body { height:100%; }
+body { background:var(--midnight); color:var(--text); font-family:'Space Grotesk',-apple-system,sans-serif; line-height:1.65; font-size:16px; min-height:100vh; display:flex; flex-direction:column; }
+
+.app-header { background:rgba(7,21,46,0.95); backdrop-filter:blur(16px); border-bottom:1px solid var(--border); padding:0 40px; height:56px; display:flex; align-items:center; flex-shrink:0; }
+.app-brand { font-size:20px; font-weight:700; letter-spacing:-0.5px; text-decoration:none; text-transform:none; }
+.app-brand .n4 { color:var(--goldf); } .app-brand .nc { color:var(--white); } .app-brand .na { color:var(--cyan); font-weight:300; }
+.beta-badge { font-size:9px; font-weight:700; letter-spacing:2px; background:rgba(247,216,93,0.10); border:1px solid rgba(247,216,93,0.35); border-radius:4px; padding:3px 8px; color:var(--goldf); margin-left:12px; margin-right:auto; }
+.app-back { font-size:11px; color:var(--muted); text-decoration:none; letter-spacing:2px; text-transform:uppercase; transition:color 0.2s; }
+.app-back:hover { color:var(--steel); }
+
+.pending-wrap { flex:1; display:flex; align-items:center; justify-content:center; padding:60px 24px; }
+.pending-card { background:var(--card); border:1px solid var(--border); border-radius:16px; padding:48px 44px; max-width:560px; width:100%; box-shadow:0 32px 80px rgba(0,0,0,0.4); text-align:center; }
+.pending-eyebrow { font-size:10px; font-weight:700; letter-spacing:5px; color:var(--muted); text-transform:uppercase; margin-bottom:16px; }
+.pending-title { font-size:26px; font-weight:700; color:var(--white); margin-bottom:12px; }
+.pending-title .g { color:var(--goldf); }
+.pending-sub { font-size:15px; color:var(--steel); line-height:1.75; margin-bottom:28px; }
+.pending-sub strong { color:var(--text); }
+
+.spinner { width:48px; height:48px; margin:0 auto 24px; border:3px solid var(--border); border-top-color:var(--goldf); border-radius:50%; animation:spin 1s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.kicker { background:rgba(43,99,217,0.06); border:1px solid rgba(43,99,217,0.22); border-radius:8px; padding:14px 16px; margin:8px 0 24px; font-size:12px; color:var(--steel); line-height:1.7; text-align:left; }
+.kicker strong { color:var(--cyan); }
+
+.session-row { font-size:11px; color:var(--muted); font-family:ui-monospace,SFMono-Regular,Menlo,monospace; word-break:break-all; padding:10px 14px; background:rgba(0,0,0,0.25); border:1px solid var(--border); border-radius:6px; margin-bottom:24px; display:none; }
+.session-row.visible { display:block; }
+.session-row .label { display:block; font-family:'Space Grotesk',sans-serif; font-size:9px; letter-spacing:3px; color:var(--muted); text-transform:uppercase; margin-bottom:4px; }
+
+.note { font-size:13px; color:var(--steel); line-height:1.7; margin-top:18px; }
+.note a { color:var(--steel); text-decoration:none; border-bottom:1px dotted var(--muted); }
+.note a:hover { color:var(--goldf); border-color:var(--goldf); }
+
+footer { background:#030710; border-top:1px solid var(--border); padding:24px 40px; display:flex; align-items:center; justify-content:space-between; flex-shrink:0; }
+.fb { font-size:18px; font-weight:700; }
+.fb .n4 { color:var(--goldf); } .fb .nc { color:var(--white); } .fb .na { color:var(--cyan); font-weight:300; }
+.fl { display:flex; gap:24px; flex-wrap:wrap; }
+.fl a { font-size:11px; color:var(--muted); text-decoration:none; letter-spacing:1px; transition:color 0.2s; }
+.fl a:hover { color:var(--steel); }
+.fr { font-size:11px; color:var(--muted); letter-spacing:1px; }
+
+@media (max-width:560px) {
+  .pending-card { padding:32px 24px; }
+  .app-header { padding:0 20px; }
+  footer { flex-direction:column; gap:16px; padding:24px 20px; text-align:center; }
+}
+</style>
+</head>
+<body>
+
+<header class="app-header">
+  <a href="/" class="app-brand"><span class="n4">4</span><span class="nc">CITE</span><span class="na">.ai</span></a>
+  <span class="beta-badge">BETA</span>
+  <a href="/" class="app-back">← Back to site</a>
+</header>
+
+<main class="pending-wrap">
+  <div class="pending-card">
+    <div class="spinner"></div>
+    <div class="pending-eyebrow">Cert · Generating</div>
+    <h1 class="pending-title">Payment received — your <span class="g">cert is generating</span></h1>
+    <p class="pending-sub">
+      Thanks for your purchase. The Scan → Report → Certify pipeline is running now.
+      Your <strong>certificate PDF will arrive by email in about 1–2 minutes</strong>.
+    </p>
+
+    <div class="kicker">
+      <strong>What happens next.</strong> The PDF is emailed to the address you entered at checkout.
+      A permanent registry entry is also written, and the document is sealed in your Cert Vault.
+      If you ever lose the PDF, recover it by email at <a href="/portal/cert/recover" style="color:var(--cyan);">/portal/cert/recover</a>.
+    </div>
+
+    <div id="sessionRow" class="session-row">
+      <span class="label">Stripe session</span>
+      <span id="sessionId">—</span>
+    </div>
+
+    <p class="note">
+      Don't see the email after a few minutes? Check spam, then
+      <a href="/portal/cert/recover">recover your cert by email →</a>
+    </p>
+  </div>
+</main>
+
+<footer>
+  <div class="fb"><span class="n4">4</span><span class="nc">CITE</span><span class="na">.ai</span></div>
+  <div class="fl">
+    <a href="/about">About</a>
+    <a href="/contact">Contact</a>
+    <a href="/privacy">Privacy</a>
+    <a href="/terms">Terms</a>
+  </div>
+  <div class="fr">© 2026 4 SHIELD LLC</div>
+</footer>
+
+<script>
+const params = new URLSearchParams(window.location.search);
+const sid = params.get('session_id');
+if (sid && /^cs_(live|test)_[A-Za-z0-9]+$/.test(sid)) {
+  document.getElementById('sessionId').textContent = sid;
+  document.getElementById('sessionRow').classList.add('visible');
+}
+</script>
+
+</body>
+</html>
