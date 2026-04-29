@@ -3,7 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>4CITE.ai — Integrity Map</title>
+<title>The Integrity Map — 4CITE.ai</title>
+<meta name="description" content="The 4CITE Integrity Map — a live structural integrity map of U.S. institutional documents across law, business, and government. Every tile is a real document, scored by the 4CITE engine.">
+<meta name="theme-color" content="#07152E">
+<link rel="apple-touch-icon" href="/icons/icon-192.png">
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
 :root {
@@ -398,6 +401,7 @@ nav a.nav-brand { margin-right:12px !important; }
   <span class="nav-beta-badge">BETA</span>
   <a href="/how-it-works" class="nav-link">How It Works</a>
   <a href="/verticals/" class="nav-link">Verticals</a>
+  <a href="/map" class="nav-link active">Map</a>
   <a href="/pricing" class="nav-link">Pricing</a>
   <a href="/research/" class="nav-link">Research</a>
   <a href="/faq" class="nav-link">FAQ</a>
@@ -407,6 +411,7 @@ nav a.nav-brand { margin-right:12px !important; }
 <div class="mobile-drawer" id="mobileDrawer">
   <a href="/how-it-works">How It Works</a>
   <a href="/verticals/">Verticals</a>
+  <a href="/map">Map</a>
   <a href="/pricing">Pricing</a>
   <a href="/research/">Research</a>
   <a href="/faq">FAQ</a>
@@ -424,8 +429,8 @@ nav a.nav-brand { margin-right:12px !important; }
     <span class="g">A structural integrity map of the United States.</span>
   </div>
   <div class="hero-sub">
-    Every tile is a real document, scored by the ValueMirror™ engine across four structural dimensions.
-    Colored by integrity quadrant. The density you see is the corpus growing.
+    Every tile is a real document, scored by the 4CITE engine across four structural dimensions.
+    Colored by integrity tier. The density you see is the corpus growing.
     What it looks like when accountability has architecture.
   </div>
   <div class="hero-meta">
@@ -775,74 +780,4 @@ function renderArchetypes() {
   grid.innerHTML = ARCHETYPES.map(a => `
     <div class="ab-item">
       <div class="ab-name">${a.name}</div>
-      <div class="ab-track"><div class="ab-fill" style="width:${(a.count/max*100).toFixed(1)}%;background:${a.color};"></div></div>
-      <div class="ab-meta">
-        <div class="ab-count">${a.count} records</div>
-        <div class="ab-pct">${(a.count/73*100).toFixed(0)}%</div>
-      </div>
-    </div>
-  `).join('');
-}
-
-// Corpus counter animation
-function animateCounter() {
-  const el = document.getElementById('corpusCount');
-  const target = 16421;
-  let current = 16000;
-  const step = () => {
-    current = Math.min(current + Math.ceil(Math.random()*3 + 1), target);
-    el.textContent = current.toLocaleString();
-    if (current < target) setTimeout(step, 120);
-  };
-  setTimeout(step, 800);
-
-  // Slow drift after initial count
-  setTimeout(() => {
-    setInterval(() => {
-      const n = parseInt(el.textContent.replace(/,/g,'')) + 1;
-      el.textContent = n.toLocaleString();
-    }, 8000 + Math.random()*4000);
-  }, 4000);
-}
-
-// ── CORPUS STATS (live from Supabase via Vercel) ──────────────────────────────
-async function loadCorpusStats() {
-  try {
-    const r = await fetch('/api/corpus/stats');
-    if (!r.ok) return;
-    const d = await r.json();
-    if (d.documents_loaded)   document.getElementById('statDocs').textContent    = d.documents_loaded.toLocaleString();
-    if (d.entities_identified) document.getElementById('statEnts').textContent   = d.entities_identified.toLocaleString();
-    if (d.structural_exams)   document.getElementById('statExams').textContent   = d.structural_exams.toLocaleString();
-    if (d.map_completion_pct) document.getElementById('statCompl').textContent   = d.map_completion_pct;
-    // Also update nav counter
-    if (d.documents_loaded)   document.getElementById('corpusCount').textContent = d.documents_loaded.toLocaleString();
-  } catch(e) { /* fail silently — hardcoded fallbacks remain */ }
-}
-
-// ── INIT ─────────────────────────────────────────────────────────────────────
-document.addEventListener('DOMContentLoaded', () => {
-  renderTiles();
-  renderArchetypes();
-  animateCounter();
-  loadCorpusStats();
-
-  // Stagger archetype bars for entrance
-  setTimeout(() => {
-    document.querySelectorAll('.ab-fill').forEach((el,i) => {
-      el.style.width = '0';
-      setTimeout(() => {
-        el.style.transition = 'width 1.2s cubic-bezier(0.16,1,0.3,1)';
-        el.style.width = el.style.width || el.getAttribute('style').match(/width:([^;]+)/)?.[1] || '0';
-      }, 200 + i*80);
-    });
-  }, 100);
-});
-</script>
-
-</body>
-</html>
-
-<script>
-function toggleNav(){var d=document.getElementById('mobileDrawer'),b=document.getElementById('navBurger');var o=d.classList.toggle('open');b.classList.toggle('open',o);b.setAttribute('aria-expanded',o?'true':'false');}
-</script>
+      <div class="ab-track"><div class="ab-fill" style="width:${(a.count/max*100).toFixed(1)

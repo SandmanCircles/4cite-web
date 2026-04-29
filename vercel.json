@@ -19,6 +19,8 @@
     { "source": "/research/wp16",   "destination": "/research/wp16.html" },
     { "source": "/verticals",       "destination": "/verticals/index.html" },
     { "source": "/verticals/",      "destination": "/verticals/index.html" },
+    { "source": "/map",             "destination": "/integrity-map-demo.html" },
+    { "source": "/integrity-map",   "destination": "/integrity-map-demo.html" },
     { "source": "/privacy",         "destination": "/privacy.html" },
     { "source": "/terms",           "destination": "/terms.html" },
 

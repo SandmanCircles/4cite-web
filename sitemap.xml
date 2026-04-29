@@ -38,6 +38,13 @@
     <priority>0.7</priority>
   </url>
 
+  <!-- Integrity Map -->
+  <url>
+    <loc>https://4cite.ai/map</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+
   <!-- Vertical pages -->
   <url>
     <loc>https://4cite.ai/verticals/</loc>

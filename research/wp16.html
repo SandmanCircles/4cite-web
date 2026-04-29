@@ -22,7 +22,7 @@
 * { margin:0; padding:0; box-sizing:border-box; }
 html { scroll-behavior:smooth; }
 body { background:var(--midnight); color:var(--text); font-family:'Space Grotesk',-apple-system,sans-serif; line-height:1.7; font-size:16px; overflow-x:hidden; }
-nav { position:fixed; top:0; left:0; right:0; z-index:200; background:rgba(7,21,46,0.95); backdrop-filter:blur(16px); border-bottom:1px solid var(--border); padding:0 60px; height:62px; display:flex; align-items:center; gap:32px; }
+body > nav { position:fixed; top:0; left:0; right:0; z-index:200; background:rgba(7,21,46,0.95); backdrop-filter:blur(16px); border-bottom:1px solid var(--border); padding:0 60px; height:62px; display:flex; align-items:center; gap:32px; }
 .nav-brand { font-size:22px; font-weight:700; margin-right:auto; letter-spacing:-0.5px; text-decoration:none; text-transform:none; }
 .nav-brand .n4 { color:var(--goldf); } .nav-brand .nc { color:var(--white); } .nav-brand .na { color:var(--cyan); font-weight:300; }
 nav a { color:var(--steel); text-decoration:none; font-size:12px; font-weight:500; letter-spacing:2px; text-transform:uppercase; transition:color 0.2s; }
@@ -129,7 +129,7 @@ footer { background:#030710; border-top:1px solid var(--border); padding:36px 80
   footer { flex-direction:column; gap:20px; text-align:center; padding:28px; }
 }
 /* ── BETA badge + hamburger + drawer (cleanup pass 2026-04-28) ── */
-nav a.nav-brand { margin-right:12px !important; }
+body > nav a.nav-brand { margin-right:12px !important; }
 .nav-beta-badge { display:inline-flex; align-items:center; font-size:9px; font-weight:700; letter-spacing:2px; background:rgba(247,216,93,0.10); border:1px solid rgba(247,216,93,0.35); border-radius:4px; padding:3px 8px; color:var(--goldf); margin-right:auto; flex-shrink:0; }
 .nav-burger { display:none; background:transparent; border:none; cursor:pointer; padding:8px; margin-left:4px; }
 .nav-burger span { display:block; width:22px; height:2px; background:var(--steel); margin:4px 0; border-radius:2px; transition:all 0.25s; }
@@ -141,7 +141,7 @@ nav a.nav-brand { margin-right:12px !important; }
 .mobile-drawer a { color:var(--steel); text-decoration:none; font-size:13px; font-weight:500; letter-spacing:2px; text-transform:uppercase; padding:14px 4px; border-bottom:1px solid rgba(26,48,96,0.3); transition:color 0.2s; }
 .mobile-drawer a:hover { color:var(--goldf); }
 .mobile-drawer a.drawer-signin { color:var(--goldf); border-bottom:none; margin-top:8px; padding-top:18px; letter-spacing:2.5px; }
-@media (max-width:960px){ .nav-burger{display:block;} nav .nav-cta{display:none;} }
+@media (max-width:960px){ .nav-burger{display:block;} body > nav .nav-cta{display:none;} }
 </style>
 </head>
 <body>
@@ -151,6 +151,7 @@ nav a.nav-brand { margin-right:12px !important; }
   <span class="nav-beta-badge">BETA</span>
   <a href="/how-it-works">How It Works</a>
   <a href="/verticals/">Verticals</a>
+  <a href="/map">Map</a>
   <a href="/pricing">Pricing</a>
   <a href="/research/">Research</a>
   <a href="/faq">FAQ</a>
@@ -160,6 +161,7 @@ nav a.nav-brand { margin-right:12px !important; }
 <div class="mobile-drawer" id="mobileDrawer">
   <a href="/how-it-works">How It Works</a>
   <a href="/verticals/">Verticals</a>
+  <a href="/map">Map</a>
   <a href="/pricing">Pricing</a>
   <a href="/research/">Research</a>
   <a href="/faq">FAQ</a>
@@ -689,5 +691,3 @@ nav a.nav-brand { margin-right:12px !important; }
 <script>
 function toggleNav(){var d=document.getElementById('mobileDrawer'),b=document.getElementById('navBurger');var o=d.classList.toggle('open');b.classList.toggle('open',o);b.setAttribute('aria-expanded',o?'true':'false');}
 </script>
-</body>
-</html>
