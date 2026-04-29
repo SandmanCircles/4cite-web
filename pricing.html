@@ -73,9 +73,8 @@ p strong { color:var(--text); font-weight:600; }
 .sub-feature { display:flex; align-items:flex-start; gap:10px; margin-bottom:10px; font-size:13px; color:var(--steel); }
 .sub-feature .check { color:var(--green); font-weight:700; flex-shrink:0; margin-top:2px; }
 .sub-cta { display:block; text-align:center; margin-top:auto; padding-top:20px; font-size:12px; font-weight:700; letter-spacing:2px; text-transform:uppercase; padding:12px 20px; border-radius:8px; text-decoration:none; transition:all 0.2s; }
-.sub-card.one .sub-cta { color:var(--steel); border:1px solid var(--border); }
-.sub-card.one .sub-cta:hover { border-color:var(--steel); color:var(--text); }
-.sub-card.more .sub-cta, .sub-card.all .sub-cta { background:linear-gradient(135deg,#2B63D9,#0A2E80); border:1px solid rgba(43,99,217,0.6); color:var(--white); }
+.sub-card .sub-cta { background:linear-gradient(135deg,#2B63D9,#0A2E80); border:1px solid rgba(43,99,217,0.6); color:var(--white); cursor:pointer; }
+.sub-card .sub-cta:hover:not(:disabled) { background:linear-gradient(135deg,#3D7AE8,#1D40A0); }
 
 /* Top-up packs */
 .topup-grid { display:grid; grid-template-columns:1fr 1fr 1fr; gap:16px; margin-top:20px; }
@@ -386,4 +385,172 @@ nav a.nav-brand { margin-right:12px !important; }
       <div class="enterprise-card">
         <div class="ent-left">
           <h3>Enterprise Inquiry</h3>
-          <p>La
+          <p>Launch a conversation with our team. Bulk pricing, API access, custom corpus integrations, and 50+ seat deployments are all on the table.</p>
+        </div>
+        <div class="ent-right">
+          <a href="/contact?topic=enterprise">Talk to sales →</a>
+        </div>
+      </div>
+    </section>
+
+  </div>
+</main>
+
+<footer>
+  <div class="fb"><span class="n4">4</span><span class="nc">CITE</span><span class="na">.ai</span></div>
+  <div class="fl">
+    <a href="/about">About</a>
+    <a href="/contact">Contact</a>
+    <a href="/privacy">Privacy</a>
+    <a href="/terms">Terms</a>
+  </div>
+  <div class="fr">© 2026 4 SHIELD LLC</div>
+</footer>
+
+<style>
+.subscribe-modal-backdrop { position:fixed; inset:0; background:rgba(7,21,46,0.85); backdrop-filter:blur(8px); z-index:9999; display:none; align-items:center; justify-content:center; padding:24px; }
+.subscribe-modal-backdrop.visible { display:flex; }
+.subscribe-modal { background:var(--card); border:1px solid var(--border); border-radius:16px; padding:36px 32px; max-width:440px; width:100%; box-shadow:0 32px 80px rgba(0,0,0,0.5); }
+.subscribe-modal-eyebrow { font-size:10px; font-weight:700; letter-spacing:5px; color:var(--muted); text-transform:uppercase; margin-bottom:14px; }
+.subscribe-modal-title { font-size:22px; font-weight:700; color:var(--white); margin-bottom:8px; }
+.subscribe-modal-title .g { color:var(--goldf); }
+.subscribe-modal-sub { font-size:13px; color:var(--steel); margin-bottom:22px; line-height:1.6; }
+.subscribe-modal label { display:block; font-size:10px; font-weight:600; letter-spacing:3px; text-transform:uppercase; color:var(--muted); margin-bottom:8px; }
+.subscribe-modal input { width:100%; background:rgba(255,255,255,0.04); border:1px solid var(--border); border-radius:8px; color:var(--text); font-family:inherit; font-size:15px; padding:13px 16px; outline:none; transition:border-color 0.2s; -webkit-appearance:none; }
+.subscribe-modal input:focus { border-color:var(--blue); }
+.subscribe-modal-error { font-size:12px; color:var(--red); margin-top:10px; min-height:16px; line-height:1.5; }
+.subscribe-modal-actions { display:flex; gap:12px; margin-top:18px; }
+.subscribe-modal-actions button { flex:1; font-family:inherit; font-size:12px; font-weight:700; letter-spacing:2px; text-transform:uppercase; padding:13px 18px; border-radius:8px; cursor:pointer; transition:all 0.2s; border:1px solid var(--border); }
+.subscribe-modal-cancel { background:transparent; color:var(--muted); }
+.subscribe-modal-cancel:hover { color:var(--text); border-color:var(--steel); }
+.subscribe-modal-submit { background:linear-gradient(135deg,#2B63D9,#0A2E80); border:1px solid rgba(43,99,217,0.6); color:var(--white); }
+.subscribe-modal-submit:hover:not(:disabled) { background:linear-gradient(135deg,#3D7AE8,#1D40A0); }
+.subscribe-modal-submit:disabled { opacity:0.45; cursor:not-allowed; }
+.mobile-drawer.open { display:block; }
+</style>
+
+<div id="subscribeModal" class="subscribe-modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="subscribeModalTitle">
+  <form id="subscribeForm" class="subscribe-modal" novalidate>
+    <div class="subscribe-modal-eyebrow">Subscription</div>
+    <h2 id="subscribeModalTitle" class="subscribe-modal-title">Subscribe to <span class="g" id="subscribeTierLabel">4CITE</span></h2>
+    <p class="subscribe-modal-sub" id="subscribeTierSub">Enter your email to continue to Stripe Checkout.</p>
+    <label for="subscribeEmail">Email address</label>
+    <input id="subscribeEmail" type="email" inputmode="email" autocomplete="email" required placeholder="you@example.com">
+    <div id="subscribeError" class="subscribe-modal-error"></div>
+    <div class="subscribe-modal-actions">
+      <button type="button" class="subscribe-modal-cancel" id="subscribeCancel">Cancel</button>
+      <button type="submit" class="subscribe-modal-submit" id="subscribeSubmit">Continue →</button>
+    </div>
+  </form>
+</div>
+
+<script>
+const API_BASE = 'https://api.4cite.ai';
+
+// Mobile nav burger toggle (referenced inline at the burger button).
+const navBurger = document.getElementById('navBurger');
+const mobileDrawer = document.getElementById('mobileDrawer');
+function toggleNav() {
+  if (!mobileDrawer) return;
+  const isOpen = mobileDrawer.classList.toggle('open');
+  if (navBurger) navBurger.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+}
+
+// Extract a readable message from FastAPI's various detail shapes:
+//   string / {error: {message}} / array of {loc, msg, type} / unknown
+function extractApiError(errBody, status) {
+  const d = errBody && errBody.detail;
+  if (typeof d === 'string') return d;
+  if (d && typeof d === 'object' && d.error && d.error.message) return d.error.message;
+  if (Array.isArray(d)) return d.map(x => x && x.msg).filter(Boolean).join('; ') || `HTTP ${status}`;
+  return `HTTP ${status}`;
+}
+
+// ── Subscribe modal ──
+const subscribeModal = document.getElementById('subscribeModal');
+const subscribeForm = document.getElementById('subscribeForm');
+const subscribeEmail = document.getElementById('subscribeEmail');
+const subscribeError = document.getElementById('subscribeError');
+const subscribeSubmit = document.getElementById('subscribeSubmit');
+const subscribeCancel = document.getElementById('subscribeCancel');
+const subscribeTierLabel = document.getElementById('subscribeTierLabel');
+const subscribeTierSub = document.getElementById('subscribeTierSub');
+
+const TIER_INFO = {
+  for_one:  { label: '4CITE⁴one',  price: '$50/mo',  units: '225 units / month' },
+  for_more: { label: '4CITE⁴more', price: '$150/mo', units: '750 units / month' },
+  for_all:  { label: '4CITE⁴all',  price: '$500/mo', units: '3,000 units / month' },
+};
+
+let activeTier = null;
+
+function openSubscribeModal(tier) {
+  activeTier = tier;
+  const info = TIER_INFO[tier] || { label: tier, price: '', units: '' };
+  subscribeTierLabel.textContent = info.label;
+  subscribeTierSub.textContent = `${info.price} · ${info.units}. Enter your email to continue to Stripe Checkout.`;
+  subscribeError.textContent = '';
+  subscribeEmail.value = '';
+  subscribeSubmit.disabled = false;
+  subscribeSubmit.textContent = 'Continue →';
+  subscribeModal.classList.add('visible');
+  setTimeout(() => subscribeEmail.focus(), 30);
+}
+
+function closeSubscribeModal() {
+  subscribeModal.classList.remove('visible');
+  activeTier = null;
+}
+
+subscribeCancel.addEventListener('click', closeSubscribeModal);
+subscribeModal.addEventListener('click', (e) => { if (e.target === subscribeModal) closeSubscribeModal(); });
+document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && subscribeModal.classList.contains('visible')) closeSubscribeModal(); });
+
+document.querySelectorAll('.sub-checkout').forEach(btn => {
+  btn.addEventListener('click', () => openSubscribeModal(btn.dataset.tier));
+});
+
+subscribeForm.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const email = subscribeEmail.value.trim();
+  if (!email || !email.includes('@')) {
+    subscribeError.textContent = 'Please enter a valid email address.';
+    subscribeEmail.focus();
+    return;
+  }
+  if (!activeTier) {
+    subscribeError.textContent = 'No tier selected.';
+    return;
+  }
+
+  subscribeSubmit.disabled = true;
+  subscribeSubmit.textContent = 'Preparing checkout…';
+  subscribeError.textContent = '';
+
+  try {
+    const res = await fetch(`${API_BASE}/api/checkout/subscription`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ tier: activeTier, email }),
+    });
+    if (!res.ok) {
+      const errBody = await res.json().catch(() => ({}));
+      throw new Error(extractApiError(errBody, res.status));
+    }
+    const data = await res.json();
+    if (data.checkout_url) {
+      window.location.href = data.checkout_url;
+      return;
+    }
+    throw new Error('No checkout URL returned');
+  } catch (err) {
+    console.error('subscription checkout failed', err);
+    subscribeError.textContent = `Could not start checkout: ${err.message}`;
+    subscribeSubmit.disabled = false;
+    subscribeSubmit.textContent = 'Continue →';
+  }
+});
+</script>
+
+</body>
+</html>
