@@ -373,6 +373,21 @@ nav {
   .filter-bar { padding:10px 20px; }
   .hero-strip { padding:28px 20px 20px; }
 }
+/* ── BETA badge + hamburger + drawer (cleanup pass 2026-04-28) ── */
+nav a.nav-brand { margin-right:12px !important; }
+.nav-beta-badge { display:inline-flex; align-items:center; font-size:9px; font-weight:700; letter-spacing:2px; background:rgba(247,216,93,0.10); border:1px solid rgba(247,216,93,0.35); border-radius:4px; padding:3px 8px; color:var(--goldf); margin-right:auto; flex-shrink:0; }
+.nav-cta-signin { background:linear-gradient(135deg,#2B63D9,#0A2E80); border:1px solid rgba(43,99,217,0.6); color:var(--white) !important; padding:8px 18px; border-radius:6px; font-size:11px; font-weight:600; letter-spacing:2px; text-transform:uppercase; text-decoration:none; }
+.nav-burger { display:none; background:transparent; border:none; cursor:pointer; padding:8px; margin-left:4px; }
+.nav-burger span { display:block; width:22px; height:2px; background:var(--steel); margin:4px 0; border-radius:2px; transition:all 0.25s; }
+.nav-burger.open span:nth-child(1) { transform:translateY(6px) rotate(45deg); background:var(--goldf); }
+.nav-burger.open span:nth-child(2) { opacity:0; }
+.nav-burger.open span:nth-child(3) { transform:translateY(-6px) rotate(-45deg); background:var(--goldf); }
+.mobile-drawer { display:none; position:fixed; top:56px; left:0; right:0; z-index:499; background:rgba(7,21,46,0.98); backdrop-filter:blur(16px); border-bottom:1px solid var(--border); padding:18px 32px 24px; flex-direction:column; }
+.mobile-drawer.open { display:flex; }
+.mobile-drawer a { color:var(--steel); text-decoration:none; font-size:13px; font-weight:500; letter-spacing:2px; text-transform:uppercase; padding:14px 4px; border-bottom:1px solid rgba(26,48,96,0.3); transition:color 0.2s; }
+.mobile-drawer a:hover { color:var(--goldf); }
+.mobile-drawer a.drawer-signin { color:var(--goldf); border-bottom:none; margin-top:8px; padding-top:18px; letter-spacing:2.5px; }
+@media (max-width:960px){ .nav-burger{display:block;} nav .nav-link, nav .nav-cta-signin{display:none;} }
 </style>
 </head>
 <body>
@@ -380,13 +395,25 @@ nav {
 <!-- NAV -->
 <nav>
   <a href="/" class="nav-brand" style="text-decoration:none;"><span class="n4">4</span><span class="nc">CITE</span><span class="na">.ai</span></a>
+  <span class="nav-beta-badge">BETA</span>
   <a href="/how-it-works" class="nav-link">How It Works</a>
   <a href="/verticals/" class="nav-link">Verticals</a>
   <a href="/pricing" class="nav-link">Pricing</a>
   <a href="/research/" class="nav-link">Research</a>
   <a href="/faq" class="nav-link">FAQ</a>
-  <a href="/#waitlist" class="nav-link" style="color:var(--goldf);">Join Beta →</a>
+  <a href="/account/login" class="nav-cta-signin">Sign in</a>
+  <button class="nav-burger" id="navBurger" type="button" aria-label="Toggle menu" aria-expanded="false" onclick="toggleNav()"><span></span><span></span><span></span></button>
 </nav>
+<div class="mobile-drawer" id="mobileDrawer">
+  <a href="/how-it-works">How It Works</a>
+  <a href="/verticals/">Verticals</a>
+  <a href="/pricing">Pricing</a>
+  <a href="/research/">Research</a>
+  <a href="/faq">FAQ</a>
+  <a href="/about">About</a>
+  <a href="/contact">Contact</a>
+  <a href="/account/login" class="drawer-signin">Sign in →</a>
+</div>
 
 <!-- HERO STRIP -->
 <div class="hero-strip">
@@ -815,3 +842,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 </body>
 </html>
+
+<script>
+function toggleNav(){var d=document.getElementById('mobileDrawer'),b=document.getElementById('navBurger');var o=d.classList.toggle('open');b.classList.toggle('open',o);b.setAttribute('aria-expanded',o?'true':'false');}
+</script>

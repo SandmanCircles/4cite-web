@@ -56,19 +56,45 @@ footer { background:#030710; border-top:1px solid var(--border); padding:36px 80
   .content { padding:0 28px 80px; }
   footer { flex-direction:column; gap:20px; text-align:center; padding:28px; }
 }
+/* ── BETA badge + hamburger + drawer (cleanup pass 2026-04-28) ── */
+nav a.nav-brand { margin-right:12px !important; }
+.nav-beta-badge { display:inline-flex; align-items:center; font-size:9px; font-weight:700; letter-spacing:2px; background:rgba(247,216,93,0.10); border:1px solid rgba(247,216,93,0.35); border-radius:4px; padding:3px 8px; color:var(--goldf); margin-right:auto; flex-shrink:0; }
+.nav-burger { display:none; background:transparent; border:none; cursor:pointer; padding:8px; margin-left:4px; }
+.nav-burger span { display:block; width:22px; height:2px; background:var(--steel); margin:4px 0; border-radius:2px; transition:all 0.25s; }
+.nav-burger.open span:nth-child(1) { transform:translateY(6px) rotate(45deg); background:var(--goldf); }
+.nav-burger.open span:nth-child(2) { opacity:0; }
+.nav-burger.open span:nth-child(3) { transform:translateY(-6px) rotate(-45deg); background:var(--goldf); }
+.mobile-drawer { display:none; position:fixed; top:62px; left:0; right:0; z-index:199; background:rgba(7,21,46,0.98); backdrop-filter:blur(16px); border-bottom:1px solid var(--border); padding:18px 32px 24px; flex-direction:column; }
+.mobile-drawer.open { display:flex; }
+.mobile-drawer a { color:var(--steel); text-decoration:none; font-size:13px; font-weight:500; letter-spacing:2px; text-transform:uppercase; padding:14px 4px; border-bottom:1px solid rgba(26,48,96,0.3); transition:color 0.2s; }
+.mobile-drawer a:hover { color:var(--goldf); }
+.mobile-drawer a.drawer-signin { color:var(--goldf); border-bottom:none; margin-top:8px; padding-top:18px; letter-spacing:2.5px; }
+@media (max-width:960px){ .nav-burger{display:block;} nav .nav-cta{display:none;} }
 </style>
 </head>
 <body>
 
 <nav>
   <a href="/" class="nav-brand"><span class="n4">4</span><span class="nc">CITE</span><span class="na">.ai</span></a>
+  <span class="nav-beta-badge">BETA</span>
   <a href="/how-it-works">How It Works</a>
   <a href="/verticals/">Verticals</a>
   <a href="/pricing">Pricing</a>
   <a href="/research/">Research</a>
   <a href="/faq">FAQ</a>
-  <a href="/#waitlist" class="nav-cta">Join Beta →</a>
+  <a href="/account/login" class="nav-cta">Sign in</a>
+  <button class="nav-burger" id="navBurger" type="button" aria-label="Toggle menu" aria-expanded="false" onclick="toggleNav()"><span></span><span></span><span></span></button>
 </nav>
+<div class="mobile-drawer" id="mobileDrawer">
+  <a href="/how-it-works">How It Works</a>
+  <a href="/verticals/">Verticals</a>
+  <a href="/pricing">Pricing</a>
+  <a href="/research/">Research</a>
+  <a href="/faq">FAQ</a>
+  <a href="/about">About</a>
+  <a href="/contact">Contact</a>
+  <a href="/account/login" class="drawer-signin">Sign in →</a>
+</div>
 
 <main>
 
@@ -116,379 +142,4 @@ footer { background:#030710; border-top:1px solid var(--border); padding:36px 80
     </p>
     <p>
       <span class="allcaps">The Service is not legal advice. The Service is not factual-truth
-      verification. The Service is not a citation checker. The Service is not a substitute for
-      professional judgment.</span> Scoring results describe structural properties of the
-      analyzed text at the time of analysis. They do not constitute legal, financial, regulatory,
-      compliance, accounting, medical, or other professional advice, and they do not predict or
-      guarantee any outcome.
-    </p>
-
-    <h2>3. Eligibility and accounts</h2>
-    <p>
-      You must be at least sixteen (16) years old to use the Service. To access certain features
-      you must register for an account. You agree to provide accurate information, to keep your
-      account credentials confidential, and to be responsible for all activity that occurs under
-      your account. Notify us promptly at <a href="mailto:hello@4cite.ai">hello@4cite.ai</a> if
-      you suspect unauthorized use of your account or API key.
-    </p>
-
-    <h2>4. Subscriptions, billing, and renewal</h2>
-
-    <h3>4.1 Subscription plans</h3>
-    <p>
-      The Service is offered on monthly subscription plans (4CITE⁴one, 4CITE⁴more, 4CITE⁴all) and
-      on a pay-per-use basis (the 4CITE Cert). Each subscription includes a stated monthly unit
-      allotment. Units are consumed by Scan, Report, Certify, and corpus-query actions per the
-      consumption table on the <a href="/pricing#units">Pricing page</a>. Unused monthly units
-      do not roll over. Top-up unit packs purchased separately do not expire and carry forward
-      until used.
-    </p>
-
-    <h3>4.2 Payment processing</h3>
-    <p>
-      All payments are processed by <strong>Stripe, Inc.</strong>, our third-party payment
-      processor. By submitting payment information, you authorize Stripe to charge the payment
-      method you provide for the amounts due. Stripe's terms of service and privacy policy govern
-      its handling of your payment information; we receive only the limited transaction data
-      described in our <a href="/privacy#subprocessors">Privacy Policy</a>. You agree to keep
-      your payment method current and to pay applicable taxes when required.
-    </p>
-
-    <h3>4.3 Auto-renewal and cancellation</h3>
-    <p>
-      <span class="allcaps">Subscriptions automatically renew at the end of each monthly billing
-      period at the then-current rate until cancelled.</span> You may cancel at any time from
-      your <a href="/account/billing">account billing page</a>, which opens the Stripe Customer
-      Portal. Cancellation stops the next renewal; you retain full access and your remaining
-      unit allotment until the end of the current billing period.
-    </p>
-
-    <h3>4.4 Refunds</h3>
-    <p>
-      Except where required by applicable law, all charges are non-refundable. Specifically:
-    </p>
-    <ul>
-      <li><strong>4CITE Cert (pay-per).</strong> Once a certificate has been issued, recorded in
-      the Public Registry, and delivered to you, the purchase is non-refundable. We will refund
-      a Cert purchase if a technical failure on our side prevents delivery of the certificate.
-      Contact <a href="mailto:hello@4cite.ai">hello@4cite.ai</a> within fourteen (14) days of
-      the failed transaction.</li>
-      <li><strong>Subscriptions.</strong> Subscription fees are non-refundable, including for
-      partial months. Cancellation prevents future renewals; we do not pro-rate the unused
-      portion of a billing period that has already started.</li>
-      <li><strong>Top-up packs.</strong> Top-up purchases are non-refundable.</li>
-    </ul>
-    <p>
-      The full refund and cancellation policy is published at
-      <a href="/pricing#refunds">/pricing#refunds</a> and is incorporated by reference. Enterprise
-      customers are governed by the order form or master services agreement they sign with
-      4 SHIELD LLC, which supersedes this Section 4.4.
-    </p>
-
-    <h3>4.5 Failed payments</h3>
-    <p>
-      If a renewal payment fails, the subscription may be paused after Stripe's standard dunning
-      retries. While paused, the account remains accessible but pipeline calls will return a
-      402 (Payment Required) status until the billing issue is resolved. Initiating a chargeback
-      for a transaction where the Service was successfully delivered may result in account
-      suspension pending review of the dispute.
-    </p>
-
-    <h3>4.6 Taxes</h3>
-    <p>
-      Prices shown do not include taxes. You are responsible for all sales, use, value-added,
-      and similar taxes applicable to your purchase, except for taxes imposed on 4 SHIELD's net
-      income. Where required, taxes will be calculated and collected at checkout.
-    </p>
-
-    <h2>5. Acceptable use</h2>
-    <p>
-      You agree not to use the Service to:
-    </p>
-    <ul>
-      <li>Submit material you do not have the right to submit (including material that infringes
-      another party's intellectual property, breaches confidentiality, or violates a protective
-      order).</li>
-      <li>Submit content that is unlawful, defamatory, harassing, or that violates the privacy
-      or other rights of any person.</li>
-      <li>Reverse-engineer, decompile, scrape, or attempt to extract the underlying scoring
-      models, prompts, or algorithms, except to the extent expressly permitted by applicable
-      law that cannot be waived by contract.</li>
-      <li>Resell, sublicense, time-share, or otherwise make the Service available to third
-      parties outside the scope of your subscription, without our prior written consent.</li>
-      <li>Use the Service to build a competing structural-integrity scoring product or to train
-      a competing model.</li>
-      <li>Interfere with the integrity, security, or performance of the Service, or attempt to
-      gain unauthorized access to any system or account.</li>
-      <li>Use automated means (bots, scripts, scrapers) to access the Service in a manner
-      designed to circumvent rate limits or unit metering.</li>
-      <li>Submit content that violates applicable export controls, sanctions laws, or any other
-      applicable law.</li>
-    </ul>
-
-    <h2>6. Your content; the three data planes</h2>
-
-    <h3>6.1 Your ownership</h3>
-    <p>
-      You retain all ownership and intellectual-property rights in the documents you submit to
-      the Service ("<strong>Customer Content</strong>") and in the Integrity Certificates issued
-      to you. We claim no ownership of Customer Content or your certificates.
-    </p>
-
-    <h3>6.2 License to operate the Service</h3>
-    <p>
-      You grant 4 SHIELD a worldwide, non-exclusive, royalty-free license to host, copy, transmit,
-      analyze, and display Customer Content solely as necessary to provide and support the
-      Service, to compute scoring outputs you have requested, to generate and store certificates
-      on your behalf, and to comply with applicable law. This license terminates when you delete
-      the Customer Content from your Vault or close your account, except as required for
-      retention of billing records and Public Registry entries (see Section 6.5).
-    </p>
-
-    <h3>6.3 Three data planes</h3>
-    <p>
-      Customer Content is stored in your <strong>Private Vault</strong>, encrypted at rest. The
-      <strong>Public Corpus</strong> is built only from public data sources (CourtListener / PACER,
-      SEC EDGAR, Congress.gov, GovInfo.gov, the Federal Register, FEC) and never contains
-      Customer Content. The <strong>Public Registry</strong> contains only verifiability records
-      for issued certificates (certificate ID, scoring metadata, timestamp, hash) and never
-      contains source document content.
-    </p>
-
-    <h3>6.4 Research Corpus opt-in</h3>
-    <p>
-      You may, at the Certify step and only on a per-document basis, opt in to contribute an
-      anonymized copy of a certified document to the Research Corpus, which supports continued
-      calibration of the scoring engine. The opt-in is off by default. You can withdraw any
-      future contributions at any time from your account settings; contributions already merged
-      into the Research Corpus may not be retrievable due to the anonymization process, and you
-      acknowledge this when you opt in.
-    </p>
-
-    <h3>6.5 Retention and deletion</h3>
-    <p>
-      You may delete Customer Content from your Vault at any time. Issued Integrity Certificates
-      have a permanent record in the Public Registry for verifiability; deleting a certificate
-      from your Vault removes the document content but does not retract the Registry record.
-      Billing records are retained for the period required by tax and financial-record-keeping
-      laws (typically seven years).
-    </p>
-
-    <h2>7. Integrity Certificates</h2>
-    <ul>
-      <li>An Integrity Certificate is an immutable record of the Scan and Report findings,
-      frozen at issuance.</li>
-      <li>The Certificate is verifiable against its snapshot. It does not change after issuance.</li>
-      <li>The Certificate scoring reflects the document as submitted at the time of analysis.
-      It does not forecast or guarantee future performance, outcomes, or compliance.</li>
-      <li>The 4CITE⁴law cert-promotion path (where a pre-filing cert is associated with a
-      subsequently filed legal document via the CourtListener-sourced shingle match) is
-      user-initiated, one-way, and permanent. Un-promotion and cert cancellation after filing
-      are not supported.</li>
-      <li>Certificates remain in your Cert Vault unless and until you delete them. Pre-filing
-      certificates do not expire.</li>
-    </ul>
-
-    <h2>8. Our intellectual property</h2>
-    <p>
-      The Service, including its source code, scoring engine, prompts, archetype libraries,
-      Public Corpus structure, gate definitions, tier taxonomy, and all related trademarks
-      (including <strong>4CITE.ai</strong>, <strong>4CITE⁴law</strong>, <strong>4CITE⁴biz</strong>,
-      <strong>4CITE⁴gov</strong>, and the 4 SHIELD family of marks), is the property of
-      4 SHIELD LLC. We grant you a limited, non-exclusive, non-transferable, revocable license
-      to access and use the Service in accordance with these Terms. No other rights are granted
-      by implication, estoppel, or otherwise.
-    </p>
-
-    <h2>9. Beta status</h2>
-    <p>
-      The Service is currently offered in closed beta. <span class="allcaps">During the beta
-      period, pricing, features, scoring calibration, unit weights, and account terms may
-      change.</span> We will notify beta participants by email before any material change.
-      Beta service is provided on an "as is" basis as described in Section 10.
-    </p>
-
-    <h2>10. Disclaimer of warranties</h2>
-    <p class="allcaps">
-      The Service is provided "as is" and "as available," without warranty of any kind, express
-      or implied. To the maximum extent permitted by applicable law, 4 SHIELD disclaims all
-      warranties, including the implied warranties of merchantability, fitness for a particular
-      purpose, non-infringement, and any warranties arising from course of dealing or usage of
-      trade.
-    </p>
-    <p class="allcaps">
-      4 SHIELD does not warrant that the Service will be uninterrupted, error-free, secure,
-      free of viruses or other harmful components, or that any defect will be corrected. Scoring
-      outputs are analytical estimates of structural properties, not factual determinations.
-      You are solely responsible for your reliance on any output of the Service.
-    </p>
-
-    <h2>11. Limitation of liability</h2>
-    <p class="allcaps">
-      To the maximum extent permitted by applicable law, in no event will 4 SHIELD, its
-      affiliates, or their respective officers, directors, employees, or agents be liable for
-      any indirect, incidental, special, consequential, exemplary, or punitive damages, or for
-      any loss of profits, revenue, data, business opportunity, goodwill, or use, arising out of
-      or related to these Terms or the Service, whether based on contract, tort (including
-      negligence), strict liability, or any other theory, even if 4 SHIELD has been advised of
-      the possibility of such damages.
-    </p>
-    <p class="allcaps">
-      In no event will 4 SHIELD's aggregate liability arising out of or related to these Terms
-      or the Service exceed the greater of (a) the total amount you paid to 4 SHIELD for the
-      Service in the twelve (12) months immediately preceding the event giving rise to the
-      claim, or (b) one hundred U.S. dollars (US$100). Multiple claims will not enlarge this
-      limit. The foregoing limitations will apply notwithstanding the failure of essential
-      purpose of any limited remedy. Some jurisdictions do not allow the exclusion or limitation
-      of certain damages; in those jurisdictions our liability will be limited to the maximum
-      extent permitted by law.
-    </p>
-
-    <h2>12. Indemnification</h2>
-    <p>
-      You agree to defend, indemnify, and hold harmless 4 SHIELD, its affiliates, and their
-      respective officers, directors, employees, and agents from and against any claim, loss,
-      liability, damage, cost, or expense (including reasonable attorneys' fees) arising out of
-      or related to (a) your use of the Service in violation of these Terms or applicable law,
-      (b) your Customer Content, (c) your violation of any third-party right, including any
-      intellectual-property or privacy right, or (d) any reliance on a scoring output by you or
-      a third party to whom you provided the output.
-    </p>
-
-    <h2>13. Suspension and termination</h2>
-    <p>
-      You may terminate these Terms at any time by closing your account. We may suspend or
-      terminate your access to the Service, with or without notice, if (a) you breach these
-      Terms, (b) we are required to do so by law or by a payment-processor or subprocessor
-      requirement, (c) your account presents a security or fraud risk, or (d) we discontinue
-      the Service. On termination, your right to use the Service ceases immediately. The
-      following sections survive termination: 4.4 (Refunds), 6.5 (Retention and deletion), 8
-      (Our intellectual property), 10 (Disclaimers), 11 (Limitation of liability), 12
-      (Indemnification), 14 (Governing law), 15 (Dispute resolution), and 17 (Miscellaneous).
-    </p>
-
-    <h2>14. Governing law and venue</h2>
-    <p>
-      These Terms are governed by the laws of the State of Wyoming, without regard to its
-      conflict-of-laws principles. Subject to Section 15, the state and federal courts located
-      in Wyoming will have exclusive jurisdiction over any dispute that is not subject to
-      arbitration, and the parties consent to personal jurisdiction in those courts.
-    </p>
-
-    <h2>15. Dispute resolution &laquo;[counsel: confirm structure]&raquo;</h2>
-    <p>
-      <em>[Counsel review note: this section is a placeholder for an arbitration / class-action
-      waiver clause. Recommended structure for a Wyoming Benefit LLC selling SaaS to U.S.
-      consumers and businesses: pre-suit notice + 60-day informal-resolution window, JAMS or
-      AAA individual arbitration in Wyoming for non-small-claims disputes, small-claims
-      carve-out, opt-out window of 30 days from acceptance, class-action waiver, no jury trial.
-      Confirm enforceability across target buyer states (DE, NY, CA, TX, IL) and add any
-      required state-specific notices. Until counsel approves, the parties' fallback is the
-      courts identified in Section 14.]</em>
-    </p>
-
-    <h2>16. Changes to these Terms</h2>
-    <p>
-      We may update these Terms from time to time. If we make a material change, we will provide
-      notice — by email to the address on your account, by an in-product notice, or by posting
-      a banner on this page — at least fourteen (14) days before the change takes effect, except
-      where a shorter period is required by law or to address a security issue. Your continued
-      use of the Service after the effective date constitutes acceptance of the revised Terms.
-      If you do not agree to a change, you may cancel your subscription before it takes effect.
-    </p>
-
-    <h2>17. Miscellaneous</h2>
-
-    <h3>17.1 Entire agreement</h3>
-    <p>
-      These Terms, the <a href="/privacy">Privacy Policy</a>, the
-      <a href="/pricing#refunds">Refund &amp; Cancellation Policy</a>, and any order form or
-      written addendum signed by 4 SHIELD constitute the entire agreement between the parties
-      regarding the Service and supersede any prior or contemporaneous agreement on the same
-      subject. In the event of a conflict, a signed order form controls over these Terms; these
-      Terms control over the Privacy Policy on issues of contractual obligation; the Privacy
-      Policy controls on data-handling commitments.
-    </p>
-
-    <h3>17.2 Severability</h3>
-    <p>
-      If any provision of these Terms is held to be invalid or unenforceable, the remaining
-      provisions will remain in full force and effect, and the invalid provision will be modified
-      to the minimum extent necessary to render it enforceable while preserving its intent.
-    </p>
-
-    <h3>17.3 No waiver</h3>
-    <p>
-      Our failure to enforce any provision of these Terms will not constitute a waiver of that
-      provision or of any other provision. A waiver of any breach is not a waiver of any
-      subsequent breach.
-    </p>
-
-    <h3>17.4 Assignment</h3>
-    <p>
-      You may not assign or transfer these Terms or any rights under them without our prior
-      written consent. We may assign these Terms without restriction, including in connection
-      with a merger, acquisition, or sale of substantially all of our assets. Any prohibited
-      assignment is void.
-    </p>
-
-    <h3>17.5 Force majeure</h3>
-    <p>
-      Neither party is liable for any failure or delay in performance caused by an event beyond
-      its reasonable control, including acts of God, natural disasters, war, terrorism, civil
-      unrest, labor actions, governmental action, internet outage, or failure of a third-party
-      service provider — except for payment obligations, which are not excused by force majeure.
-    </p>
-
-    <h3>17.6 Independent contractors; no third-party beneficiaries</h3>
-    <p>
-      The parties are independent contractors. Nothing in these Terms creates a partnership,
-      joint venture, agency, fiduciary, or employment relationship. There are no third-party
-      beneficiaries to these Terms.
-    </p>
-
-    <h3>17.7 Notices</h3>
-    <p>
-      Notices to us must be sent to <a href="mailto:hello@4cite.ai">hello@4cite.ai</a>. Notices
-      to you may be sent to the email address on your account or by an in-product notice.
-    </p>
-
-    <h3>17.8 Export and sanctions</h3>
-    <p>
-      You represent that you are not located in, and are not a national or resident of, any
-      country subject to comprehensive U.S. sanctions, and that you are not on any U.S.
-      government list of restricted parties.
-    </p>
-
-    <h3>17.9 Public benefit purpose</h3>
-    <p>
-      4 SHIELD LLC is a Wyoming Benefit LLC. Its stated public benefit is to restore public
-      trust across all domains based on the foundational belief that systems operating in
-      integrity grow toward their highest valuation. The benefit purpose informs the operation
-      of the Service but does not create any third-party right of enforcement.
-    </p>
-
-    <h2>18. Contact</h2>
-    <p>
-      Questions about these Terms: <a href="mailto:hello@4cite.ai">hello@4cite.ai</a>.
-    </p>
-    <p style="font-size:13px;color:var(--muted);margin-top:32px;">
-      4 SHIELD LLC · Wyoming Benefit LLC · Operator of 4CITE.ai
-    </p>
-
-  </div>
-</main>
-
-<footer>
-  <div class="fb"><span class="n4">4</span><span class="nc">CITE</span><span class="na">.ai</span></div>
-  <div class="fl">
-    <a href="/about">About</a>
-    <a href="/contact">Contact</a>
-    <a href="/privacy">Privacy</a>
-    <a href="/terms">Terms</a>
-  </div>
-  <div class="fr">© 2026 4 SHIELD LLC · All Rights Reserved</div>
-</footer>
-
-</body>
-</html>
+      verification. The Service is not a citation checker. The Se

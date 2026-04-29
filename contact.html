@@ -67,19 +67,45 @@ footer { background:#030710; border-top:1px solid var(--border); padding:36px 80
   .contact-grid { grid-template-columns:1fr; }
   footer { flex-direction:column; gap:20px; text-align:center; padding:28px; }
 }
+/* ── BETA badge + hamburger + drawer (cleanup pass 2026-04-28) ── */
+nav a.nav-brand { margin-right:12px !important; }
+.nav-beta-badge { display:inline-flex; align-items:center; font-size:9px; font-weight:700; letter-spacing:2px; background:rgba(247,216,93,0.10); border:1px solid rgba(247,216,93,0.35); border-radius:4px; padding:3px 8px; color:var(--goldf); margin-right:auto; flex-shrink:0; }
+.nav-burger { display:none; background:transparent; border:none; cursor:pointer; padding:8px; margin-left:4px; }
+.nav-burger span { display:block; width:22px; height:2px; background:var(--steel); margin:4px 0; border-radius:2px; transition:all 0.25s; }
+.nav-burger.open span:nth-child(1) { transform:translateY(6px) rotate(45deg); background:var(--goldf); }
+.nav-burger.open span:nth-child(2) { opacity:0; }
+.nav-burger.open span:nth-child(3) { transform:translateY(-6px) rotate(-45deg); background:var(--goldf); }
+.mobile-drawer { display:none; position:fixed; top:62px; left:0; right:0; z-index:199; background:rgba(7,21,46,0.98); backdrop-filter:blur(16px); border-bottom:1px solid var(--border); padding:18px 32px 24px; flex-direction:column; }
+.mobile-drawer.open { display:flex; }
+.mobile-drawer a { color:var(--steel); text-decoration:none; font-size:13px; font-weight:500; letter-spacing:2px; text-transform:uppercase; padding:14px 4px; border-bottom:1px solid rgba(26,48,96,0.3); transition:color 0.2s; }
+.mobile-drawer a:hover { color:var(--goldf); }
+.mobile-drawer a.drawer-signin { color:var(--goldf); border-bottom:none; margin-top:8px; padding-top:18px; letter-spacing:2.5px; }
+@media (max-width:960px){ .nav-burger{display:block;} nav .nav-cta{display:none;} }
 </style>
 </head>
 <body>
 
 <nav>
   <a href="/" class="nav-brand"><span class="n4">4</span><span class="nc">CITE</span><span class="na">.ai</span></a>
+  <span class="nav-beta-badge">BETA</span>
   <a href="/how-it-works">How It Works</a>
   <a href="/verticals/">Verticals</a>
   <a href="/pricing">Pricing</a>
   <a href="/research/">Research</a>
   <a href="/faq">FAQ</a>
-  <a href="/#waitlist" class="nav-cta">Join Beta →</a>
+  <a href="/account/login" class="nav-cta">Sign in</a>
+  <button class="nav-burger" id="navBurger" type="button" aria-label="Toggle menu" aria-expanded="false" onclick="toggleNav()"><span></span><span></span><span></span></button>
 </nav>
+<div class="mobile-drawer" id="mobileDrawer">
+  <a href="/how-it-works">How It Works</a>
+  <a href="/verticals/">Verticals</a>
+  <a href="/pricing">Pricing</a>
+  <a href="/research/">Research</a>
+  <a href="/faq">FAQ</a>
+  <a href="/about">About</a>
+  <a href="/contact">Contact</a>
+  <a href="/account/login" class="drawer-signin">Sign in →</a>
+</div>
 
 <main>
 
@@ -103,10 +129,10 @@ footer { background:#030710; border-top:1px solid var(--border); padding:36px 80
       <div class="contact-grid">
 
         <div class="contact-card">
-          <div class="cc-type">Beta Access</div>
-          <h3>Join the Waitlist</h3>
-          <p>Request early access to 4CITE across any of the three verticals — law, business, or government. Priority access goes to active practitioners with real documents to score.</p>
-          <a href="/#waitlist" class="cc-action">Request Beta Access →</a>
+          <div class="cc-type">Get Started</div>
+          <h3>Subscriptions &amp; Walk-In Certs</h3>
+          <p>4CITE is live in closed beta across all three verticals — law, business, and government. Pick a plan, or run a single document through a $15 walk-in cert. No account required for walk-ins.</p>
+          <a href="/pricing" class="cc-action">See Pricing →</a>
         </div>
 
         <div class="contact-card">
@@ -183,7 +209,7 @@ footer { background:#030710; border-top:1px solid var(--border); padding:36px 80
       <p>
         For everything else — general curiosity, feature requests, and future
         vertical inquiries — we are paying attention even if our response is delayed.
-        The waitlist is the fastest path to the product.
+        The fastest path to the product is the <a href="/pricing" style="color:var(--cyan);">pricing page</a>.
       </p>
     </section>
 
@@ -201,5 +227,8 @@ footer { background:#030710; border-top:1px solid var(--border); padding:36px 80
   <div class="fr">© 2026 4 SHIELD LLC · All Rights Reserved</div>
 </footer>
 
+<script>
+function toggleNav(){var d=document.getElementById('mobileDrawer'),b=document.getElementById('navBurger');var o=d.classList.toggle('open');b.classList.toggle('open',o);b.setAttribute('aria-expanded',o?'true':'false');}
+</script>
 </body>
 </html>

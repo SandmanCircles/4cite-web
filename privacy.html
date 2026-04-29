@@ -60,19 +60,45 @@ footer { background:#030710; border-top:1px solid var(--border); padding:36px 80
   table.subprocessors th, table.subprocessors td { padding:8px 6px; }
   footer { flex-direction:column; gap:20px; text-align:center; padding:28px; }
 }
+/* ── BETA badge + hamburger + drawer (cleanup pass 2026-04-28) ── */
+nav a.nav-brand { margin-right:12px !important; }
+.nav-beta-badge { display:inline-flex; align-items:center; font-size:9px; font-weight:700; letter-spacing:2px; background:rgba(247,216,93,0.10); border:1px solid rgba(247,216,93,0.35); border-radius:4px; padding:3px 8px; color:var(--goldf); margin-right:auto; flex-shrink:0; }
+.nav-burger { display:none; background:transparent; border:none; cursor:pointer; padding:8px; margin-left:4px; }
+.nav-burger span { display:block; width:22px; height:2px; background:var(--steel); margin:4px 0; border-radius:2px; transition:all 0.25s; }
+.nav-burger.open span:nth-child(1) { transform:translateY(6px) rotate(45deg); background:var(--goldf); }
+.nav-burger.open span:nth-child(2) { opacity:0; }
+.nav-burger.open span:nth-child(3) { transform:translateY(-6px) rotate(-45deg); background:var(--goldf); }
+.mobile-drawer { display:none; position:fixed; top:62px; left:0; right:0; z-index:199; background:rgba(7,21,46,0.98); backdrop-filter:blur(16px); border-bottom:1px solid var(--border); padding:18px 32px 24px; flex-direction:column; }
+.mobile-drawer.open { display:flex; }
+.mobile-drawer a { color:var(--steel); text-decoration:none; font-size:13px; font-weight:500; letter-spacing:2px; text-transform:uppercase; padding:14px 4px; border-bottom:1px solid rgba(26,48,96,0.3); transition:color 0.2s; }
+.mobile-drawer a:hover { color:var(--goldf); }
+.mobile-drawer a.drawer-signin { color:var(--goldf); border-bottom:none; margin-top:8px; padding-top:18px; letter-spacing:2.5px; }
+@media (max-width:960px){ .nav-burger{display:block;} nav .nav-cta{display:none;} }
 </style>
 </head>
 <body>
 
 <nav>
   <a href="/" class="nav-brand"><span class="n4">4</span><span class="nc">CITE</span><span class="na">.ai</span></a>
+  <span class="nav-beta-badge">BETA</span>
   <a href="/how-it-works">How It Works</a>
   <a href="/verticals/">Verticals</a>
   <a href="/pricing">Pricing</a>
   <a href="/research/">Research</a>
   <a href="/faq">FAQ</a>
-  <a href="/#waitlist" class="nav-cta">Join Beta →</a>
+  <a href="/account/login" class="nav-cta">Sign in</a>
+  <button class="nav-burger" id="navBurger" type="button" aria-label="Toggle menu" aria-expanded="false" onclick="toggleNav()"><span></span><span></span><span></span></button>
 </nav>
+<div class="mobile-drawer" id="mobileDrawer">
+  <a href="/how-it-works">How It Works</a>
+  <a href="/verticals/">Verticals</a>
+  <a href="/pricing">Pricing</a>
+  <a href="/research/">Research</a>
+  <a href="/faq">FAQ</a>
+  <a href="/about">About</a>
+  <a href="/contact">Contact</a>
+  <a href="/account/login" class="drawer-signin">Sign in →</a>
+</div>
 
 <main>
 
@@ -120,229 +146,4 @@ footer { background:#030710; border-top:1px solid var(--border); padding:36px 80
 
     <h3>Information collected automatically</h3>
     <ul>
-      <li><strong>Usage data.</strong> Counts of Scans, Reports, and Certificates run, the
-      timestamp of each action, and the unit cost — used for billing, rate limiting, and capacity
-      planning. We do not retain document content beyond what is required to produce the requested
-      analysis and to store any certificates you have issued.</li>
-      <li><strong>Device and connection data.</strong> IP address, user-agent string, and
-      approximate region — used for security, fraud prevention, and basic analytics.</li>
-      <li><strong>API logs.</strong> When you call the 4CITE API with an issued key, we record the
-      request path, response status, and unit cost. We do not log request bodies in plain form.</li>
-    </ul>
-
-    <h2>3. The three data planes</h2>
-    <p>
-      4CITE.ai keeps user-submitted text strictly separate from the public reference corpus. This
-      separation is part of the product's correctness model, not just a privacy choice.
-    </p>
-    <ul>
-      <li><strong>Public Corpus.</strong> Documents we have ingested from public sources
-      (CourtListener / PACER, SEC EDGAR, Congress.gov, GovInfo.gov, the Federal Register, FEC).
-      No user-submitted content is ever merged into the Public Corpus.</li>
-      <li><strong>Public Registry.</strong> Verifiability records for issued Integrity Certificates
-      — certificate ID, scoring metadata, timestamp, and signing hash. The Registry contains
-      <em>no source document content</em>. It exists only so a third party can confirm a
-      certificate was actually issued.</li>
-      <li><strong>Private Vault.</strong> Your source documents and Integrity Certificates.
-      Encrypted in transit and at rest. Visible only to you and to authorized 4 SHIELD LLC
-      personnel acting on your behalf for support or security purposes. You control deletion.</li>
-    </ul>
-
-    <h2>4. Research Corpus opt-in</h2>
-    <p>
-      The Research Corpus is a separate, opt-in data plane used to support continued calibration
-      of the scoring engine. Inclusion is <strong>off by default</strong>. The opt-in checkbox
-      appears only at the Certify step and must be actively selected each time you choose to
-      contribute. Contributions are anonymized at the source-text level before any merge into the
-      research plane. Research Corpus contributions are never merged with benchmark queries
-      and are never used as training data without a separate, document-specific consent step.
-    </p>
-
-    <h2>5. How we use information</h2>
-    <ul>
-      <li>To operate the service — run Scans, Reports, and Certify pipelines you request.</li>
-      <li>To bill you for usage and to reconcile billing events with our payment processor.</li>
-      <li>To deliver certificates, receipts, magic-link logins, and account-related notifications.</li>
-      <li>To prevent abuse, fraud, and unauthorized access.</li>
-      <li>To improve the engine through aggregate, non-attributable usage analysis. We do not
-      use your private documents to train or fine-tune any model.</li>
-      <li>To comply with applicable law, valid legal process, or to enforce our Terms of Service.</li>
-    </ul>
-
-    <h2 id="subprocessors">6. Subprocessors</h2>
-    <p>
-      4 SHIELD LLC uses the following third-party services to operate 4CITE.ai. Each is bound by a
-      written agreement that limits their use of your information to the purposes listed below.
-      We update this list when subprocessors change.
-    </p>
-    <table class="subprocessors">
-      <thead>
-        <tr><th>Subprocessor</th><th>Role</th><th>Data handled</th><th>Region</th></tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>Stripe, Inc.</td>
-          <td>Payments &amp; billing</td>
-          <td>Card details, billing address, customer ID, subscription state, invoice history.</td>
-          <td>United States</td>
-        </tr>
-        <tr>
-          <td>Amazon Web Services (AWS)</td>
-          <td>Application hosting, container orchestration, secret storage, encrypted file storage</td>
-          <td>API runtime, encrypted document storage (S3), credential storage (Secrets Manager).</td>
-          <td>us-east-2 (Ohio)</td>
-        </tr>
-        <tr>
-          <td>Supabase, Inc.</td>
-          <td>Application database</td>
-          <td>Account records, usage logs, certificate metadata, subscription state.</td>
-          <td>United States</td>
-        </tr>
-        <tr>
-          <td>Vercel, Inc.</td>
-          <td>Marketing-site hosting</td>
-          <td>Static page delivery for 4CITE.ai. No account data routed through Vercel.</td>
-          <td>United States / global edge</td>
-        </tr>
-        <tr>
-          <td>Resend, Inc.</td>
-          <td>Transactional email</td>
-          <td>Recipient email address, certificate delivery, magic-link login emails, receipts.</td>
-          <td>United States</td>
-        </tr>
-        <tr>
-          <td>xAI Corp. (Grok API)</td>
-          <td>Scoring engine inference</td>
-          <td>The text submitted for scoring is sent to the Grok API to compute gate scores.
-          xAI's API terms govern their handling. We do not authorize xAI to retain or train on
-          your submissions; we rely on xAI's published API data-handling commitments and pass any
-          changes through to this policy.</td>
-          <td>United States</td>
-        </tr>
-      </tbody>
-    </table>
-    <p style="font-size:13px;color:var(--muted);">
-      Public data sources used to build the Public Corpus (CourtListener, SEC EDGAR, Congress.gov,
-      GovInfo.gov, the Federal Register, FEC) are <em>not</em> subprocessors of your information —
-      they are upstream public data that we ingest. Your documents are never sent to those sources.
-    </p>
-
-    <h2>7. Sharing and disclosure</h2>
-    <p>
-      We do not sell your personal information. We do not share your documents with advertisers.
-      We disclose information only as follows:
-    </p>
-    <ul>
-      <li>To the subprocessors listed above, for the purposes described.</li>
-      <li>To comply with applicable law, valid legal process, or a government request that we
-      reasonably believe is lawfully issued.</li>
-      <li>To enforce our Terms of Service, protect the rights, property, or safety of 4 SHIELD LLC,
-      our users, or the public, or to detect or prevent fraud, abuse, or security incidents.</li>
-      <li>In connection with a corporate transaction (merger, acquisition, financing, sale of
-      assets) — in which case we will provide notice and the acquirer will be bound by the same
-      privacy commitments or you will be given a chance to delete your data first.</li>
-    </ul>
-
-    <h2>8. Retention and deletion</h2>
-    <p>
-      <strong>Documents in your Private Vault are retained until you delete them.</strong> The
-      system never unilaterally deletes Vault content while your account is active. You can delete
-      individual documents, individual certificates, or close your account at any time from your
-      account settings.
-    </p>
-    <p>
-      <strong>Issued Integrity Certificates have a permanent record in the Public Registry</strong>
-      (certificate ID, hash, timestamp, scoring metadata) for verifiability. The Registry contains
-      no source text. Deleting a certificate from your Vault removes the document content but does
-      not retract the Registry record — that is the point of the Registry.
-    </p>
-    <p>
-      <strong>Account closure.</strong> When you close your account, Vault content is deleted
-      within thirty (30) days. Billing records are retained for the period required by tax and
-      financial-record-keeping laws (typically seven years). Public Registry records remain.
-    </p>
-
-    <h2>9. Security</h2>
-    <p>
-      Documents are transmitted to our service over TLS and stored encrypted at rest in AWS S3
-      under accounts owned by 4 SHIELD LLC. Production credentials are held in AWS Secrets Manager
-      with restricted IAM access. Database access is gated through Supabase RLS policies tied to
-      your account.
-    </p>
-    <p>
-      No system is perfectly secure. If we become aware of a security incident materially
-      affecting your data, we will notify you and the relevant authorities as required by
-      applicable law.
-    </p>
-
-    <h2>10. Your rights</h2>
-    <p>Depending on where you live, you may have the right to:</p>
-    <ul>
-      <li>Access the personal information we hold about you.</li>
-      <li>Correct inaccurate information.</li>
-      <li>Delete your information, subject to billing-record-retention requirements.</li>
-      <li>Export a copy of your account data and issued certificates.</li>
-      <li>Object to or restrict certain processing.</li>
-      <li>Opt out of any non-essential analytics or marketing communications.</li>
-    </ul>
-    <p>
-      To exercise any of these rights, email <a href="mailto:hello@4cite.ai">hello@4cite.ai</a>
-      from the address on your account or include enough information for us to verify your
-      identity. We will respond within thirty (30) days.
-    </p>
-
-    <h2>11. Cookies and similar technologies</h2>
-    <p>
-      4CITE.ai uses a small number of strictly necessary cookies and similar local-storage values
-      to keep you signed in, remember your usage session, and gate the free check counter. We do
-      not use third-party advertising cookies or behavioral-tracking pixels.
-    </p>
-
-    <h2>12. International users</h2>
-    <p>
-      4 SHIELD LLC is based in the United States. By using 4CITE.ai, you understand and consent
-      to your information being processed in the United States and in any region where our
-      subprocessors operate. Where required, we rely on Standard Contractual Clauses or other
-      lawful transfer mechanisms with our subprocessors.
-    </p>
-
-    <h2>13. Children</h2>
-    <p>
-      4CITE.ai is not intended for children under sixteen (16). We do not knowingly collect
-      personal information from anyone under sixteen. If you believe a child has provided us
-      with information, contact <a href="mailto:hello@4cite.ai">hello@4cite.ai</a> and we will
-      delete it.
-    </p>
-
-    <h2>14. Changes to this policy</h2>
-    <p>
-      We update this policy from time to time. Material changes will be announced by email to
-      account holders and posted on this page with a new "Last updated" date. Continued use of
-      4CITE.ai after a material change constitutes acceptance of the revised policy.
-    </p>
-
-    <h2>15. Contact</h2>
-    <p>
-      Privacy questions, data subject requests (access, deletion, export), and subprocessor
-      inquiries: <a href="mailto:hello@4cite.ai">hello@4cite.ai</a>.
-    </p>
-    <p style="font-size:13px;color:var(--muted);margin-top:32px;">
-      4 SHIELD LLC · Wyoming Benefit LLC · Operator of 4CITE.ai
-    </p>
-
-  </div>
-</main>
-
-<footer>
-  <div class="fb"><span class="n4">4</span><span class="nc">CITE</span><span class="na">.ai</span></div>
-  <div class="fl">
-    <a href="/about">About</a>
-    <a href="/contact">Contact</a>
-    <a href="/privacy">Privacy</a>
-    <a href="/terms">Terms</a>
-  </div>
-  <div class="fr">© 2026 4 SHIELD LLC · All Rights Reserved</div>
-</footer>
-
-</body>
-</html>
+  

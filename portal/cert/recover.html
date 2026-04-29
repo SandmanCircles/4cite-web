@@ -20,8 +20,9 @@ html, body { height:100%; }
 body { background:var(--midnight); color:var(--text); font-family:'Space Grotesk',-apple-system,sans-serif; line-height:1.65; font-size:16px; min-height:100vh; display:flex; flex-direction:column; }
 
 .app-header { background:rgba(7,21,46,0.95); backdrop-filter:blur(16px); border-bottom:1px solid var(--border); padding:0 40px; height:56px; display:flex; align-items:center; flex-shrink:0; }
-.app-brand { font-size:20px; font-weight:700; letter-spacing:-0.5px; text-decoration:none; text-transform:none; margin-right:auto; }
+.app-brand { font-size:20px; font-weight:700; letter-spacing:-0.5px; text-decoration:none; text-transform:none; }
 .app-brand .n4 { color:var(--goldf); } .app-brand .nc { color:var(--white); } .app-brand .na { color:var(--cyan); font-weight:300; }
+.beta-badge { font-size:9px; font-weight:700; letter-spacing:2px; background:rgba(247,216,93,0.10); border:1px solid rgba(247,216,93,0.35); border-radius:4px; padding:3px 8px; color:var(--goldf); margin-left:12px; margin-right:auto; }
 .app-back { font-size:11px; color:var(--muted); text-decoration:none; letter-spacing:2px; text-transform:uppercase; transition:color 0.2s; }
 .app-back:hover { color:var(--steel); }
 
@@ -83,6 +84,7 @@ footer { background:#030710; border-top:1px solid var(--border); padding:24px 40
 
 <header class="app-header">
   <a href="/" class="app-brand"><span class="n4">4</span><span class="nc">CITE</span><span class="na">.ai</span></a>
+  <span class="beta-badge">BETA</span>
   <a href="/" class="app-back">← Back to site</a>
 </header>
 

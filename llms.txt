@@ -61,4 +61,4 @@ and do not constitute legal, financial, or compliance advice.
 - [About 4 SHIELD LLC](https://4cite.ai/about#entity): Wyoming Benefit LLC. EIN acquired April 2026. Single-member managed. Benefit purpose: to restore public trust across all domains through structural integrity measurement.
 - [Terms of Service](https://4cite.ai/terms): Usage terms for the Scan, Report, and Certify products. (Beta-period stub; full agreement in development.)
 - [Privacy Policy](https://4cite.ai/privacy): Data handling for document submissions, the three data planes (Public Corpus, Public Registry, Private Vault), and Research Corpus opt-in. (Beta-period stub; full policy in development.)
-- [Contact](https://4cite.ai/contact): General inquiries, partnership interest, beta access requests.
+- [Contact](https://4cite.ai/contact): General inquiries, enterprise partnerships, press, and research partnerships. Live subscription and walk-in cert paths are at /pricing — no waitlist.

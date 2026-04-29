@@ -8,6 +8,8 @@
 <meta name="theme-color" content="#07152E">
 <link rel="apple-touch-icon" href="/icons/icon-192.png">
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
 <style>
 :root {
   --midnight:#07152E; --navy:#0B2358; --card:#0C1628; --border:#1A3060;
@@ -20,8 +22,9 @@ html, body { height:100%; }
 body { background:var(--midnight); color:var(--text); font-family:'Space Grotesk',-apple-system,sans-serif; line-height:1.65; font-size:16px; min-height:100vh; display:flex; flex-direction:column; }
 
 .app-header { background:rgba(7,21,46,0.95); backdrop-filter:blur(16px); border-bottom:1px solid var(--border); padding:0 40px; height:56px; display:flex; align-items:center; flex-shrink:0; }
-.app-brand { font-size:20px; font-weight:700; letter-spacing:-0.5px; text-decoration:none; text-transform:none; margin-right:auto; }
+.app-brand { font-size:20px; font-weight:700; letter-spacing:-0.5px; text-decoration:none; text-transform:none; }
 .app-brand .n4 { color:var(--goldf); } .app-brand .nc { color:var(--white); } .app-brand .na { color:var(--cyan); font-weight:300; }
+.beta-badge { font-size:9px; font-weight:700; letter-spacing:2px; background:rgba(247,216,93,0.10); border:1px solid rgba(247,216,93,0.35); border-radius:4px; padding:3px 8px; color:var(--goldf); margin-left:12px; margin-right:auto; }
 .app-back { font-size:11px; color:var(--muted); text-decoration:none; letter-spacing:2px; text-transform:uppercase; transition:color 0.2s; }
 .app-back:hover { color:var(--steel); }
 
@@ -71,6 +74,29 @@ h1 .g { color:var(--goldf); }
 .error-msg { display:none; background:rgba(224,80,80,0.08); border:1px solid rgba(224,80,80,0.32); border-radius:8px; padding:12px 14px; margin-top:14px; font-size:13px; color:var(--red); }
 .error-msg.visible { display:block; }
 
+/* ── FILE UPLOAD (cleanup pass 2026-04-28) ── */
+.drop-zone { border:2px dashed var(--border); border-radius:10px; padding:26px 20px; text-align:center; cursor:pointer; transition:all 0.2s; margin-bottom:14px; position:relative; }
+.drop-zone:hover, .drop-zone.drag-over { border-color:var(--blue); background:rgba(43,99,217,0.05); }
+.drop-icon { font-size:24px; margin-bottom:8px; }
+.drop-title { font-size:13px; font-weight:600; color:var(--white); margin-bottom:4px; }
+.drop-sub { font-size:11px; color:var(--muted); margin-bottom:10px; }
+.drop-types { font-size:9px; letter-spacing:2px; text-transform:uppercase; color:var(--muted); margin-top:8px; }
+.drop-browse { background:transparent; border:1px solid var(--border); color:var(--steel); font-family:'Space Grotesk',sans-serif; font-size:10px; font-weight:600; letter-spacing:2px; text-transform:uppercase; padding:7px 16px; border-radius:6px; display:inline-block; }
+.drop-browse:hover { border-color:var(--blue); color:var(--text); }
+#fileInput { display:none; }
+.file-loaded { display:none; align-items:center; gap:10px; background:rgba(34,201,122,0.07); border:1px solid rgba(34,201,122,0.2); border-radius:8px; padding:10px 14px; margin-bottom:14px; }
+.file-loaded.visible { display:flex; }
+.file-loaded-name { font-size:12px; color:var(--green); font-weight:600; flex:1; word-break:break-all; }
+.file-loaded-size { font-size:10px; color:var(--muted); }
+.file-clear { background:transparent; border:none; color:var(--muted); cursor:pointer; font-size:14px; padding:0 4px; }
+.file-clear:hover { color:var(--red); }
+.extract-progress { display:none; font-size:11px; color:var(--muted); text-align:center; padding:8px 0; margin-bottom:8px; }
+.extract-progress.visible { display:block; }
+.extract-progress.error { color:var(--amber); }
+.divider-or { display:flex; align-items:center; gap:10px; margin:8px 0 14px; }
+.divider-or span { font-size:10px; color:var(--muted); text-transform:uppercase; letter-spacing:2px; white-space:nowrap; }
+.divider-or::before, .divider-or::after { content:''; flex:1; height:1px; background:var(--border); }
+
 /* Sidebar */
 .sidebar { display:flex; flex-direction:column; gap:18px; }
 .side-card { background:var(--card); border:1px solid var(--border); border-radius:12px; padding:24px 26px; }
@@ -107,6 +133,7 @@ footer { background:#030710; border-top:1px solid var(--border); padding:28px 40
 
 <header class="app-header">
   <a href="/" class="app-brand"><span class="n4">4</span><span class="nc">CITE</span><span class="na">.ai</span></a>
+  <span class="beta-badge">BETA</span>
   <a href="/" class="app-back">← Back to site</a>
 </header>
 
@@ -122,7 +149,7 @@ footer { background:#030710; border-top:1px solid var(--border); padding:28px 40
   <div class="page-eyebrow">Pay-Per · One-Time</div>
   <h1>Get a <span class="g">4CITE Cert</span></h1>
   <p class="page-lead">
-    Paste your document below (up to 75 pages, ~40,000 words), pick the vertical, enter your email,
+    Upload or paste your document (up to 75 pages, ~40,000 words), pick the vertical, enter your email,
     and complete payment with Stripe. The full <strong>Scan → Report → Certify</strong> pipeline
     runs once and produces an <strong>immutable Integrity Certificate</strong> that's emailed to
     you and recorded in the Public Registry.
@@ -157,7 +184,24 @@ footer { background:#030710; border-top:1px solid var(--border); padding:28px 40
       </div>
 
       <div class="field">
-        <label for="docText">Document text</label>
+        <label>Document</label>
+        <div class="drop-zone" id="dropZone" onclick="document.getElementById('fileInput').click()"
+             ondragover="onDragOver(event)" ondragleave="onDragLeave(event)" ondrop="onDrop(event)">
+          <div class="drop-icon">📄</div>
+          <div class="drop-title">Drop your document here</div>
+          <div class="drop-sub">or</div>
+          <span class="drop-browse">Browse files</span>
+          <div class="drop-types">PDF · DOCX · TXT</div>
+          <input type="file" id="fileInput" accept=".pdf,.docx,.doc,.txt" onchange="onFileSelect(event)">
+        </div>
+        <div class="file-loaded" id="fileLoaded">
+          <span style="font-size:13px;">📄</span>
+          <span class="file-loaded-name" id="fileName">—</span>
+          <span class="file-loaded-size" id="fileSize">—</span>
+          <button type="button" class="file-clear" onclick="clearFile()" aria-label="Remove file">✕</button>
+        </div>
+        <div class="extract-progress" id="extractProgress">Extracting text…</div>
+        <div class="divider-or"><span>or paste below</span></div>
         <textarea id="docText" required placeholder="Paste your document text here. Up to ~40,000 words (about 75 pages)."></textarea>
         <div class="charcount" id="charCount">0 characters · 0 words</div>
       </div>
@@ -306,6 +350,81 @@ certForm.addEventListener('submit', async (e) => {
 });
 
 updateCharCount();
+
+// ── File upload (drag/drop + browse) ────────────────────────
+if (typeof pdfjsLib !== 'undefined') {
+  pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+}
+function onDragOver(e){ e.preventDefault(); document.getElementById('dropZone').classList.add('drag-over'); }
+function onDragLeave(){ document.getElementById('dropZone').classList.remove('drag-over'); }
+function onDrop(e){
+  e.preventDefault();
+  document.getElementById('dropZone').classList.remove('drag-over');
+  const f = e.dataTransfer.files[0];
+  if (f) processFile(f);
+}
+function onFileSelect(e){ const f = e.target.files[0]; if (f) processFile(f); }
+function clearFile(){
+  document.getElementById('fileLoaded').classList.remove('visible');
+  document.getElementById('dropZone').style.display='block';
+  document.getElementById('extractProgress').classList.remove('visible','error');
+  document.getElementById('extractProgress').textContent='Extracting text…';
+  document.getElementById('fileInput').value='';
+  docText.value='';
+  updateCharCount();
+}
+function fmtBytes(b){ if (b>1048576) return (b/1048576).toFixed(1)+' MB'; if (b>1024) return (b/1024).toFixed(0)+' KB'; return b+' B'; }
+function readAsText(file){ return new Promise((res,rej)=>{ const r=new FileReader(); r.onload=e=>res(e.target.result); r.onerror=()=>rej(new Error('FileReader error')); r.readAsText(file); }); }
+async function extractDocx(file){
+  const buf = await file.arrayBuffer();
+  const result = await mammoth.extractRawText({ arrayBuffer: buf });
+  return result.value;
+}
+async function extractPdf(file){
+  if (typeof pdfjsLib === 'undefined') throw new Error('PDF library not loaded');
+  const buf = await file.arrayBuffer();
+  const pdf = await pdfjsLib.getDocument({ data: buf }).promise;
+  const pages = [];
+  for (let i=1; i<=pdf.numPages; i++) {
+    const page = await pdf.getPage(i);
+    const content = await page.getTextContent();
+    pages.push(content.items.map(it=>it.str).join(' '));
+  }
+  return pages.join('\n\n');
+}
+async function processFile(file){
+  const ext = file.name.split('.').pop().toLowerCase();
+  const allowed = ['pdf','docx','doc','txt'];
+  if (!allowed.includes(ext)) {
+    alert('Unsupported file type (.'+ext+'). Please use PDF, DOCX, or TXT.');
+    return;
+  }
+  const fl = document.getElementById('fileLoaded');
+  document.getElementById('fileName').textContent = file.name;
+  document.getElementById('fileSize').textContent = fmtBytes(file.size);
+  fl.classList.add('visible');
+  document.getElementById('dropZone').style.display='none';
+  const prog = document.getElementById('extractProgress');
+  prog.textContent = 'Extracting text…'; prog.classList.add('visible'); prog.classList.remove('error');
+  docText.value=''; updateCharCount();
+  try {
+    let text = '';
+    if (ext==='txt') text = await readAsText(file);
+    else if (ext==='docx' || ext==='doc') text = await extractDocx(file);
+    else if (ext==='pdf') text = await extractPdf(file);
+    text = (text||'').trim();
+    docText.value = text; updateCharCount();
+    prog.classList.remove('visible');
+    if (!text) {
+      prog.textContent = '⚠ No text extracted. Try a different format or paste below.';
+      prog.classList.add('visible','error');
+    }
+  } catch (err) {
+    console.error('extract failed', err);
+    prog.textContent = '⚠ Could not read this file: ' + (err.message||'unknown error') + '. Paste the text below.';
+    prog.classList.add('visible','error');
+  }
+}
 </script>
 
 </body>

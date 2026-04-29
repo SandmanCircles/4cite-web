@@ -63,19 +63,45 @@ footer { background:#030710; border-top:1px solid var(--border); padding:36px 80
   .content { padding:0 28px 80px; }
   footer { flex-direction:column; gap:20px; text-align:center; padding:28px; }
 }
+/* ── BETA badge + hamburger + drawer (cleanup pass 2026-04-28) ── */
+nav a.nav-brand { margin-right:12px !important; }
+.nav-beta-badge { display:inline-flex; align-items:center; font-size:9px; font-weight:700; letter-spacing:2px; background:rgba(247,216,93,0.10); border:1px solid rgba(247,216,93,0.35); border-radius:4px; padding:3px 8px; color:var(--goldf); margin-right:auto; flex-shrink:0; }
+.nav-burger { display:none; background:transparent; border:none; cursor:pointer; padding:8px; margin-left:4px; }
+.nav-burger span { display:block; width:22px; height:2px; background:var(--steel); margin:4px 0; border-radius:2px; transition:all 0.25s; }
+.nav-burger.open span:nth-child(1) { transform:translateY(6px) rotate(45deg); background:var(--goldf); }
+.nav-burger.open span:nth-child(2) { opacity:0; }
+.nav-burger.open span:nth-child(3) { transform:translateY(-6px) rotate(-45deg); background:var(--goldf); }
+.mobile-drawer { display:none; position:fixed; top:62px; left:0; right:0; z-index:199; background:rgba(7,21,46,0.98); backdrop-filter:blur(16px); border-bottom:1px solid var(--border); padding:18px 32px 24px; flex-direction:column; }
+.mobile-drawer.open { display:flex; }
+.mobile-drawer a { color:var(--steel); text-decoration:none; font-size:13px; font-weight:500; letter-spacing:2px; text-transform:uppercase; padding:14px 4px; border-bottom:1px solid rgba(26,48,96,0.3); transition:color 0.2s; }
+.mobile-drawer a:hover { color:var(--goldf); }
+.mobile-drawer a.drawer-signin { color:var(--goldf); border-bottom:none; margin-top:8px; padding-top:18px; letter-spacing:2.5px; }
+@media (max-width:960px){ .nav-burger{display:block;} nav .nav-cta{display:none;} }
 </style>
 </head>
 <body>
 
 <nav>
   <a href="/" class="nav-brand"><span class="n4">4</span><span class="nc">CITE</span><span class="na">.ai</span></a>
+  <span class="nav-beta-badge">BETA</span>
   <a href="/how-it-works">How It Works</a>
   <a href="/verticals/">Verticals</a>
   <a href="/pricing">Pricing</a>
   <a href="/research/">Research</a>
   <a href="/faq">FAQ</a>
-  <a href="/#waitlist" class="nav-cta">Join Beta →</a>
+  <a href="/account/login" class="nav-cta">Sign in</a>
+  <button class="nav-burger" id="navBurger" type="button" aria-label="Toggle menu" aria-expanded="false" onclick="toggleNav()"><span></span><span></span><span></span></button>
 </nav>
+<div class="mobile-drawer" id="mobileDrawer">
+  <a href="/how-it-works">How It Works</a>
+  <a href="/verticals/">Verticals</a>
+  <a href="/pricing">Pricing</a>
+  <a href="/research/">Research</a>
+  <a href="/faq">FAQ</a>
+  <a href="/about">About</a>
+  <a href="/contact">Contact</a>
+  <a href="/account/login" class="drawer-signin">Sign in →</a>
+</div>
 
 <main>
 
@@ -466,25 +492,35 @@ footer { background:#030710; border-top:1px solid var(--border); padding:36px 80
       <article class="faq-item" id="how-much">
         <h3>How much does 4CITE cost?</h3>
         <p>
-          4CITE is currently in closed beta. Pricing during beta:
+          Beta pricing is published in full at <a href="/pricing">/pricing</a>. Summary:
         </p>
         <p>
-          <strong>Scan — Free (limited).</strong> Initial structural analysis, tier
-          classification, and summary gate scores. Available to waitlist members during beta.
+          <strong>Walk-in 4CITE Cert — $15 per certificate.</strong> No account, no
+          subscription. Paste a document, pay, receive a PDF Integrity Certificate by
+          email. The full Scan + Report + Certify pipeline runs once and produces an
+          immutable certificate stored permanently in the Cert Vault.
         </p>
         <p>
-          <strong>Report — Subscription.</strong> Full four-gate scoring with narrative,
-          longitudinal data where available, archetype classification, and OMS breakdown.
-          Priced per vertical or as a cross-vertical subscription. Pricing details will
-          be published at <a href="/pricing">/pricing</a> when beta opens.
+          <strong>4CITE⁴one — $50 / month.</strong> 1 seat, 225 units / month. Units
+          work across all three verticals. Typical use: 15 certs per month or an
+          equivalent research mix.
         </p>
         <p>
-          <strong>Certificate — Per issuance.</strong> Immutable archived record of
-          Scan and Report findings. Volume pricing available for institutional users.
+          <strong>4CITE⁴more — $150 / month.</strong> 2–10 seats, 750 units / month
+          shared pool, team usage dashboard, proration on plan changes.
         </p>
         <p>
-          <strong>Enterprise / Institutional.</strong> Site license pricing available for
-          law firms, investment banks, government agencies, and academic institutions.
+          <strong>4CITE⁴all — $500 / month.</strong> 10–50 seats, 3,000 units / month
+          org-wide shared pool, $0.167 / unit effective rate.
+        </p>
+        <p>
+          <strong>Top-up packs.</strong> 100 / 500 / 2,000-unit packs for any
+          subscriber when the monthly allotment runs out. Top-up units carry forward
+          across billing periods until used.
+        </p>
+        <p>
+          <strong>Enterprise / Institutional.</strong> Site license pricing for law
+          firms, investment platforms, government agencies, and academic institutions.
           <a href="/contact">Contact us</a> for details.
         </p>
       </article>
@@ -492,9 +528,11 @@ footer { background:#030710; border-top:1px solid var(--border); padding:36px 80
       <article class="faq-item" id="how-to-access">
         <h3>How do I get access?</h3>
         <p>
-          4CITE is in closed beta. Join the waitlist at <a href="/#waitlist">4cite.ai</a>.
-          We are opening access by vertical — law, business, and government — and will
-          notify waitlist members when their vertical opens.
+          Two paths. For one document: buy a $15 walk-in cert at
+          <a href="/portal/certify">/portal/certify</a> — no account, no subscription.
+          For ongoing use: pick a plan at <a href="/pricing">/pricing</a> and sign in
+          at <a href="/account/login">/account/login</a>. Both paths are live now in
+          closed beta across law, business, and government.
         </p>
       </article>
 
@@ -543,5 +581,8 @@ footer { background:#030710; border-top:1px solid var(--border); padding:36px 80
   <div class="fr">© 2026 4 SHIELD LLC · All Rights Reserved</div>
 </footer>
 
+<script>
+function toggleNav(){var d=document.getElementById('mobileDrawer'),b=document.getElementById('navBurger');var o=d.classList.toggle('open');b.classList.toggle('open',o);b.setAttribute('aria-expanded',o?'true':'false');}
+</script>
 </body>
 </html>

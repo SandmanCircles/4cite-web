@@ -5,7 +5,6 @@
     }
   },
   "rewrites": [
-    { "source": "/app",            "destination": "/app.html" },
     { "source": "/about",          "destination": "/about.html" },
     { "source": "/faq",            "destination": "/faq.html" },
     { "source": "/how-it-works",   "destination": "/how-it-works.html" },

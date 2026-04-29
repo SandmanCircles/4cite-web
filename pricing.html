@@ -148,19 +148,45 @@ footer { background:#030710; border-top:1px solid var(--border); padding:36px 80
 @media (max-width:760px) {
   .vp-options { grid-template-columns:1fr; }
 }
+/* ── BETA badge + hamburger + drawer (cleanup pass 2026-04-28) ── */
+nav a.nav-brand { margin-right:12px !important; }
+.nav-beta-badge { display:inline-flex; align-items:center; font-size:9px; font-weight:700; letter-spacing:2px; background:rgba(247,216,93,0.10); border:1px solid rgba(247,216,93,0.35); border-radius:4px; padding:3px 8px; color:var(--goldf); margin-right:auto; flex-shrink:0; }
+.nav-burger { display:none; background:transparent; border:none; cursor:pointer; padding:8px; margin-left:4px; }
+.nav-burger span { display:block; width:22px; height:2px; background:var(--steel); margin:4px 0; border-radius:2px; transition:all 0.25s; }
+.nav-burger.open span:nth-child(1) { transform:translateY(6px) rotate(45deg); background:var(--goldf); }
+.nav-burger.open span:nth-child(2) { opacity:0; }
+.nav-burger.open span:nth-child(3) { transform:translateY(-6px) rotate(-45deg); background:var(--goldf); }
+.mobile-drawer { display:none; position:fixed; top:62px; left:0; right:0; z-index:199; background:rgba(7,21,46,0.98); backdrop-filter:blur(16px); border-bottom:1px solid var(--border); padding:18px 32px 24px; flex-direction:column; }
+.mobile-drawer.open { display:flex; }
+.mobile-drawer a { color:var(--steel); text-decoration:none; font-size:13px; font-weight:500; letter-spacing:2px; text-transform:uppercase; padding:14px 4px; border-bottom:1px solid rgba(26,48,96,0.3); transition:color 0.2s; }
+.mobile-drawer a:hover { color:var(--goldf); }
+.mobile-drawer a.drawer-signin { color:var(--goldf); border-bottom:none; margin-top:8px; padding-top:18px; letter-spacing:2.5px; }
+@media (max-width:960px){ .nav-burger{display:block;} nav .nav-cta{display:none;} }
 </style>
 </head>
 <body>
 
 <nav>
   <a href="/" class="nav-brand"><span class="n4">4</span><span class="nc">CITE</span><span class="na">.ai</span></a>
+  <span class="nav-beta-badge">BETA</span>
   <a href="/how-it-works">How It Works</a>
   <a href="/verticals/">Verticals</a>
   <a href="/pricing">Pricing</a>
   <a href="/research/">Research</a>
   <a href="/faq">FAQ</a>
-  <a href="/#waitlist" class="nav-cta">Join Beta →</a>
+  <a href="/account/login" class="nav-cta">Sign in</a>
+  <button class="nav-burger" id="navBurger" type="button" aria-label="Toggle menu" aria-expanded="false" onclick="toggleNav()"><span></span><span></span><span></span></button>
 </nav>
+<div class="mobile-drawer" id="mobileDrawer">
+  <a href="/how-it-works">How It Works</a>
+  <a href="/verticals/">Verticals</a>
+  <a href="/pricing">Pricing</a>
+  <a href="/research/">Research</a>
+  <a href="/faq">FAQ</a>
+  <a href="/about">About</a>
+  <a href="/contact">Contact</a>
+  <a href="/account/login" class="drawer-signin">Sign in →</a>
+</div>
 
 <main>
 
@@ -358,215 +384,4 @@ footer { background:#030710; border-top:1px solid var(--border); padding:36px 80
       <div class="enterprise-card">
         <div class="ent-left">
           <h3>Enterprise Inquiry</h3>
-          <p>Law firms with active dockets, investment platforms scoring EDGAR filings at scale, government agencies processing regulatory document volumes. Reach out directly — no public floor price.</p>
-        </div>
-        <div class="ent-right">
-          <a href="mailto:hello@4cite.ai">Contact Enterprise →</a>
-        </div>
-      </div>
-    </section>
-
-    <!-- ═══════════════════════════════ REFUNDS & CANCELLATIONS ═══════════════════════════════ -->
-    <section class="section" id="refunds">
-      <div class="sec-label">Refunds &amp; Cancellations</div>
-      <h2>Refunds &amp; <span class="g">Cancellations</span></h2>
-      <p>
-        Plain-language summary of how refunds, cancellations, and renewals work at 4CITE.ai.
-        These terms are part of your purchase. The full legal version lives in the
-        <a href="/terms" style="color:var(--goldf);text-decoration:none;">Terms of Service</a>.
-      </p>
-
-      <div class="unit-explainer" style="background:rgba(247,216,93,0.05);border-color:rgba(247,216,93,0.25);margin-top:20px;">
-        <h3 style="color:var(--goldf);">Walk-in 4CITE Cert ($15) — pay-per</h3>
-        <p style="color:var(--steel);font-size:14px;line-height:1.8;margin:0;">
-          A 4CITE Cert is a finished digital deliverable. Once your certificate has been issued,
-          recorded in the Public Registry, and delivered (PDF emailed and stored in your Cert
-          Vault), the purchase is <strong style="color:var(--text);">non-refundable</strong>. The
-          certificate is permanent — there is no operational way to "un-issue" it. We will refund
-          a Cert purchase only when a technical failure on our side prevents delivery (for example,
-          the pipeline errors out and no certificate is produced). In that case, contact
-          <a href="mailto:hello@4cite.ai" style="color:var(--cyan);">hello@4cite.ai</a> within
-          14 days and we will refund in full or, at your option, re-run the analysis.
-        </p>
-      </div>
-
-      <div class="unit-explainer" style="margin-top:16px;">
-        <h3>Subscriptions — 4CITE⁴one / 4CITE⁴more / 4CITE⁴all</h3>
-        <p style="color:var(--steel);font-size:14px;line-height:1.8;margin:0;">
-          Subscriptions are billed monthly in advance. You can
-          <strong style="color:var(--text);">cancel at any time</strong> from your
-          <a href="/account/billing" style="color:var(--cyan);">account billing page</a>, which
-          opens the Stripe Customer Portal. Cancellation stops the next renewal — you keep full
-          access and your remaining unit allotment until the end of the current billing period.
-          We do <strong style="color:var(--text);">not pro-rate</strong> partial months: no refund
-          is issued for the unused portion of a period that has already started. Switching tiers
-          mid-period is pro-rated by Stripe in the standard way (you are charged or credited the
-          difference on your next invoice).
-        </p>
-      </div>
-
-      <div class="unit-explainer" style="margin-top:16px;">
-        <h3>Top-up packs (100 / 500 / 2,000 units)</h3>
-        <p style="color:var(--steel);font-size:14px;line-height:1.8;margin:0;">
-          Top-up packs are <strong style="color:var(--text);">non-refundable</strong> once
-          purchased. Top-up units do not expire — they carry forward across billing periods until
-          used, even if you downgrade or cancel your subscription, as long as your account remains
-          open.
-        </p>
-      </div>
-
-      <div class="unit-explainer" style="margin-top:16px;">
-        <h3>Enterprise</h3>
-        <p style="color:var(--steel);font-size:14px;line-height:1.8;margin:0;">
-          Enterprise terms are governed by the order form or master services agreement signed
-          with 4 SHIELD LLC. Refund and cancellation rights for enterprise customers are set in
-          that agreement and supersede the terms above.
-        </p>
-      </div>
-
-      <div class="unit-explainer" style="margin-top:16px;background:rgba(43,99,217,0.06);border-color:rgba(43,99,217,0.25);">
-        <h3 style="color:var(--cyan);">Failed payments &amp; chargebacks</h3>
-        <p style="color:var(--steel);font-size:14px;line-height:1.8;margin:0;">
-          If a renewal payment fails, Stripe will retry the charge per its standard dunning
-          schedule and notify you by email. If the payment ultimately cannot be collected, the
-          subscription will be paused — your account remains accessible but pipeline calls will
-          return a 402 status until billing is resolved. Initiating a chargeback for a transaction
-          where the service was successfully delivered may result in account suspension while we
-          review the dispute.
-        </p>
-      </div>
-
-      <p style="font-size:13px;color:var(--muted);margin-top:18px;">
-        To request a refund covered by the conditions above, or to ask any billing question,
-        email <a href="mailto:hello@4cite.ai" style="color:var(--cyan);">hello@4cite.ai</a> from
-        the address on your account. We respond to billing inquiries within two business days.
-      </p>
-    </section>
-
-    <!-- ═══════════════════════════════ PRICING FAQ ═══════════════════════════════ -->
-    <section class="section" id="faq">
-      <div class="sec-label">Pricing Questions</div>
-      <h2>Common <span class="g">Questions</span></h2>
-      <div class="mini-faq">
-        <div class="mfaq-item">
-          <h3>What is the difference between the walk-in Cert and a subscription?</h3>
-          <p>The walk-in 4CITE Cert ($15) requires no account — you paste a document, pay, and receive a certificate by email. Subscriptions give you a monthly unit allotment for ongoing analysis across all three verticals. If you need one certificate, use the walk-in. If you're running 15 or more analyses a month, a subscription is more economical.</p>
-        </div>
-        <div class="mfaq-item">
-          <h3>What does "units work across all three verticals" mean?</h3>
-          <p>The same unit allotment covers law, business, and government documents. A solo attorney on 4CITE⁴one can use their 225 monthly units on briefs, EDGAR filings, and regulatory documents in any combination — there is no per-vertical budget restriction.</p>
-        </div>
-        <div class="mfaq-item">
-          <h3>Do unused units roll over?</h3>
-          <p>Monthly subscription units reset at each billing period and do not roll over. Top-up pack units do not expire — they carry forward across billing periods until used. If you anticipate a high-volume month, purchasing a top-up pack in advance is more economical than relying on rollover.</p>
-        </div>
-        <div class="mfaq-item">
-          <h3>Does a certificate expire?</h3>
-          <p>No. Certificates stored in the Cert Vault are permanent, with no auto-expiration. The scoring is frozen at the moment of issuance. The user controls deletion — the system never deletes user data unilaterally.</p>
-        </div>
-        <div class="mfaq-item">
-          <h3>Is the pricing shown here final?</h3>
-          <p>Pricing shown is BETA pricing, locked as of April 2026. Post-beta pricing may differ. Beta participants will be notified before any pricing changes and offered the opportunity to lock beta rates.</p>
-        </div>
-        <div class="mfaq-item">
-          <h3>Can I score documents privately?</h3>
-          <p>Yes. Non-certified documents sit in your private account queue until you delete them. Research Corpus inclusion is opt-in only and defaults to off — you must actively choose to contribute. Certificate documents are stored permanently in the Cert Vault, but Vault storage is user-controlled for deletion.</p>
-        </div>
-      </div>
-    </section>
-
-  </div><!-- end .content -->
-</main>
-
-<footer>
-  <div class="fb"><span class="n4">4</span><span class="nc">CITE</span><span class="na">.ai</span></div>
-  <div class="fl">
-    <a href="/about">About</a>
-    <a href="/contact">Contact</a>
-    <a href="/privacy">Privacy</a>
-    <a href="/terms">Terms</a>
-  </div>
-  <div class="fr">© 2026 4 SHIELD LLC · All Rights Reserved</div>
-</footer>
-
-<script>
-// ── Vertical capture (amendment §A2.5) ─────────────────────────
-const API_BASE = 'https://api.4cite.ai';
-const VALID_VERTICALS = ['law', 'biz', 'gov'];
-const VERTICAL_PRETTY = { law: '4CITE⁴law', biz: '4CITE⁴biz', gov: '4CITE⁴gov' };
-
-function readVerticalFromUrl() {
-  const params = new URLSearchParams(window.location.search);
-  const v = params.get('vertical');
-  return VALID_VERTICALS.includes(v) ? v : null;
-}
-
-let selectedVertical = readVerticalFromUrl();
-const picker = document.getElementById('verticalPicker');
-const subCtas = document.querySelectorAll('.sub-checkout');
-
-function applyVertical(v) {
-  selectedVertical = v;
-  if (v) {
-    picker.querySelectorAll('.vp-opt').forEach(opt => {
-      opt.classList.toggle('selected', opt.dataset.vertical === v);
-    });
-    document.getElementById('vpSelectedLabel').textContent = VERTICAL_PRETTY[v];
-    document.getElementById('vpSelected').style.display = 'block';
-    picker.classList.add('locked');
-    subCtas.forEach(b => { b.disabled = false; });
-  } else {
-    subCtas.forEach(b => { b.disabled = true; });
-  }
-}
-
-if (selectedVertical) {
-  // Vertical came from URL — picker stays hidden, CTAs enabled.
-  subCtas.forEach(b => { b.disabled = false; });
-} else {
-  // Show picker, lock CTAs until choice is made.
-  picker.style.display = 'block';
-  subCtas.forEach(b => { b.disabled = true; });
-}
-
-picker.querySelectorAll('.vp-opt').forEach(opt => {
-  opt.addEventListener('click', () => applyVertical(opt.dataset.vertical));
-});
-
-// ── Subscription CTA → /api/checkout/subscription ──────────────
-async function startSubscriptionCheckout(tier, btn) {
-  if (!selectedVertical) {
-    picker.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    return;
-  }
-  const orig = btn.textContent;
-  btn.disabled = true;
-  btn.textContent = 'Loading…';
-  try {
-    const res = await fetch(`${API_BASE}/api/checkout/subscription`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ tier, vertical: selectedVertical }),
-    });
-    if (!res.ok) throw new Error(`HTTP ${res.status}`);
-    const data = await res.json();
-    if (data.checkout_url) {
-      window.location.href = data.checkout_url;
-      return;
-    }
-    throw new Error('No checkout URL returned');
-  } catch (err) {
-    console.error('subscription checkout failed', err);
-    btn.textContent = 'Try again →';
-    btn.disabled = false;
-    setTimeout(() => { btn.textContent = orig; }, 3000);
-  }
-}
-
-subCtas.forEach(btn => {
-  btn.addEventListener('click', () => startSubscriptionCheckout(btn.dataset.tier, btn));
-});
-</script>
-
-</body>
-</html>
+          <p>La

@@ -112,21 +112,7 @@ nav a:hover { color:var(--goldf); }
 .beta-sub { font-size:16px; color:var(--steel); line-height:1.75; max-width:580px; margin:0 auto 40px; }
 .beta-sub strong { color:var(--text); font-weight:500; }
 
-/* Inline waitlist form */
-.waitlist-form { display:flex; gap:10px; max-width:580px; margin:0 auto 16px; flex-wrap:wrap; }
-.waitlist-email { flex:1; min-width:200px; background:rgba(255,255,255,0.04); border:1px solid var(--border); border-radius:8px; color:var(--text); font-family:'Space Grotesk',sans-serif; font-size:14px; padding:13px 18px; outline:none; transition:border-color 0.2s; }
-.waitlist-email:focus { border-color:var(--blue); }
-.waitlist-email::placeholder { color:var(--muted); }
-.waitlist-select { background:rgba(255,255,255,0.04); border:1px solid var(--border); border-radius:8px; color:var(--text); font-family:'Space Grotesk',sans-serif; font-size:13px; padding:13px 16px; outline:none; cursor:pointer; -webkit-appearance:none; min-width:170px; transition:border-color 0.2s; }
-.waitlist-select:focus { border-color:var(--blue); }
-.waitlist-select option { background:#0C1628; }
-.waitlist-btn { background:linear-gradient(135deg,#D89A0B,#8B5E00); border:1px solid rgba(216,154,11,0.6); color:var(--midnight); font-family:'Space Grotesk',sans-serif; font-size:12px; font-weight:700; letter-spacing:2px; text-transform:uppercase; padding:13px 28px; border-radius:8px; cursor:pointer; transition:all 0.2s; white-space:nowrap; }
-.waitlist-btn:hover { background:linear-gradient(135deg,#F7D85D,#C09010); box-shadow:0 6px 24px rgba(216,154,11,0.3); }
-.waitlist-note { font-size:11px; color:var(--muted); letter-spacing:1px; }
-.waitlist-success { display:none; text-align:center; padding:20px; background:rgba(34,201,122,0.06); border:1px solid rgba(34,201,122,0.2); border-radius:10px; }
-.waitlist-success-icon { font-size:28px; margin-bottom:8px; }
-.waitlist-success-title { font-size:16px; font-weight:700; color:var(--green); margin-bottom:4px; }
-.waitlist-success-sub { font-size:13px; color:var(--steel); }
+/* (waitlist form CSS removed in cleanup pass 2026-04-28) */
 
 /* ── INTEGRITY MAP PREVIEW ── */
 .map-preview { background:#060D1E; border-top:1px solid var(--border); border-bottom:1px solid var(--border); padding:80px 80px 64px; }
@@ -260,16 +246,31 @@ footer { background:#030710; border-top:1px solid var(--border); padding:40px 80
 @keyframes tileIn { from{opacity:0;transform:translateY(6px);} to{opacity:1;transform:translateY(0);} }
 .mp-tile { animation:tileIn 0.5s ease both; }
 
+/* ── BETA badge + hamburger + drawer (cleanup pass 2026-04-28) ── */
+nav a.nav-brand { margin-right:12px !important; }
+.nav-beta-badge { display:inline-flex; align-items:center; font-size:9px; font-weight:700; letter-spacing:2px; background:rgba(247,216,93,0.10); border:1px solid rgba(247,216,93,0.35); border-radius:4px; padding:3px 8px; color:var(--goldf); margin-right:auto; flex-shrink:0; }
+.nav-burger { display:none; background:transparent; border:none; cursor:pointer; padding:8px; margin-left:4px; }
+.nav-burger span { display:block; width:22px; height:2px; background:var(--steel); margin:4px 0; border-radius:2px; transition:all 0.25s; }
+.nav-burger.open span:nth-child(1) { transform:translateY(6px) rotate(45deg); background:var(--goldf); }
+.nav-burger.open span:nth-child(2) { opacity:0; }
+.nav-burger.open span:nth-child(3) { transform:translateY(-6px) rotate(-45deg); background:var(--goldf); }
+.mobile-drawer { display:none; position:fixed; top:62px; left:0; right:0; z-index:199; background:rgba(7,21,46,0.98); backdrop-filter:blur(16px); border-bottom:1px solid var(--border); padding:18px 32px 24px; flex-direction:column; }
+.mobile-drawer.open { display:flex; }
+.mobile-drawer a { color:var(--steel); text-decoration:none; font-size:13px; font-weight:500; letter-spacing:2px; text-transform:uppercase; padding:14px 4px; border-bottom:1px solid rgba(26,48,96,0.3); transition:color 0.2s; }
+.mobile-drawer a:hover { color:var(--goldf); }
+.mobile-drawer a.drawer-signin { color:var(--goldf); border-bottom:none; margin-top:8px; padding-top:18px; letter-spacing:2.5px; }
+
 @media (max-width:960px) {
-  nav{padding:0 24px;gap:24px;} nav a:not(.nav-cta){display:none;}
-  .hero{padding:120px 32px 80px;} .sec{padding:70px 32px;} .beta-strip{padding:60px 32px;} .map-preview{padding:60px 32px;}
+  nav{padding:0 24px;gap:16px;} nav a:not(.nav-brand):not(.nav-cta){display:none;}
+  nav .nav-cta{display:none;}
+  .nav-burger{display:block;}
+  .hero{padding:120px 32px 80px;} .sec{padding:70px 32px;} .map-preview{padding:60px 32px;}
   .pos-bar{padding:24px 32px;flex-direction:column;gap:24px;}
   .pos-item{border-right:none;border-bottom:1px solid var(--border);padding-bottom:24px;}
   .pos-item:last-child{border-bottom:none;}
   .gates{grid-template-columns:1fr;} .verts{grid-template-columns:1fr;}
   .evgrid{grid-template-columns:1fr;}
   .mp-cols{grid-template-columns:1fr;}
-  .waitlist-form{flex-direction:column;}
   footer{flex-direction:column;gap:24px;text-align:center;}
 }
 </style>
@@ -279,13 +280,25 @@ footer { background:#030710; border-top:1px solid var(--border); padding:40px 80
 <!-- NAV -->
 <nav>
   <a href="/" class="nav-brand" style="text-decoration:none;"><span class="n4">4</span><span class="nc">CITE</span><span class="na">.ai</span></a>
+  <span class="nav-beta-badge">BETA</span>
   <a href="/how-it-works">How It Works</a>
   <a href="/verticals/">Verticals</a>
   <a href="/pricing">Pricing</a>
   <a href="/research/">Research</a>
   <a href="/faq">FAQ</a>
-  <a href="#waitlist" class="nav-cta">Join Beta →</a>
+  <a href="/account/login" class="nav-cta">Sign in</a>
+  <button class="nav-burger" id="navBurger" type="button" aria-label="Toggle menu" aria-expanded="false" onclick="toggleNav()"><span></span><span></span><span></span></button>
 </nav>
+<div class="mobile-drawer" id="mobileDrawer">
+  <a href="/how-it-works">How It Works</a>
+  <a href="/verticals/">Verticals</a>
+  <a href="/pricing">Pricing</a>
+  <a href="/research/">Research</a>
+  <a href="/faq">FAQ</a>
+  <a href="/about">About</a>
+  <a href="/contact">Contact</a>
+  <a href="/account/login" class="drawer-signin">Sign in →</a>
+</div>
 
 <!-- HERO -->
 <section class="hero">
@@ -302,7 +315,7 @@ footer { background:#030710; border-top:1px solid var(--border); padding:40px 80
     one measurable standard for whether the <strong>reasoning actually holds</strong>.
   </p>
   <div class="hero-ctas">
-    <a href="#waitlist" class="btn-g">Join the Beta Waitlist →</a>
+    <a href="/pricing" class="btn-g">See Pricing →</a>
     <a href="#how" class="btn-s">See how it works →</a>
   </div>
   <!-- Corpus stats — live-updated by JS; static fallback values shown until API responds -->
@@ -327,37 +340,6 @@ footer { background:#030710; border-top:1px solid var(--border); padding:40px 80
   })();
   </script>
 </section>
-
-<!-- BETA STRIP -->
-<div class="beta-strip" id="waitlist">
-  <div class="beta-glow"></div>
-  <div class="beta-inner">
-    <div class="beta-badge">Closed Beta</div>
-    <div class="beta-hl">The engine is built.<br><span class="g">The corpus is growing.</span></div>
-    <div class="beta-sub">
-      4CITE is in closed beta across all three verticals. The backend is live, the scoring pipeline is running,
-      and the first documents are already scored. <strong>Early access is limited.</strong>
-      Join the waitlist to get priority access when we open the doors.
-    </div>
-    <div class="waitlist-form" id="waitlistForm">
-      <input class="waitlist-email" type="email" id="wEmail" placeholder="you@yourfirm.com" autocomplete="email">
-      <select class="waitlist-select" id="wVertical">
-        <option value="">I work in…</option>
-        <option value="law">Law — firm, court, compliance</option>
-        <option value="biz">Business — public company, finance</option>
-        <option value="gov">Government — agency, legislative</option>
-        <option value="other">Other</option>
-      </select>
-      <button class="waitlist-btn" onclick="submitWaitlist()">Join Waitlist →</button>
-    </div>
-    <div class="waitlist-success" id="waitlistSuccess">
-      <div class="waitlist-success-icon">✓</div>
-      <div class="waitlist-success-title">You're on the list.</div>
-      <div class="waitlist-success-sub">We'll reach out when beta access opens in your vertical.</div>
-    </div>
-    <div class="waitlist-note">No card required · No spam · Unsubscribe anytime</div>
-  </div>
-</div>
 
 <!-- INTEGRITY MAP PREVIEW -->
 <div class="map-preview">
@@ -565,8 +547,9 @@ footer { background:#030710; border-top:1px solid var(--border); padding:40px 80
 <!-- CTA -->
 <div class="cta-sec" id="contact">
   <h2 class="cta-hl">Three branches.<br><span style="color:var(--goldf);">One integrity standard.</span></h2>
-  <p class="cta-s">4CITE is in closed beta. The engine is built and scoring. Join the waitlist for priority access when we open the doors.</p>
-  <a href="#waitlist" class="btn-g" style="font-size:12px;letter-spacing:2px;">Join the Waitlist →</a>
+  <p class="cta-s">4CITE is live in closed beta. The engine is built and scoring. Pick a plan or run a single document through a walk-in cert.</p>
+  <a href="/pricing" class="btn-g" style="font-size:12px;letter-spacing:2px;">See Pricing →</a>
+  <a href="/portal/certify" class="btn-s" style="margin-left:18px;">Or get a $15 cert →</a>
   <p style="margin-top:28px;font-size:12px;color:var(--muted);letter-spacing:1px;">A product of 4 SHIELD LLC · 4CITE.ai · Wyoming Benefit LLC</p>
 </div>
 
@@ -583,26 +566,12 @@ footer { background:#030710; border-top:1px solid var(--border); padding:40px 80
 </footer>
 
 <script>
-// ── Waitlist form ──────────────────────────────────────────
-async function submitWaitlist(){
-  const email=document.getElementById('wEmail').value.trim();
-  const vert=document.getElementById('wVertical').value;
-  if(!email||!email.includes('@')){
-    document.getElementById('wEmail').style.borderColor='#E05050';
-    setTimeout(()=>document.getElementById('wEmail').style.borderColor='',1200);
-    return;
-  }
-  const btn=document.querySelector('.waitlist-btn');
-  btn.textContent='Joining…'; btn.disabled=true;
-  try {
-    await fetch('/api/gate/email',{
-      method:'POST',
-      headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({session_id:'waitlist-'+Date.now(),email,vertical:vert||'other'})
-    });
-  } catch(e){}
-  document.getElementById('waitlistForm').style.display='none';
-  document.getElementById('waitlistSuccess').style.display='block';
+// ── Mobile nav drawer ──────────────────────────────────────
+function toggleNav(){
+  var d=document.getElementById('mobileDrawer'),b=document.getElementById('navBurger');
+  var o=d.classList.toggle('open');
+  b.classList.toggle('open',o);
+  b.setAttribute('aria-expanded',o?'true':'false');
 }
 </script>
 </body>
