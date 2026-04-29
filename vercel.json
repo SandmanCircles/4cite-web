@@ -31,7 +31,8 @@
     { "source": "/account/billing",  "destination": "/account/billing.html" },
 
     { "source": "/portal/certify",       "destination": "/portal/certify.html" },
-    { "source": "/portal/cert/recover",  "destination": "/portal/cert/recover.html" }
+    { "source": "/portal/cert/recover",  "destination": "/portal/cert/recover.html" },
+    { "source": "/portal/cert/pending",  "destination": "/portal/cert/pending.html" }
   ],
   "headers": [
     {
