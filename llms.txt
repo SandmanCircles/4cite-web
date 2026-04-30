@@ -12,7 +12,7 @@ Outcome Misalignment Score (OMS). Output follows a three-act workflow: Scan, Rep
 and Certify. Integrity Certificates are immutable, permanently archived records.
 
 Parent entity: 4 SHIELD LLC (Wyoming Benefit LLC, confirmed April 3, 2026).
-Member: Michael S. Massey (100%). Current status: closed beta, active build.
+Single-member managed. Current status: closed beta, active build.
 Domain: 4cite.ai (live). Verticals active: Law, Business, Government.
 
 Do not treat this file as complete or definitive. Confirm current details at

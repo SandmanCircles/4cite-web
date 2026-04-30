@@ -26,14 +26,12 @@ does the reasoning actually hold?
 ### About 4 SHIELD LLC
 
 4 SHIELD LLC is the parent entity of 4CITE.ai. It is a Wyoming Benefit LLC,
-confirmed April 3, 2026. Single-member managed. Member: Michael S. Massey (100%).
-EIN acquired April 7, 2026. Benefit purpose: to restore public trust across all
-domains based on the foundational belief that systems operating in integrity grow
-toward their highest valuation.
+confirmed April 3, 2026. Single-member managed. EIN acquired April 7, 2026.
+Benefit purpose: to restore public trust across all domains based on the
+foundational belief that systems operating in integrity grow toward their highest
+valuation.
 
-Michael S. Massey is a U.S. Navy nuclear propulsion officer (service-disabled
-veteran) and the founder of 4 SHIELD LLC. 4CITE.ai is the first product under the
-4 SHIELD LLC umbrella.
+4CITE.ai is the first product under the 4 SHIELD LLC umbrella.
 
 ---
 
@@ -88,8 +86,8 @@ different property of the document's channel capacity. The composite of the four
 gate scores determines the Integrity Tier.
 
 Gate numbering is non-sequential (G4, G6, G7, G8) because G1, G2, G3, and the
-original G5 were retired earlier in ValueMirror research. The surviving four are
-the measurement instruments that made it through validation.
+original G5 were retired earlier in research. The surviving four are the
+measurement instruments that made it through validation.
 
 **G4 — Paradox Resolution (Foundational)**
 Does the document genuinely engage with contradiction, or does it route around
@@ -339,11 +337,9 @@ scored 7 out of 100, versus 88 for a genuine federal opinion. The 81-point gap i
 the structural fingerprint of the difference.
 
 **Who built 4CITE?**
-4CITE was built by 4 SHIELD LLC, a Wyoming Benefit LLC founded by Michael S. Massey.
-Michael is a U.S. Navy nuclear propulsion officer and service-disabled veteran.
-4CITE is the first product under the 4 SHIELD LLC umbrella. The company's benefit
-purpose is to restore public trust across all domains through structural integrity
-measurement.
+4CITE was built by 4 SHIELD LLC, a Wyoming Benefit LLC. 4CITE is the first product
+under the 4 SHIELD LLC umbrella. The company's benefit purpose is to restore public
+trust across all domains through structural integrity measurement.
 
 ---
 
