@@ -283,7 +283,6 @@ nav a.nav-brand { margin-right:12px !important; }
   <span class="nav-beta-badge">BETA</span>
   <a href="/how-it-works">How It Works</a>
   <a href="/verticals/">Verticals</a>
-  <a href="/map">Map</a>
   <a href="/pricing">Pricing</a>
   <a href="/research/">Research</a>
   <a href="/faq">FAQ</a>
@@ -293,7 +292,6 @@ nav a.nav-brand { margin-right:12px !important; }
 <div class="mobile-drawer" id="mobileDrawer">
   <a href="/how-it-works">How It Works</a>
   <a href="/verticals/">Verticals</a>
-  <a href="/map">Map</a>
   <a href="/pricing">Pricing</a>
   <a href="/research/">Research</a>
   <a href="/faq">FAQ</a>
@@ -320,102 +318,29 @@ nav a.nav-brand { margin-right:12px !important; }
     <a href="/pricing" class="btn-g">See Pricing →</a>
     <a href="#how" class="btn-s">See how it works →</a>
   </div>
-  <!-- Corpus stats — live-updated by JS; static fallback values shown until API responds -->
-  <div class="stats" id="heroStats" aria-label="Live corpus statistics">
-    <div><div class="stat-n g" id="hs-docs">16K+</div><div class="stat-l">Documents<br>in corpus</div></div>
+  <!-- Corpus stats — live from /api/stats. Row stays empty until the API responds. -->
+  <div class="stats" id="heroStats" aria-label="Live corpus statistics" hidden>
+    <div><div class="stat-n g" id="hs-docs">—</div><div class="stat-l">Documents<br>in corpus</div></div>
     <div class="stat-div"></div>
-    <div><div class="stat-n g" id="hs-entities">431+</div><div class="stat-l">Entities<br>tracked</div></div>
+    <div><div class="stat-n g" id="hs-entities">—</div><div class="stat-l">Entities<br>tracked</div></div>
     <div class="stat-div"></div>
-    <div><div class="stat-n g" id="hs-exams">30+</div><div class="stat-l">Structural<br>exams run</div></div>
+    <div><div class="stat-n g" id="hs-exams">—</div><div class="stat-l">Structural<br>exams run</div></div>
     <div class="stat-div"></div>
-    <div><div class="stat-n g" id="hs-pct">Growing</div><div class="stat-l">Corpus<br>scored</div></div>
+    <div><div class="stat-n g" id="hs-pct">—</div><div class="stat-l">Corpus<br>scored</div></div>
   </div>
   <script>
   (function(){
-    fetch('https://api.4cite.ai/api/stats').then(r=>r.json()).then(d=>{
-      function fmt(n){if(n>=1e6)return(n/1e6).toFixed(1)+'M';if(n>=1e3)return(n/1e3).toFixed(1)+'K';return n.toLocaleString();}
+    fetch('https://api.4cite.ai/api/stats').then(r=>{ if(!r.ok) throw 0; return r.json(); }).then(d=>{
+      function fmt(n){if(n==null)return'—';if(n>=1e6)return(n/1e6).toFixed(1)+'M';if(n>=1e3)return(n/1e3).toFixed(1)+'K';return n.toLocaleString();}
       document.getElementById('hs-docs').textContent=fmt(d.total_documents);
       document.getElementById('hs-entities').textContent=fmt(d.total_entities);
       document.getElementById('hs-exams').textContent=fmt(d.structural_exams);
-      document.getElementById('hs-pct').textContent=d.pct_scored;
-    }).catch(()=>{});
+      document.getElementById('hs-pct').textContent=d.pct_scored||'—';
+      document.getElementById('heroStats').hidden=false;
+    }).catch(()=>{ /* keep row hidden — no fake numbers */ });
   })();
   </script>
 </section>
-
-<!-- INTEGRITY MAP PREVIEW -->
-<div class="map-preview">
-  <div class="mp-inner">
-    <div class="mp-head">
-      <div class="mp-ey">Live Corpus · Beta Preview</div>
-      <div class="mp-t">The Integrity Map</div>
-      <div class="mp-s">Every tile is a real document, already scored by the 4CITE engine. Colored by integrity tier. The full interactive map launches with the beta.</div>
-      <div class="mp-note">Hover a tile in the full demo to see gate scores, archetype, and analytical notes →
-        <a href="/map" style="color:var(--goldf);text-decoration:none;margin-left:6px;border-bottom:1px solid rgba(247,216,93,0.3);padding-bottom:1px;">View Full Demo</a>
-      </div>
-    </div>
-
-    <div class="mp-cols">
-      <!-- LAW -->
-      <div>
-        <div class="mp-col-head law">⁴law · Judicial Branch</div>
-        <div class="mp-tiles">
-          <div class="mp-tile t1" style="animation-delay:0ms"><div class="mp-tile-tier">T1</div><div class="mp-tile-name">Brown v. Board</div><div class="mp-tile-score">88</div></div>
-          <div class="mp-tile t1" style="animation-delay:60ms"><div class="mp-tile-tier">T1</div><div class="mp-tile-name">Sanctions Opinion</div><div class="mp-tile-score">88</div></div>
-          <div class="mp-tile t1" style="animation-delay:120ms"><div class="mp-tile-tier">T1</div><div class="mp-tile-name">Dobbs v. Jackson</div><div class="mp-tile-score">58</div></div>
-          <div class="mp-tile t3" style="animation-delay:180ms"><div class="mp-tile-tier">T3</div><div class="mp-tile-name">Citizens United<div class="mp-theater"></div></div><div class="mp-tile-score">44</div></div>
-          <div class="mp-tile t3" style="animation-delay:240ms"><div class="mp-tile-tier">T3</div><div class="mp-tile-name">Bush v. Gore<div class="mp-theater"></div></div><div class="mp-tile-score">41</div></div>
-          <div class="mp-tile t4" style="animation-delay:300ms"><div class="mp-tile-tier">T4</div><div class="mp-tile-name">Mata v. Avianca<br><span style="font-size:8px;color:rgba(224,96,112,0.7);">ChatGPT-fabricated</span></div><div class="mp-tile-score">7</div></div>
-          <div class="mp-tile t4" style="animation-delay:360ms"><div class="mp-tile-tier">T4</div><div class="mp-tile-name">Park v. Kim<br><span style="font-size:8px;color:rgba(224,96,112,0.7);">Fabricated citations</span></div><div class="mp-tile-score">12</div></div>
-          <div class="mp-tile t3" style="animation-delay:420ms"><div class="mp-tile-tier">T3</div><div class="mp-tile-name">PSLRA Class Action<div class="mp-theater"></div></div><div class="mp-tile-score">36</div></div>
-        </div>
-        <div class="mp-coming">⁴law corpus expanding · beta</div>
-      </div>
-
-      <!-- BIZ -->
-      <div>
-        <div class="mp-col-head biz">⁴biz · SEC EDGAR · 431 companies</div>
-        <div class="mp-tiles">
-          <div class="mp-tile t1" style="animation-delay:30ms"><div class="mp-tile-tier">T1</div><div class="mp-tile-name">AAPL 10-K FY24</div><div class="mp-tile-score">82</div></div>
-          <div class="mp-tile t1" style="animation-delay:90ms"><div class="mp-tile-tier">T1</div><div class="mp-tile-name">MSFT 10-K FY24</div><div class="mp-tile-score">78</div></div>
-          <div class="mp-tile t1" style="animation-delay:150ms"><div class="mp-tile-tier">T1</div><div class="mp-tile-name">BRK.A Letter 2023</div><div class="mp-tile-score">87</div></div>
-          <div class="mp-tile t1" style="animation-delay:210ms"><div class="mp-tile-tier">T1</div><div class="mp-tile-name">JPM 10-K FY24</div><div class="mp-tile-score">72</div></div>
-          <div class="mp-tile t2" style="animation-delay:270ms"><div class="mp-tile-tier">T2</div><div class="mp-tile-name">GOOGL Q4 Q&amp;A</div><div class="mp-tile-score">62</div></div>
-          <div class="mp-tile t3" style="animation-delay:330ms"><div class="mp-tile-tier">T3</div><div class="mp-tile-name">META FY22 10-K<div class="mp-theater"></div></div><div class="mp-tile-score">41</div></div>
-          <div class="mp-tile t3" style="animation-delay:390ms"><div class="mp-tile-tier">T3</div><div class="mp-tile-name">XOM Climate Risk<div class="mp-theater"></div></div><div class="mp-tile-score">43</div></div>
-          <div class="mp-tile t3" style="animation-delay:450ms"><div class="mp-tile-tier">T3</div><div class="mp-tile-name">GS Proxy DEF 14A<div class="mp-theater"></div></div><div class="mp-tile-score">37</div></div>
-          <div class="mp-tile t4" style="animation-delay:510ms"><div class="mp-tile-tier">T4</div><div class="mp-tile-name">SVB FY22 Risk<div class="mp-theater"></div></div><div class="mp-tile-score">22</div></div>
-          <div class="mp-tile t4" style="animation-delay:570ms"><div class="mp-tile-tier">T4</div><div class="mp-tile-name">ENRN FY00 10-K<div class="mp-theater"></div></div><div class="mp-tile-score">8</div></div>
-        </div>
-      </div>
-
-      <!-- GOV -->
-      <div>
-        <div class="mp-col-head gov">⁴gov · Legislative Branch</div>
-        <div class="mp-tiles">
-          <div class="mp-tile t1" style="animation-delay:15ms"><div class="mp-tile-tier">T1</div><div class="mp-tile-name">Federalist No. 51</div><div class="mp-tile-score">91</div></div>
-          <div class="mp-tile t1" style="animation-delay:75ms"><div class="mp-tile-tier">T1</div><div class="mp-tile-name">Gettysburg Address</div><div class="mp-tile-score">89</div></div>
-          <div class="mp-tile t1" style="animation-delay:135ms"><div class="mp-tile-tier">T1</div><div class="mp-tile-name">Washington Farewell</div><div class="mp-tile-score">86</div></div>
-          <div class="mp-tile t2" style="animation-delay:195ms"><div class="mp-tile-tier">T2</div><div class="mp-tile-name">SotU 2001</div><div class="mp-tile-score">59</div></div>
-          <div class="mp-tile t1" style="animation-delay:255ms"><div class="mp-tile-tier">T1</div><div class="mp-tile-name">Volcker Testimony<br><span style="font-size:8px;color:rgba(247,216,93,0.6);">Senate 1981</span></div><div class="mp-tile-score">78</div></div>
-          <div class="mp-tile t3" style="animation-delay:315ms"><div class="mp-tile-tier">T3</div><div class="mp-tile-name">SotU 2025<div class="mp-theater"></div></div><div class="mp-tile-score">44</div></div>
-          <div class="mp-tile t3" style="animation-delay:375ms"><div class="mp-tile-tier">T3</div><div class="mp-tile-name">Zuckerberg Senate<div class="mp-theater"></div></div><div class="mp-tile-score">40</div></div>
-          <div class="mp-tile t4" style="animation-delay:435ms"><div class="mp-tile-tier">T4</div><div class="mp-tile-name">Iraq WMD Hearing<div class="mp-theater"></div></div><div class="mp-tile-score">21</div></div>
-        </div>
-        <div class="mp-coming">⁴gov corpus expanding · beta</div>
-      </div>
-    </div>
-
-    <div class="mp-legend">
-      <div class="mpl-item"><div class="mpl-dot" style="background:rgba(247,216,93,0.15);border-color:rgba(247,216,93,0.4);"></div>T1 High Integrity</div>
-      <div class="mpl-item"><div class="mpl-dot" style="background:rgba(125,235,255,0.12);border-color:rgba(125,235,255,0.35);"></div>T2 Assisted, Well-Reviewed</div>
-      <div class="mpl-item"><div class="mpl-dot" style="background:rgba(240,160,32,0.12);border-color:rgba(240,160,32,0.4);"></div>T3 Surface-Clean, Weak Foundation</div>
-      <div class="mpl-item"><div class="mpl-dot" style="background:rgba(200,48,64,0.12);border-color:rgba(200,48,64,0.35);"></div>T4 Structural Failure</div>
-      <div class="mpl-item"><div style="width:8px;height:8px;border-radius:50%;background:#FF5060;display:inline-block;margin-right:7px;"></div>Accountability Theater flag</div>
-    </div>
-    <div class="mp-link"><a href="/map">View full interactive demo →</a></div>
-  </div>
-</div>
 
 <!-- POSITIONING BAR -->
 <div class="pos-bar">
@@ -500,35 +425,6 @@ nav a.nav-brand { margin-right:12px !important; }
       <tr><td><span class="tb t4">T4</span></td><td class="t-sc">0 – 29</td><td class="t-d">Paper Doll</td><td class="t-d">Channel capacity catastrophically below the claimed signal. Dressed-up surface, hollow underneath. Near-total absence of structural integrity signals; the signature of accountability theater.</td></tr>
     </tbody>
   </table>
-</div>
-
-<hr class="divider">
-
-<!-- VERTICALS -->
-<div class="sec" id="verticals">
-  <div class="sec-lbl">Deployment Architecture</div>
-  <h2 class="sec-t">One Engine. <span class="g">Three Branches.</span></h2>
-  <p class="sec-s">4CITE is a domain-agnostic structural integrity engine that deploys into domain-specific verticals. Law, business, and government — the three institutional pillars where document integrity carries the highest public consequence.</p>
-  <div class="verts">
-    <div class="vc law">
-      <div class="vp">Phase 1 · Closed Beta</div>
-      <div class="vn">4CITE<sup>4</sup>law</div>
-      <div class="vd">Structural integrity analysis for legal professionals, law firms, and courts. Detects AI-hallucinated filings, structural weakness in briefs, and accountability theater before a document reaches the bench. Rule 11 defense, not just citation verification.</div>
-      <span class="vs s-beta">Beta · Priority Access</span>
-    </div>
-    <div class="vc biz">
-      <div class="vp">Phase 1 · Closed Beta</div>
-      <div class="vn">4CITE<sup>4</sup>biz</div>
-      <div class="vd">Structural integrity for public company communications. Scores SEC filings, earnings calls, and shareholder letters against a longitudinal baseline — detecting accountability drift before it becomes a disclosure liability.</div>
-      <span class="vs s-beta">Beta · 431 Companies Scored</span>
-    </div>
-    <div class="vc gov">
-      <div class="vp">Phase 2 · Closed Beta</div>
-      <div class="vn">4CITE<sup>4</sup>gov</div>
-      <div class="vd">Structural integrity for the legislative branch. Scores congressional testimony, regulatory filings, and government communications against an institutional baseline. Congress.gov · Federal Register · GovInfo.</div>
-      <span class="vs s-beta">Beta · Phase 2</span>
-    </div>
-  </div>
 </div>
 
 <hr class="divider">
