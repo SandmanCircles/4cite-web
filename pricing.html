@@ -537,6 +537,10 @@ subscribeForm.addEventListener('submit', async (e) => {
     }
     const data = await res.json();
     if (data.checkout_url) {
+      // Stash email so /account/login can pre-fill it after Stripe
+      // redirects with welcome=1. Same-origin sessionStorage; clears on
+      // tab close. Avoids the redundant email re-entry post-checkout.
+      try { sessionStorage.setItem('subscription_email', email); } catch (_) { /* private mode */ }
       window.location.href = data.checkout_url;
       return;
     }

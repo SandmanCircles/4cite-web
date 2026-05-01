@@ -157,6 +157,28 @@ const resendTimer = document.getElementById('resendTimer');
 let lastEmail = '';
 let resendInterval = null;
 
+// Welcome-flow pre-fill: when Stripe Checkout redirects here after a
+// successful subscription, the URL has ?welcome=1&session_id=... and
+// pricing.html stashed the buyer's email in sessionStorage just before
+// the Stripe redirect. Read it back, pre-fill the input, and surface
+// a verify-this-is-your-email hint above the form.
+(function welcomePrefill() {
+  const params = new URLSearchParams(window.location.search);
+  if (!params.has('welcome')) return;
+  let email = '';
+  try { email = sessionStorage.getItem('subscription_email') || ''; } catch (_) { /* private mode */ }
+  if (!email) return;
+  emailInput.value = email;
+  // Insert a hint above the field.
+  const hint = document.createElement('div');
+  hint.style.cssText = 'background:rgba(34,201,122,0.08);border:1px solid rgba(34,201,122,0.3);border-radius:8px;padding:12px 14px;margin-bottom:18px;font-size:13px;color:var(--text);line-height:1.55;';
+  hint.innerHTML = '<strong style="color:var(--green);">Welcome to 4CITE.</strong> ' +
+    'Your API key + sign-in link were emailed to <strong>' + email.replace(/[<&]/g, c => c === '<' ? '&lt;' : '&amp;') + '</strong>. ' +
+    'Verify this is the right email — if it is, just click the magic link in your inbox. ' +
+    'If not, edit the field below and request another link.';
+  loginForm.parentNode.insertBefore(hint, loginForm);
+})();
+
 function showSuccess(email) {
   lastEmail = email;
   sentTo.textContent = email;
