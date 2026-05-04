@@ -117,10 +117,33 @@ body { background:var(--midnight); color:var(--text); font-family:'Space Grotesk
 
 .gates { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:22px; }
 @media (max-width:560px) { .gates { grid-template-columns:1fr; } }
-.gate { background:rgba(7,21,46,0.55); border:1px solid var(--border); border-radius:8px; padding:14px 16px; }
+.gate { background:rgba(7,21,46,0.55); border:1px solid var(--border); border-radius:8px; padding:14px 16px; cursor:pointer; transition:border-color 0.18s; }
+.gate:hover { border-color:rgba(125,235,255,0.35); }
+.gate-head { display:flex; align-items:flex-start; justify-content:space-between; gap:10px; }
+.gate-head-left { flex:1; min-width:0; }
 .gate-id { font-size:9px; font-weight:700; letter-spacing:2px; color:var(--muted); text-transform:uppercase; }
-.gate-name { font-size:13px; font-weight:600; color:var(--white); margin:4px 0 8px; }
-.gate-score { font-size:22px; font-weight:700; color:var(--goldf); }
+.gate-name { font-size:13px; font-weight:600; color:var(--white); margin:4px 0 0; }
+.gate-score { font-size:22px; font-weight:700; color:var(--goldf); flex-shrink:0; }
+.gate-toggle { font-size:11px; color:var(--muted); margin-top:8px; letter-spacing:1px; }
+.gate-evidence { display:none; margin-top:12px; padding-top:12px; border-top:1px solid rgba(26,48,96,0.5); }
+.gate.open .gate-evidence { display:block; }
+.gate.open .gate-toggle::before { content:'▾ '; }
+.gate:not(.open) .gate-toggle::before { content:'▸ '; }
+.evidence-item { padding:8px 0; border-bottom:1px solid rgba(26,48,96,0.3); }
+.evidence-item:last-child { border-bottom:none; }
+.evidence-head { display:flex; align-items:center; gap:8px; margin-bottom:4px; }
+.evidence-signal { font-family:'Space Grotesk',ui-monospace,monospace; font-size:10px; font-weight:700; color:var(--cyan); letter-spacing:0.5px; }
+.evidence-status { font-size:9px; font-weight:700; letter-spacing:1.5px; text-transform:uppercase; padding:2px 8px; border-radius:10px; }
+.evidence-status.present { background:rgba(34,201,122,0.10); color:var(--green); border:1px solid rgba(34,201,122,0.35); }
+.evidence-status.absent { background:rgba(224,80,80,0.10); color:var(--red); border:1px solid rgba(224,80,80,0.35); }
+.evidence-status.partial,.evidence-status.weak { background:rgba(240,160,32,0.10); color:var(--amber); border:1px solid rgba(240,160,32,0.35); }
+.evidence-note { font-size:12px; color:var(--text); line-height:1.55; }
+
+/* Copy report button */
+.report-actions { display:flex; gap:10px; flex-wrap:wrap; align-items:center; margin-bottom:16px; }
+.btn-copy { background:transparent; border:1px solid var(--border); color:var(--cyan); font-family:'Space Grotesk',sans-serif; font-size:11px; font-weight:600; letter-spacing:1.5px; text-transform:uppercase; padding:8px 14px; border-radius:6px; cursor:pointer; transition:all 0.2s; display:inline-flex; align-items:center; gap:6px; }
+.btn-copy:hover { border-color:var(--cyan); background:rgba(125,235,255,0.06); }
+.btn-copy.copied { border-color:var(--green); color:var(--green); background:rgba(34,201,122,0.08); }
 
 .archetype-block { background:rgba(43,99,217,0.04); border:1px solid rgba(43,99,217,0.22); border-radius:8px; padding:16px 18px; margin-bottom:18px; }
 .archetype-id { font-size:9px; letter-spacing:2px; color:var(--muted); text-transform:uppercase; }
@@ -255,6 +278,11 @@ footer a:hover { color:var(--goldf); }
         <span class="tier-pill t1" id="reportTierPill">—</span>
         <span class="tier-name" id="reportTierName">—</span>
         <span class="tier-composite">Composite: <strong id="reportComposite">—</strong></span>
+      </div>
+
+      <div class="report-actions">
+        <button class="btn-copy" id="copyReportBtn" type="button">⎘ Copy report</button>
+        <span style="font-size:11px;color:var(--muted);">Click any gate card to expand evidence</span>
       </div>
 
       <div class="gates" id="reportGates"></div>
@@ -653,26 +681,79 @@ function renderReport(d) {
   document.getElementById('reportComposite').textContent = comp != null ? Number(comp).toFixed(1) : '—';
 
   // Gate cards — /api/explain returns gates as {g4:{score,evidence}, g6:{...}, ...}
+  // Each evidence entry shape: {signal, status, note}.
   const gateNames = { g4:'G4 Paradox Resolution', g6:'G6 Recursive Mirror', g7:'G7 Ethical Pivot', g8:'G8 Identity Stake' };
   const gatesObj = (d && d.gates) || {};
   const wrap = document.getElementById('reportGates');
   wrap.innerHTML = '';
   ['g4','g6','g7','g8'].forEach(k => {
-    // Tolerate both nested ({g4:{score}}) and flat (g4: 75) shapes.
     const slot = gatesObj[k];
     const score = (slot && typeof slot === 'object' && slot.score != null) ? slot.score :
                   (typeof slot === 'number') ? slot :
                   (d[k] ?? d[k+'_score']);
+    const evidence = (slot && typeof slot === 'object' && Array.isArray(slot.evidence)) ? slot.evidence : [];
+
     const card = document.createElement('div');
     card.className = 'gate';
+    card.setAttribute('role', 'button');
+    card.setAttribute('aria-expanded', 'false');
+
+    const head = document.createElement('div');
+    head.className = 'gate-head';
+    const left = document.createElement('div');
+    left.className = 'gate-head-left';
     const idEl = document.createElement('div');
     idEl.className = 'gate-id'; idEl.textContent = k.toUpperCase();
     const nameEl = document.createElement('div');
     nameEl.className = 'gate-name'; nameEl.textContent = gateNames[k];
+    left.appendChild(idEl); left.appendChild(nameEl);
     const scoreEl = document.createElement('div');
     scoreEl.className = 'gate-score';
     scoreEl.textContent = score != null ? Number(score).toFixed(0) : '—';
-    card.appendChild(idEl); card.appendChild(nameEl); card.appendChild(scoreEl);
+    head.appendChild(left); head.appendChild(scoreEl);
+    card.appendChild(head);
+
+    const toggle = document.createElement('div');
+    toggle.className = 'gate-toggle';
+    toggle.textContent = evidence.length ? `${evidence.length} signal${evidence.length===1?'':'s'}` : 'No evidence';
+    card.appendChild(toggle);
+
+    const evWrap = document.createElement('div');
+    evWrap.className = 'gate-evidence';
+    evidence.forEach(ev => {
+      const item = document.createElement('div');
+      item.className = 'evidence-item';
+      const evHead = document.createElement('div');
+      evHead.className = 'evidence-head';
+      const sig = document.createElement('span');
+      sig.className = 'evidence-signal';
+      sig.textContent = (ev && ev.signal) || '—';
+      evHead.appendChild(sig);
+      const status = ((ev && ev.status) || '').toString().toLowerCase();
+      if (status) {
+        const stEl = document.createElement('span');
+        stEl.className = 'evidence-status ' + status;
+        stEl.textContent = status;
+        evHead.appendChild(stEl);
+      }
+      item.appendChild(evHead);
+      const note = document.createElement('div');
+      note.className = 'evidence-note';
+      note.textContent = (ev && ev.note) || '';
+      item.appendChild(note);
+      evWrap.appendChild(item);
+    });
+    card.appendChild(evWrap);
+
+    if (evidence.length) {
+      card.addEventListener('click', () => {
+        const open = card.classList.toggle('open');
+        card.setAttribute('aria-expanded', open ? 'true' : 'false');
+      });
+    } else {
+      card.style.cursor = 'default';
+    }
+
     wrap.appendChild(card);
   });
 
@@ -765,6 +846,119 @@ function renderReport(d) {
     synthBlock.appendChild(card);
   });
 }
+
+// ─── Copy Report → clipboard ───────────────────────────
+document.getElementById('copyReportBtn').addEventListener('click', async () => {
+  const btn = document.getElementById('copyReportBtn');
+  const d = state.reportResult || {};
+  const scan = state.scanResult || {};
+  const tier = String(d.tier || '').toUpperCase();
+  const tierName = (TIER_LABELS[tier] || {}).name || '';
+  const comp = d.composite ?? d.composite_score;
+  const lines = [];
+  lines.push('# 4CITE Report');
+  lines.push('');
+  const verticalLabel = VERTICAL_LABELS[document.getElementById('fldVertical').value] ||
+    document.getElementById('fldVertical').value;
+  lines.push(`**Vertical:** ${verticalLabel}`);
+  const docTitle = document.getElementById('fldDocTitle').value;
+  if (docTitle) lines.push(`**Document:** ${docTitle}`);
+  lines.push(`**Tier:** ${tier}${tierName ? ' — ' + tierName : ''}`);
+  lines.push(`**Composite:** ${comp != null ? Number(comp).toFixed(2) : '—'}`);
+  if (d.theater_flag) lines.push(`**Theater flag:** YES (level ${d.theater_level || 0})`);
+  lines.push('');
+
+  // Scan three-act
+  const obs = (scan.scan && scan.scan.observations) || (scan.observations) || {};
+  const obsEntries = Object.entries(obs).filter(([_, v]) => v && v.count > 0);
+  if (obsEntries.length) {
+    lines.push('## Scan — Observations');
+    obsEntries.forEach(([key, val]) => {
+      const name = PATTERN_DISPLAY_NAMES[key] || key.replace(/_/g, ' ');
+      lines.push(`- **${name}** ×${val.count}`);
+      (val.examples || []).slice(0, 2).forEach(ex => lines.push(`  - "${ex}"`));
+    });
+    lines.push('');
+  }
+  const sec = (scan.scan && scan.scan.secondary_questions) || scan.secondary_questions || {};
+  const qs = sec.questions || [];
+  if (qs.length) {
+    lines.push('## Scan — Secondary questions');
+    qs.forEach(q => lines.push(`- ${q}`));
+    lines.push('');
+  }
+  const bq = (scan.scan && scan.scan.big_question) || scan.big_question || {};
+  if (bq.question) {
+    lines.push('## Scan — BIG question');
+    lines.push(`> ${bq.question}`);
+    lines.push('');
+  }
+
+  // Gates with evidence
+  const gateLong = { g4:'G4 Paradox Resolution', g6:'G6 Recursive Mirror', g7:'G7 Ethical Pivot', g8:'G8 Identity Stake' };
+  const gatesObj = d.gates || {};
+  ['g4','g6','g7','g8'].forEach(k => {
+    const slot = gatesObj[k] || {};
+    const sc = slot.score ?? '—';
+    lines.push(`## ${gateLong[k]} — ${sc}`);
+    (slot.evidence || []).forEach(ev => {
+      lines.push(`- **${ev.signal || ''}** [${ev.status || ''}] — ${ev.note || ''}`);
+    });
+    lines.push('');
+  });
+
+  // Archetype
+  const arch = d.archetype || d.archetype_match || (d.archetype_id ? { code: d.archetype_id, name: d.archetype_name } : null);
+  if (arch && (arch.code || arch.name)) {
+    lines.push(`## Archetype`);
+    lines.push(`${arch.code || ''} — ${arch.name || ''}`);
+    lines.push('');
+  }
+
+  // Synthesis
+  const synth = d.synthesis || {};
+  const entries = synth.synthesis || [];
+  if (synth.explanation) {
+    lines.push('## Synthesis');
+    lines.push(synth.explanation);
+    lines.push('');
+  }
+  if (entries.length) {
+    if (!synth.explanation) lines.push('## Synthesis');
+    entries.forEach(e => {
+      const label = e.question_type === 'big' ? 'BIG' : 'Secondary';
+      lines.push(`### ${label} · ${e.disposition || ''}`);
+      lines.push(`> ${e.question || ''}`);
+      (e.evidence || []).forEach(ev => {
+        lines.push(`- **${ev.gate_id || ''}** "${ev.quote || ev.signal || ''}"`);
+      });
+      if (e.gap) lines.push(`*Gap:* ${e.gap}`);
+      if (e.structural_reason) lines.push(`*Structural reason:* ${e.structural_reason}`);
+      lines.push('');
+    });
+  }
+
+  lines.push(`---`);
+  lines.push(`Doc hash: ${state.docHash || '(unknown)'}`);
+  lines.push(`Generated: ${new Date().toISOString()}`);
+
+  const text = lines.join('\n');
+  try {
+    await navigator.clipboard.writeText(text);
+    btn.classList.add('copied');
+    btn.textContent = '✓ Copied!';
+    setTimeout(() => { btn.classList.remove('copied'); btn.textContent = '⎘ Copy report'; }, 2200);
+  } catch (e) {
+    // Fallback: textarea + execCommand
+    const ta = document.createElement('textarea');
+    ta.value = text; ta.style.position = 'fixed'; ta.style.left = '-9999px';
+    document.body.appendChild(ta); ta.select();
+    try { document.execCommand('copy'); btn.textContent = '✓ Copied!'; }
+    catch (_) { btn.textContent = 'Copy failed'; }
+    document.body.removeChild(ta);
+    setTimeout(() => { btn.textContent = '⎘ Copy report'; }, 2200);
+  }
+});
 
 // ─── Step 3 → Issue cert ───────────────────────────────
 document.getElementById('issueCertBtn').addEventListener('click', () => {
