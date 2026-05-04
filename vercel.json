@@ -22,11 +22,12 @@
     { "source": "/privacy",         "destination": "/privacy.html" },
     { "source": "/terms",           "destination": "/terms.html" },
 
-    { "source": "/account",          "destination": "/account/index.html" },
-    { "source": "/account/",         "destination": "/account/index.html" },
-    { "source": "/account/login",    "destination": "/account/login.html" },
-    { "source": "/account/usage",    "destination": "/account/usage.html" },
-    { "source": "/account/billing",  "destination": "/account/billing.html" },
+    { "source": "/account",                "destination": "/account/index.html" },
+    { "source": "/account/",               "destination": "/account/index.html" },
+    { "source": "/account/login",          "destination": "/account/login.html" },
+    { "source": "/account/login/verify",   "destination": "https://api.4cite.ai/account/login/verify" },
+    { "source": "/account/usage",          "destination": "/account/usage.html" },
+    { "source": "/account/billing",        "destination": "/account/billing.html" },
 
     { "source": "/portal/certify",       "destination": "/portal/certify.html" },
     { "source": "/portal/cert/recover",  "destination": "/portal/cert/recover.html" },
