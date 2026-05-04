@@ -31,7 +31,10 @@
 
     { "source": "/portal/certify",       "destination": "/portal/certify.html" },
     { "source": "/portal/cert/recover",  "destination": "/portal/cert/recover.html" },
-    { "source": "/portal/cert/pending",  "destination": "/portal/cert/pending.html" }
+    { "source": "/portal/cert/pending",  "destination": "/portal/cert/pending.html" },
+
+    { "source": "/cert",                 "destination": "/cert.html" },
+    { "source": "/verify/:cert_id",      "destination": "/verify/[cert_id].html" }
   ],
   "headers": [
     {

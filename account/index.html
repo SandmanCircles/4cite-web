@@ -101,8 +101,27 @@ h1 .g { color:var(--goldf); }
 .key-grace-banner.visible { display:block; }
 .key-grace-banner strong { color:var(--goldf); }
 
+/* ── QUICK ACTIONS (Phase D2 §4.2) ───────────────────── */
+.quick-actions { display:grid; grid-template-columns:1fr 1fr 1fr; gap:18px; margin-bottom:28px; }
+.qa-card { background:var(--card); border:1px solid var(--border); border-radius:12px; padding:24px 22px 22px; text-decoration:none; transition:all 0.22s; position:relative; overflow:hidden; display:block; }
+.qa-card::before { content:''; position:absolute; top:0; left:0; right:0; height:2px; background:linear-gradient(90deg,var(--blue),var(--cyan)); transform:translateY(-2px); transition:transform 0.22s; }
+.qa-card:hover { border-color:var(--blue); transform:translateY(-2px); box-shadow:0 14px 36px rgba(43,99,217,0.16); }
+.qa-card:hover::before { transform:translateY(0); }
+.qa-card.primary { background:linear-gradient(135deg,rgba(43,99,217,0.10),rgba(43,99,217,0.02)); border-color:rgba(43,99,217,0.4); }
+.qa-card.primary::before { background:linear-gradient(90deg,var(--goldf),var(--gold)); transform:translateY(0); }
+.qa-icon { font-size:22px; margin-bottom:10px; color:var(--goldf); }
+.qa-card.primary .qa-icon { color:var(--goldf); }
+.qa-title { font-size:14px; font-weight:700; color:var(--white); letter-spacing:1.5px; text-transform:uppercase; margin-bottom:6px; }
+.qa-sub { font-size:12px; color:var(--steel); line-height:1.6; }
+.qa-arrow { display:block; font-size:11px; font-weight:600; color:var(--goldf); letter-spacing:2px; text-transform:uppercase; margin-top:14px; }
+.qa-card:hover .qa-arrow { color:var(--cyan); }
+
+/* ── HEADER "Run a check" CTA ─────────────────────────── */
+.acct-cta { background:linear-gradient(135deg,#D89A0B,#8B5E00); border:1px solid rgba(216,154,11,0.6); color:#07152E; font-family:'Space Grotesk',sans-serif; font-size:11px; font-weight:700; letter-spacing:2px; text-transform:uppercase; padding:8px 18px; border-radius:6px; text-decoration:none; transition:all 0.2s; }
+.acct-cta:hover { background:linear-gradient(135deg,#F7D85D,#D89A0B); }
+
 /* ── BILLING + SUPPORT BOX ──────────────────────────── */
-.row-2 { display:grid; grid-template-columns:1fr 1fr; gap:20px; margin-bottom:28px; }
+.row-2 { display:grid; grid-template-columns:1fr 1fr 1fr; gap:20px; margin-bottom:28px; }
 .mini-card { background:var(--card); border:1px solid var(--border); border-radius:10px; padding:24px 28px; }
 .mini-card h4 { font-size:13px; font-weight:700; color:var(--white); letter-spacing:2px; text-transform:uppercase; margin-bottom:8px; }
 .mini-card p { font-size:13px; color:var(--steel); line-height:1.65; margin-bottom:16px; }
@@ -168,6 +187,7 @@ h1 .g { color:var(--goldf); }
     <a href="/account/billing">Billing</a>
   </nav>
   <span class="acct-email" id="acctEmail">—</span>
+  <a href="/portal/certify" class="acct-cta">Run a check →</a>
   <a href="#" class="acct-logout" id="logoutBtn">Sign out</a>
 </header>
 
@@ -190,6 +210,28 @@ h1 .g { color:var(--goldf); }
     <div class="profile-meta">
       <strong>Member since:</strong> <span id="memberSince">—</span>
     </div>
+  </section>
+
+  <!-- ── Quick Actions (Phase D2 §4.2) ────────────── -->
+  <section class="quick-actions">
+    <a href="/portal/certify" class="qa-card primary">
+      <div class="qa-icon">▣</div>
+      <div class="qa-title">Run a check</div>
+      <div class="qa-sub">Scan → Report → Certify in one flow</div>
+      <span class="qa-arrow">Open →</span>
+    </a>
+    <a href="/portal/cert/recover" class="qa-card">
+      <div class="qa-icon">⏎</div>
+      <div class="qa-title">Recover a cert</div>
+      <div class="qa-sub">Magic-link by email to your inbox</div>
+      <span class="qa-arrow">Recover →</span>
+    </a>
+    <a href="/account/usage" class="qa-card">
+      <div class="qa-icon">≡</div>
+      <div class="qa-title">Detailed usage</div>
+      <div class="qa-sub">Sparkline + per-action breakdown</div>
+      <span class="qa-arrow">View →</span>
+    </a>
   </section>
 
   <!-- ── Meter card ───────────────────────────────── -->
@@ -245,7 +287,12 @@ h1 .g { color:var(--goldf); }
     <div class="mini-card">
       <h4>Need a hand?</h4>
       <p>Beta support: questions, account issues, vertical changes, integration help.</p>
-      <a href="/contact">Contact support →</a>
+      <a href="/contact?ref=account">Contact support →</a>
+    </div>
+    <div class="mini-card">
+      <h4>Forget this person</h4>
+      <p>Clears the certifying-attendant prefill (name + email) saved for the in-browser cert flow.</p>
+      <a href="#" id="forgetAttendantBtn">Clear prefill →</a>
     </div>
   </div>
 
@@ -492,6 +539,20 @@ document.getElementById('confirmRevoke').addEventListener('click', async () => {
   } finally {
     btn.textContent = 'Revoke key';
   }
+});
+
+// ── Forget attendant prefill (Phase D2 §7.4) ──────────
+document.getElementById('forgetAttendantBtn').addEventListener('click', (e) => {
+  e.preventDefault();
+  // Cookies were set at Path=/portal/certify with Domain=4cite.ai per the
+  // unified flow's prefill spec. Clear with matching attributes.
+  const expire = 'Thu, 01 Jan 1970 00:00:00 GMT';
+  ['4cite_attendant_name', '4cite_attendant_email'].forEach(name => {
+    document.cookie = `${name}=; expires=${expire}; path=/portal/certify; domain=4cite.ai;`;
+    document.cookie = `${name}=; expires=${expire}; path=/portal/certify;`;
+    document.cookie = `${name}=; expires=${expire}; path=/;`;
+  });
+  showToast('Prefill cleared', 'The next cert will start with empty attendant fields.');
 });
 
 // ── Logout ────────────────────────────────────────────

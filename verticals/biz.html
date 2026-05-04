@@ -113,7 +113,8 @@ nav a.nav-brand { margin-right:12px !important; }
   <a href="/pricing">Pricing</a>
   <a href="/research/">Research</a>
   <a href="/faq">FAQ</a>
-  <a href="/account/login" class="nav-cta">Sign in</a>
+  <a href="/cert" class="nav-cert-link" id="navCertLink">Get a cert · $15</a>
+  <a href="/account/login" class="nav-cta" id="navAccountToggle">Sign in</a>
   <button class="nav-burger" id="navBurger" type="button" aria-label="Toggle menu" aria-expanded="false" onclick="toggleNav()"><span></span><span></span><span></span></button>
 </nav>
 <div class="mobile-drawer" id="mobileDrawer">
@@ -124,7 +125,8 @@ nav a.nav-brand { margin-right:12px !important; }
   <a href="/faq">FAQ</a>
   <a href="/about">About</a>
   <a href="/contact">Contact</a>
-  <a href="/account/login" class="drawer-signin">Sign in →</a>
+  <a href="/cert" id="drawerCertLink">Get a cert · $15</a>
+  <a href="/account/login" class="drawer-signin" id="drawerAccountToggle">Sign in →</a>
 </div>
 
 <main>
@@ -351,5 +353,25 @@ nav a.nav-brand { margin-right:12px !important; }
 <script>
 function toggleNav(){var d=document.getElementById('mobileDrawer'),b=document.getElementById('navBurger');var o=d.classList.toggle('open');b.classList.toggle('open',o);b.setAttribute('aria-expanded',o?'true':'false');}
 </script>
+
+<!-- Header session toggle (SUBSCRIBER_PORTAL_DESIGN_2026-05-03 §3) -->
+<script>(function(){
+  var path = location.pathname;
+  var hideCert = /^\/(cert|account|portal)(\/|$)/.test(path);
+  var hasSession = /(?:^|;\s*)4cite_session_present=1(?:;|$)/.test(document.cookie);
+  if (hasSession) {
+    var t = document.getElementById("navAccountToggle");
+    if (t) { t.href = "/account"; t.textContent = "Account"; }
+    var dt = document.getElementById("drawerAccountToggle");
+    if (dt) { dt.href = "/account"; dt.textContent = "Account →"; }
+  }
+  if (hideCert) {
+    var c = document.getElementById("navCertLink"); if (c) c.style.display = "none";
+    var dc = document.getElementById("drawerCertLink"); if (dc) dc.style.display = "none";
+  }
+  var s = document.createElement("style");
+  s.textContent = ".nav-cert-link{color:#7A9ABE!important;font-size:11px!important;letter-spacing:1.5px!important;border-bottom:1px solid rgba(122,154,190,0.25);padding-bottom:2px;}.nav-cert-link:hover{color:#7DEBFF!important;border-color:#7DEBFF;}@media(max-width:768px){.nav-cert-link{display:none;}}";
+  document.head.appendChild(s);
+})();</script>
 </body>
 </html>

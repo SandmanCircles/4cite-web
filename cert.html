@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Get a 4CITE Cert — pay-per-cert · 4CITE.ai</title>
+<meta name="description" content="Paste a document, pay $15, receive a 4CITE Integrity Certificate by email. No account required.">
+<meta name="theme-color" content="#07152E">
+<link rel="apple-touch-icon" href="/icons/icon-192.png">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<style>
+:root {
+  --midnight:#07152E; --navy:#0B2358; --card:#0C1628; --border:#1A3060;
+  --blue:#2B63D9; --cyan:#7DEBFF; --gold:#D89A0B; --goldf:#F7D85D;
+  --steel:#7A9ABE; --muted:#3A5A80; --text:#C8D8EE; --white:#FFFFFF;
+  --green:#22C97A; --amber:#F0A020; --red:#E05050;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+html, body { height:100%; }
+body { background:var(--midnight); color:var(--text); font-family:'Space Grotesk',-apple-system,sans-serif; line-height:1.65; font-size:16px; min-height:100vh; display:flex; flex-direction:column; }
+
+.app-header { background:rgba(7,21,46,0.95); backdrop-filter:blur(16px); border-bottom:1px solid var(--border); padding:0 40px; height:56px; display:flex; align-items:center; flex-shrink:0; }
+.app-brand { font-size:20px; font-weight:700; letter-spacing:-0.5px; text-decoration:none; text-transform:none; }
+.app-brand .n4 { color:var(--goldf); } .app-brand .nc { color:var(--white); } .app-brand .na { color:var(--cyan); font-weight:300; }
+.beta-badge { font-size:9px; font-weight:700; letter-spacing:2px; background:rgba(247,216,93,0.10); border:1px solid rgba(247,216,93,0.35); border-radius:4px; padding:3px 8px; color:var(--goldf); margin-left:12px; margin-right:auto; }
+.app-back { font-size:11px; color:var(--muted); text-decoration:none; letter-spacing:2px; text-transform:uppercase; transition:color 0.2s; }
+.app-back:hover { color:var(--steel); }
+
+.disclosure { background:rgba(11,35,88,0.35); border-bottom:1px solid var(--border); padding:10px 40px; display:flex; align-items:center; gap:14px; flex-shrink:0; }
+.disc-icon { font-size:14px; flex-shrink:0; }
+.disc-text { font-size:11px; color:var(--steel); line-height:1.5; }
+.disc-text strong { color:var(--goldf); font-weight:600; }
+
+.cert-main { flex:1; max-width:1100px; width:100%; margin:0 auto; padding:40px 40px 60px; }
+.page-eyebrow { font-size:10px; font-weight:700; letter-spacing:5px; color:var(--muted); text-transform:uppercase; margin-bottom:14px; display:flex; align-items:center; gap:12px; }
+.page-eyebrow::before { content:''; display:block; width:32px; height:1px; background:var(--muted); }
+h1 { font-size:32px; font-weight:700; color:var(--white); margin-bottom:10px; line-height:1.2; }
+h1 .g { color:var(--goldf); }
+.page-lead { font-size:15px; color:var(--steel); margin-bottom:36px; max-width:680px; line-height:1.75; }
+.page-lead strong { color:var(--text); }
+
+.cert-grid { display:grid; grid-template-columns:1fr 360px; gap:32px; align-items:start; }
+@media (max-width:880px) {
+  .cert-grid { grid-template-columns:1fr; }
+}
+
+/* Form panel */
+.form-card { background:var(--card); border:1px solid var(--border); border-radius:14px; padding:32px; }
+.form-card h3 { font-size:11px; font-weight:700; color:var(--muted); letter-spacing:4px; text-transform:uppercase; margin-bottom:14px; }
+
+.field { margin-bottom:20px; }
+.field label { display:block; font-size:10px; font-weight:600; letter-spacing:3px; text-transform:uppercase; color:var(--muted); margin-bottom:8px; }
+.field-helper { font-size:11px; color:var(--muted); margin-top:6px; line-height:1.55; }
+.field input, .field select, .field textarea { width:100%; background:rgba(255,255,255,0.04); border:1px solid var(--border); border-radius:8px; color:var(--text); font-family:'Space Grotesk',sans-serif; font-size:14px; padding:12px 14px; outline:none; transition:border-color 0.2s; -webkit-appearance:none; }
+.field input:focus, .field select:focus, .field textarea:focus { border-color:var(--blue); }
+.field textarea { font-family:'Space Grotesk',ui-monospace,monospace; font-size:13px; line-height:1.7; min-height:280px; resize:vertical; }
+.field select option { background:#0C1628; }
+
+.charcount { font-size:11px; color:var(--muted); text-align:right; margin-top:4px; letter-spacing:0.5px; }
+.charcount.warn { color:var(--amber); }
+.charcount.crit { color:var(--red); }
+
+.tos-row { display:flex; align-items:flex-start; gap:10px; margin:22px 0 18px; font-size:12px; color:var(--steel); line-height:1.6; }
+.tos-row input { width:auto; margin-top:3px; flex-shrink:0; }
+.tos-row a { color:var(--cyan); text-decoration:none; }
+.tos-row a:hover { color:var(--goldf); }
+
+.btn-pay { width:100%; background:linear-gradient(135deg,#D89A0B,#8B5E00); border:1px solid rgba(216,154,11,0.6); color:#07152E; font-family:'Space Grotesk',sans-serif; font-size:13px; font-weight:700; letter-spacing:2px; text-transform:uppercase; padding:14px; border-radius:8px; cursor:pointer; transition:all 0.2s; }
+.btn-pay:hover:not(:disabled) { background:linear-gradient(135deg,#F7D85D,#D89A0B); }
+.btn-pay:disabled { opacity:0.5; cursor:not-allowed; }
+
+.error-msg { display:none; background:rgba(224,80,80,0.08); border:1px solid rgba(224,80,80,0.32); border-radius:8px; padding:12px 14px; margin-top:14px; font-size:13px; color:var(--red); }
+.error-msg.visible { display:block; }
+
+/* ── FILE UPLOAD (cleanup pass 2026-04-28) ── */
+.drop-zone { border:2px dashed var(--border); border-radius:10px; padding:26px 20px; text-align:center; cursor:pointer; transition:all 0.2s; margin-bottom:14px; position:relative; }
+.drop-zone:hover, .drop-zone.drag-over { border-color:var(--blue); background:rgba(43,99,217,0.05); }
+.drop-icon { font-size:24px; margin-bottom:8px; }
+.drop-title { font-size:13px; font-weight:600; color:var(--white); margin-bottom:4px; }
+.drop-sub { font-size:11px; color:var(--muted); margin-bottom:10px; }
+.drop-types { font-size:9px; letter-spacing:2px; text-transform:uppercase; color:var(--muted); margin-top:8px; }
+.drop-browse { background:transparent; border:1px solid var(--border); color:var(--steel); font-family:'Space Grotesk',sans-serif; font-size:10px; font-weight:600; letter-spacing:2px; text-transform:uppercase; padding:7px 16px; border-radius:6px; display:inline-block; }
+.drop-browse:hover { border-color:var(--blue); color:var(--text); }
+#fileInput { display:none; }
+.file-loaded { display:none; align-items:center; gap:10px; background:rgba(34,201,122,0.07); border:1px solid rgba(34,201,122,0.2); border-radius:8px; padding:10px 14px; margin-bottom:14px; }
+.file-loaded.visible { display:flex; }
+.file-loaded-name { font-size:12px; color:var(--green); font-weight:600; flex:1; word-break:break-all; }
+.file-loaded-size { font-size:10px; color:var(--muted); }
+.file-clear { background:transparent; border:none; color:var(--muted); cursor:pointer; font-size:14px; padding:0 4px; }
+.file-clear:hover { color:var(--red); }
+.extract-progress { display:none; font-size:11px; color:var(--muted); text-align:center; padding:8px 0; margin-bottom:8px; }
+.extract-progress.visible { display:block; }
+.extract-progress.error { color:var(--amber); }
+.divider-or { display:flex; align-items:center; gap:10px; margin:8px 0 14px; }
+.divider-or span { font-size:10px; color:var(--muted); text-transform:uppercase; letter-spacing:2px; white-space:nowrap; }
+.divider-or::before, .divider-or::after { content:''; flex:1; height:1px; background:var(--border); }
+
+/* Sidebar */
+.sidebar { display:flex; flex-direction:column; gap:18px; }
+.side-card { background:var(--card); border:1px solid var(--border); border-radius:12px; padding:24px 26px; }
+.side-card.price { border-color:rgba(247,216,93,0.35); position:relative; overflow:hidden; }
+.side-card.price::before { content:''; position:absolute; top:0; left:0; right:0; height:3px; background:linear-gradient(90deg,var(--gold),var(--goldf)); }
+.side-card h4 { font-size:11px; font-weight:700; color:var(--muted); letter-spacing:4px; text-transform:uppercase; margin-bottom:12px; }
+.side-price { font-size:46px; font-weight:700; color:var(--goldf); line-height:1; margin-bottom:4px; }
+.side-price-sub { font-size:12px; color:var(--muted); letter-spacing:1px; margin-bottom:16px; }
+.side-card ul { list-style:none; padding:0; margin:0; }
+.side-card li { font-size:13px; color:var(--steel); line-height:1.7; padding:5px 0 5px 20px; position:relative; }
+.side-card li::before { content:'✓'; position:absolute; left:0; color:var(--green); font-weight:700; }
+.side-card p { font-size:13px; color:var(--steel); line-height:1.7; }
+.side-card a { color:var(--cyan); text-decoration:none; }
+.side-card a:hover { color:var(--goldf); }
+
+footer { background:#030710; border-top:1px solid var(--border); padding:28px 40px; display:flex; align-items:center; justify-content:space-between; flex-shrink:0; }
+.fb { font-size:18px; font-weight:700; }
+.fb .n4 { color:var(--goldf); } .fb .nc { color:var(--white); } .fb .na { color:var(--cyan); font-weight:300; }
+.fl { display:flex; gap:24px; flex-wrap:wrap; }
+.fl a { font-size:11px; color:var(--muted); text-decoration:none; letter-spacing:1px; transition:color 0.2s; }
+.fl a:hover { color:var(--steel); }
+.fr { font-size:11px; color:var(--muted); letter-spacing:1px; }
+
+@media (max-width:760px) {
+  .app-header { padding:0 18px; }
+  .disclosure { padding:10px 18px; }
+  .cert-main { padding:28px 20px 50px; }
+  .form-card { padding:22px 20px; }
+  footer { flex-direction:column; gap:16px; padding:24px 20px; text-align:center; }
+}
+</style>
+</head>
+<body>
+
+<header class="app-header">
+  <a href="/" class="app-brand"><span class="n4">4</span><span class="nc">CITE</span><span class="na">.ai</span></a>
+  <span class="beta-badge">BETA</span>
+  <a href="/" class="app-back">← Back to site</a>
+</header>
+
+<div class="disclosure">
+  <span class="disc-icon">🛡</span>
+  <div class="disc-text">
+    <strong>Walk-in 4CITE Cert</strong> — no account, no subscription. Paste a document, pay $15,
+    receive an Integrity Certificate by email. <strong>Not legal advice.</strong>
+  </div>
+</div>
+
+<main class="cert-main">
+  <div class="page-eyebrow">Pay-Per · One-Time</div>
+  <h1>Get a <span class="g">4CITE Cert</span></h1>
+  <p class="page-lead">
+    Upload or paste your document (up to ~10 pages, ~5,000 words), pick the vertical, enter your email,
+    and complete payment with Stripe. The full <strong>Scan → Report → Certify</strong> pipeline
+    runs once and produces an <strong>immutable Integrity Certificate</strong> that's emailed to
+    you and recorded in the Public Registry.
+  </p>
+
+  <div class="cert-grid">
+
+    <!-- ── FORM ─────────────────────────────────── -->
+    <form class="form-card" id="certForm" novalidate>
+      <h3>Your certificate request</h3>
+
+      <div class="field">
+        <label for="attendantName">Your name</label>
+        <input id="attendantName" type="text" autocomplete="name" required maxlength="200" placeholder="Jane Smith">
+        <div class="field-helper">Name printed on the certificate as the certifying attendant.</div>
+      </div>
+
+      <div class="field">
+        <label for="email">Email address</label>
+        <input id="email" type="email" inputmode="email" autocomplete="email" required placeholder="you@example.com">
+        <div class="field-helper">Your certificate PDF will be emailed here. We'll also send a magic link to retrieve it later.</div>
+      </div>
+
+      <div class="field">
+        <label for="vertical">Vertical</label>
+        <select id="vertical" required>
+          <option value="">— Pick a vertical —</option>
+          <option value="law">4CITE⁴law (legal filings, briefs, opinions)</option>
+          <option value="biz">4CITE⁴biz (SEC filings, earnings, disclosures)</option>
+          <option value="gov">4CITE⁴gov (bills, regulations, hearings)</option>
+          <option value="generic">Other (general-purpose scoring)</option>
+        </select>
+        <div class="field-helper">Pick the vertical that best matches your document.</div>
+      </div>
+
+      <div class="field">
+        <label for="docTitle">Document title <span style="color:var(--muted);">(optional)</span></label>
+        <input id="docTitle" type="text" maxlength="200" placeholder="e.g. SmithCo 10-K FY2025">
+      </div>
+
+      <div class="field">
+        <label>Document</label>
+        <div class="drop-zone" id="dropZone" onclick="document.getElementById('fileInput').click()"
+             ondragover="onDragOver(event)" ondragleave="onDragLeave(event)" ondrop="onDrop(event)">
+          <div class="drop-icon">📄</div>
+          <div class="drop-title">Drop your document here</div>
+          <div class="drop-sub">or</div>
+          <span class="drop-browse">Browse files</span>
+          <div class="drop-types">PDF · DOCX · TXT</div>
+          <input type="file" id="fileInput" accept=".pdf,.docx,.doc,.txt" onchange="onFileSelect(event)">
+        </div>
+        <div class="file-loaded" id="fileLoaded">
+          <span style="font-size:13px;">📄</span>
+          <span class="file-loaded-name" id="fileName">—</span>
+          <span class="file-loaded-size" id="fileSize">—</span>
+          <button type="button" class="file-clear" onclick="clearFile()" aria-label="Remove file">✕</button>
+        </div>
+        <div class="extract-progress" id="extractProgress">Extracting text…</div>
+        <div class="divider-or"><span>or paste below</span></div>
+        <textarea id="docText" required placeholder="Paste your document text here. Up to ~5,000 words (about 10 pages)."></textarea>
+        <div class="charcount" id="charCount">0 characters · 0 words</div>
+      </div>
+
+      <div class="tos-row">
+        <input type="checkbox" id="tosCheck" required>
+        <label for="tosCheck" style="text-transform:none;letter-spacing:0;color:var(--steel);font-weight:400;">
+          I agree to the <a href="/terms" target="_blank">Terms of Service</a> and
+          <a href="/privacy" target="_blank">Privacy Policy</a>. I understand a 4CITE Cert is a
+          structural integrity analysis — not legal advice or factual-truth verification — and
+          that the cert is non-refundable once delivered.
+        </label>
+      </div>
+
+      <button type="submit" class="btn-pay" id="payBtn">Continue to payment — $15</button>
+
+      <div class="error-msg" id="errorMsg"></div>
+    </form>
+
+    <!-- ── SIDEBAR ──────────────────────────────── -->
+    <aside class="sidebar">
+      <div class="side-card price">
+        <h4>Single certificate</h4>
+        <div class="side-price">$15</div>
+        <div class="side-price-sub">USD · one-time · BETA pricing</div>
+        <ul>
+          <li>Full Scan + Report + Certify pipeline</li>
+          <li>Four-gate composite + Integrity Tier</li>
+          <li>PDF certificate emailed to you</li>
+          <li>Permanent record in Public Registry</li>
+          <li>Cert Vault retrieval by email</li>
+          <li>No subscription, no account</li>
+        </ul>
+      </div>
+
+      <div class="side-card">
+        <h4>Already have a cert?</h4>
+        <p>
+          Lost your PDF? <a href="/portal/cert/recover">Recover a cert by email →</a>
+        </p>
+      </div>
+
+      <div class="side-card">
+        <h4>Running 15+ certs/month?</h4>
+        <p>
+          A 4CITE⁴one subscription ($50/mo, 225 units) is more economical.
+          <a href="/pricing">See plans →</a>
+        </p>
+      </div>
+    </aside>
+
+  </div>
+</main>
+
+<footer>
+  <div class="fb"><span class="n4">4</span><span class="nc">CITE</span><span class="na">.ai</span></div>
+  <div class="fl">
+    <a href="/about">About</a>
+    <a href="/contact">Contact</a>
+    <a href="/privacy">Privacy</a>
+    <a href="/terms">Terms</a>
+  </div>
+  <div class="fr">© 2026 4 SHIELD LLC</div>
+</footer>
+
+<script>
+const API_BASE = 'https://api.4cite.ai';
+
+const docText = document.getElementById('docText');
+const charCount = document.getElementById('charCount');
+const certForm = document.getElementById('certForm');
+const payBtn = document.getElementById('payBtn');
+const errorMsg = document.getElementById('errorMsg');
+
+const MAX_CHARS = 32000;  // 32k-char ceiling matches backend (8K-token Grok context, api/routes_engine.py)
+const WARN_AT = 28000;
+
+function updateCharCount() {
+  const text = docText.value;
+  const chars = text.length;
+  const words = text.trim() ? text.trim().split(/\s+/).length : 0;
+  charCount.textContent = `${chars.toLocaleString()} characters · ${words.toLocaleString()} words`;
+  charCount.classList.toggle('warn', chars >= WARN_AT && chars < MAX_CHARS);
+  charCount.classList.toggle('crit', chars >= MAX_CHARS);
+}
+docText.addEventListener('input', updateCharCount);
+
+// Pre-fill vertical from URL ?vertical= if present
+const params = new URLSearchParams(window.location.search);
+const v = params.get('vertical');
+if (v && ['law','biz','gov','generic'].includes(v)) {
+  document.getElementById('vertical').value = v;
+}
+
+function showError(text) {
+  errorMsg.textContent = text;
+  errorMsg.classList.add('visible');
+  setTimeout(() => errorMsg.classList.remove('visible'), 6000);
+}
+
+// Extract a readable message from FastAPI's various detail shapes:
+//   - string                            → use as-is
+//   - {error: {message, code}}          → error.message (custom HTTPException)
+//   - [{loc, msg, type}, ...]           → joined msgs (Pydantic 422)
+//   - undefined / unknown               → fall back to HTTP status
+function extractApiError(errBody, status) {
+  const d = errBody && errBody.detail;
+  if (typeof d === 'string') return d;
+  if (d && typeof d === 'object' && d.error && d.error.message) return d.error.message;
+  if (Array.isArray(d)) return d.map(x => x && x.msg).filter(Boolean).join('; ') || `HTTP ${status}`;
+  return `HTTP ${status}`;
+}
+
+certForm.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const name = document.getElementById('attendantName').value.trim();
+  const email = document.getElementById('email').value.trim();
+  const vertical = document.getElementById('vertical').value;
+  const text = docText.value.trim();
+  const tos = document.getElementById('tosCheck').checked;
+
+  if (!name) return showError('Please enter your name.');
+  if (!email || !email.includes('@')) return showError('Please enter a valid email address.');
+  if (!vertical) return showError('Please pick a vertical.');
+  if (text.length < 200) return showError('Please paste at least a few paragraphs of document text.');
+  if (text.length > MAX_CHARS) return showError(`Document is too long (max ~${(MAX_CHARS/1000).toFixed(0)}k characters).`);
+  if (!tos) return showError('Please accept the Terms of Service to continue.');
+
+  payBtn.disabled = true;
+  payBtn.textContent = 'Preparing checkout…';
+  errorMsg.classList.remove('visible');
+
+  try {
+    // Step 1: create the pending cert request, receive request_id.
+    const reqRes = await fetch(`${API_BASE}/api/cert/request`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        text,
+        vertical,
+        certifying_attendant: { name, email },
+      }),
+    });
+    if (!reqRes.ok) {
+      const errBody = await reqRes.json().catch(() => ({}));
+      throw new Error(extractApiError(errBody, reqRes.status));
+    }
+    const reqData = await reqRes.json();
+    const requestId = reqData.request_id;
+    if (!requestId) throw new Error('No request_id returned');
+
+    // Step 2: open Stripe Checkout for the $15 payment.
+    const payRes = await fetch(`${API_BASE}/api/checkout/cert`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, request_id: requestId }),
+    });
+    if (!payRes.ok) {
+      const errBody = await payRes.json().catch(() => ({}));
+      throw new Error(extractApiError(errBody, payRes.status));
+    }
+    const payData = await payRes.json();
+    if (payData.checkout_url) {
+      window.location.href = payData.checkout_url;
+      return;
+    }
+    throw new Error('No checkout URL returned');
+  } catch (err) {
+    console.error('cert checkout failed', err);
+    showError(`Could not start checkout: ${err.message}. Please try again or email hello@4cite.ai.`);
+    payBtn.disabled = false;
+    payBtn.textContent = 'Continue to payment — $15';
+  }
+});
+
+updateCharCount();
+
+// ── File upload (drag/drop + browse) ────────────────────────
+if (typeof pdfjsLib !== 'undefined') {
+  pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+}
+function onDragOver(e){ e.preventDefault(); document.getElementById('dropZone').classList.add('drag-over'); }
+function onDragLeave(){ document.getElementById('dropZone').classList.remove('drag-over'); }
+function onDrop(e){
+  e.preventDefault();
+  document.getElementById('dropZone').classList.remove('drag-over');
+  const f = e.dataTransfer.files[0];
+  if (f) processFile(f);
+}
+function onFileSelect(e){ const f = e.target.files[0]; if (f) processFile(f); }
+function clearFile(){
+  document.getElementById('fileLoaded').classList.remove('visible');
+  document.getElementById('dropZone').style.display='block';
+  document.getElementById('extractProgress').classList.remove('visible','error');
+  document.getElementById('extractProgress').textContent='Extracting text…';
+  document.getElementById('fileInput').value='';
+  docText.value='';
+  updateCharCount();
+}
+function fmtBytes(b){ if (b>1048576) return (b/1048576).toFixed(1)+' MB'; if (b>1024) return (b/1024).toFixed(0)+' KB'; return b+' B'; }
+function readAsText(file){ return new Promise((res,rej)=>{ const r=new FileReader(); r.onload=e=>res(e.target.result); r.onerror=()=>rej(new Error('FileReader error')); r.readAsText(file); }); }
+async function extractDocx(file){
+  const buf = await file.arrayBuffer();
+  const result = await mammoth.extractRawText({ arrayBuffer: buf });
+  return result.value;
+}
+async function extractPdf(file){
+  if (typeof pdfjsLib === 'undefined') throw new Error('PDF library not loaded');
+  const buf = await file.arrayBuffer();
+  const pdf = await pdfjsLib.getDocument({ data: buf }).promise;
+  const pages = [];
+  for (let i=1; i<=pdf.numPages; i++) {
+    const page = await pdf.getPage(i);
+    const content = await page.getTextContent();
+    pages.push(content.items.map(it=>it.str).join(' '));
+  }
+  return pages.join('\n\n');
+}
+async function processFile(file){
+  const ext = file.name.split('.').pop().toLowerCase();
+  const allowed = ['pdf','docx','doc','txt'];
+  if (!allowed.includes(ext)) {
+    alert('Unsupported file type (.'+ext+'). Please use PDF, DOCX, or TXT.');
+    return;
+  }
+  const fl = document.getElementById('fileLoaded');
+  document.getElementById('fileName').textContent = file.name;
+  document.getElementById('fileSize').textContent = fmtBytes(file.size);
+  fl.classList.add('visible');
+  document.getElementById('dropZone').style.display='none';
+  const prog = document.getElementById('extractProgress');
+  prog.textContent = 'Extracting text…'; prog.classList.add('visible'); prog.classList.remove('error');
+  docText.value=''; updateCharCount();
+  try {
+    let text = '';
+    if (ext==='txt') text = await readAsText(file);
+    else if (ext==='docx' || ext==='doc') text = await extractDocx(file);
+    else if (ext==='pdf') text = await extractPdf(file);
+    text = (text||'').trim();
+    docText.value = text; updateCharCount();
+    prog.classList.remove('visible');
+    if (!text) {
+      prog.textContent = '⚠ No text extracted. Try a different format or paste below.';
+      prog.classList.add('visible','error');
+    }
+  } catch (err) {
+    console.error('extract failed', err);
+    prog.textContent = '⚠ Could not read this file: ' + (err.message||'unknown error') + '. Paste the text below.';
+    prog.classList.add('visible','error');
+  }
+}
+</script>
+
+</body>
+</html>

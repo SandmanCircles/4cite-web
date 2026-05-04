@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>4CITE.ai — Verify Integrity Certificate</title>
+<meta name="description" content="Public registry projection for a 4CITE Integrity Certificate.">
+<meta name="theme-color" content="#07152E">
+<link rel="apple-touch-icon" href="/icons/icon-192.png">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --midnight: #07152E;
+  --navy:     #0B2358;
+  --card:     #0C1628;
+  --border:   #1A3060;
+  --blue:     #2B63D9;
+  --cyan:     #7DEBFF;
+  --gold:     #D89A0B;
+  --goldf:    #F7D85D;
+  --steel:    #7A9ABE;
+  --muted:    #3A5A80;
+  --text:     #C8D8EE;
+  --white:    #FFFFFF;
+  --green:    #22C97A;
+  --amber:    #F0A020;
+  --red:      #E05050;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior:smooth; }
+body { background:var(--midnight); color:var(--text); font-family:'Space Grotesk',-apple-system,sans-serif; line-height:1.65; font-size:16px; min-height:100vh; }
+
+/* ── NAV ── */
+nav { position:fixed; top:0; left:0; right:0; z-index:200; background:rgba(7,21,46,0.95); backdrop-filter:blur(16px); border-bottom:1px solid var(--border); padding:0 60px; height:62px; display:flex; align-items:center; gap:40px; }
+.nav-brand { font-size:22px; font-weight:700; letter-spacing:-0.5px; text-decoration:none; }
+.nav-brand .n4 { color:var(--goldf); }
+.nav-brand .nc { color:var(--white); }
+.nav-brand .na { color:var(--cyan); font-weight:300; }
+.nav-back { color:var(--steel); font-size:12px; font-weight:500; letter-spacing:2px; text-transform:uppercase; text-decoration:none; margin-left:auto; transition:color 0.2s; }
+.nav-back:hover { color:var(--goldf); }
+
+/* ── BETA STRIP ── */
+.beta-banner { background:rgba(247,216,93,0.06); border-bottom:1px solid rgba(247,216,93,0.2); padding:8px 24px; text-align:center; font-size:11px; letter-spacing:2px; text-transform:uppercase; color:var(--goldf); }
+
+/* ── PAGE LAYOUT ── */
+.page { max-width:760px; margin:0 auto; padding:120px 24px 80px; }
+.page-ey { font-size:10px; font-weight:600; letter-spacing:5px; color:var(--goldf); text-transform:uppercase; margin-bottom:14px; text-align:center; }
+.page-h1 { font-size:32px; font-weight:700; color:var(--white); line-height:1.15; text-align:center; margin-bottom:8px; }
+.page-sub { font-size:14px; color:var(--steel); text-align:center; margin-bottom:48px; }
+
+/* ── CERT CARD ── */
+.cert-card { background:var(--card); border:1px solid var(--border); border-radius:16px; padding:36px 36px 32px; box-shadow:0 24px 60px rgba(0,0,0,0.32); }
+.cert-id-row { display:flex; align-items:flex-start; justify-content:space-between; gap:16px; margin-bottom:24px; padding-bottom:24px; border-bottom:1px solid rgba(26,48,96,0.5); flex-wrap:wrap; }
+.cert-id-label { font-size:9px; letter-spacing:3px; color:var(--muted); text-transform:uppercase; margin-bottom:4px; }
+.cert-id-val { font-family:'Space Grotesk',monospace; font-size:14px; color:var(--text); word-break:break-all; }
+.cert-status { display:inline-flex; align-items:center; gap:6px; font-size:11px; font-weight:600; letter-spacing:2px; text-transform:uppercase; padding:4px 12px; border-radius:14px; white-space:nowrap; }
+.cert-status.ok { color:var(--green); background:rgba(34,201,122,0.10); border:1px solid rgba(34,201,122,0.3); }
+.cert-status.cancelled { color:var(--red); background:rgba(224,80,80,0.10); border:1px solid rgba(224,80,80,0.3); }
+.cert-status.pending { color:var(--amber); background:rgba(240,160,32,0.10); border:1px solid rgba(240,160,32,0.3); }
+.cert-status::before { content:'●'; font-size:8px; }
+
+/* ── FIELD GRID ── */
+.fields { display:grid; grid-template-columns:1fr 1fr; gap:20px 32px; margin-bottom:28px; }
+.fld-label { font-size:9px; letter-spacing:2.5px; color:var(--muted); text-transform:uppercase; margin-bottom:5px; }
+.fld-val { font-size:15px; color:var(--text); font-weight:500; word-break:break-word; }
+.fld-val.muted { color:var(--steel); font-weight:400; }
+.fld-val.mono { font-family:'Space Grotesk',monospace; font-size:13px; color:var(--steel); }
+@media (max-width:560px) {
+  .fields { grid-template-columns:1fr; }
+  nav { padding:0 20px; }
+  .page { padding:96px 16px 60px; }
+  .cert-card { padding:24px 20px; }
+}
+
+/* ── TIER BADGE ── */
+.tier-badge { display:inline-block; padding:6px 18px; border-radius:18px; font-size:13px; font-weight:700; letter-spacing:1.5px; }
+.tier-badge.t1 { background:rgba(247,216,93,0.10); color:var(--goldf); border:1px solid rgba(247,216,93,0.4); }
+.tier-badge.t2 { background:rgba(125,235,255,0.08); color:var(--cyan); border:1px solid rgba(125,235,255,0.35); }
+.tier-badge.t3 { background:rgba(240,160,32,0.10); color:var(--amber); border:1px solid rgba(240,160,32,0.40); }
+.tier-badge.t4 { background:rgba(224,80,80,0.10); color:var(--red); border:1px solid rgba(224,80,80,0.40); }
+.tier-name { font-size:18px; font-weight:600; color:var(--white); margin-top:6px; }
+
+/* ── ATTENDANT BLOCK ── */
+.attendant { background:rgba(43,99,217,0.04); border:1px solid rgba(43,99,217,0.2); border-radius:10px; padding:18px 22px; margin-top:8px; }
+.attendant-label { font-size:9px; letter-spacing:3px; color:var(--muted); text-transform:uppercase; margin-bottom:10px; }
+.attendant-name { font-size:16px; font-weight:600; color:var(--white); margin-bottom:4px; }
+.attendant-domain { font-size:13px; color:var(--steel); font-family:'Space Grotesk',monospace; }
+
+/* ── DISCLAIMER ── */
+.disclaimer { margin-top:32px; padding-top:24px; border-top:1px solid rgba(26,48,96,0.5); font-size:12px; color:var(--muted); line-height:1.65; }
+
+/* ── STATES ── */
+.state-loading, .state-error { text-align:center; padding:80px 24px; }
+.state-icon { font-size:36px; margin-bottom:16px; }
+.state-title { font-size:20px; font-weight:600; color:var(--white); margin-bottom:8px; }
+.state-text { font-size:14px; color:var(--steel); max-width:420px; margin:0 auto 24px; line-height:1.7; }
+.state-cta { display:inline-block; color:var(--goldf); font-size:12px; font-weight:600; letter-spacing:2px; text-transform:uppercase; text-decoration:none; border-bottom:1px solid var(--gold); padding-bottom:2px; transition:all 0.2s; }
+.state-cta:hover { color:var(--cyan); border-color:var(--cyan); }
+
+.spinner { width:32px; height:32px; border:2px solid var(--border); border-top-color:var(--goldf); border-radius:50%; animation:spin 0.7s linear infinite; margin:0 auto 20px; }
+@keyframes spin { to { transform:rotate(360deg); } }
+
+footer { text-align:center; font-size:11px; color:var(--muted); padding:48px 24px 32px; letter-spacing:1px; }
+footer a { color:var(--steel); text-decoration:none; transition:color 0.2s; }
+footer a:hover { color:var(--goldf); }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="/" class="nav-brand"><span class="n4">4</span><span class="nc">CITE</span><span class="na">.ai</span></a>
+  <a href="/" class="nav-back">← 4cite.ai</a>
+</nav>
+
+<div class="beta-banner">BETA · Public Integrity Registry</div>
+
+<main class="page">
+  <div class="page-ey">Integrity Certificate</div>
+  <h1 class="page-h1">Verification</h1>
+  <p class="page-sub">Public registry projection. No source text or evidence is exposed.</p>
+
+  <!-- LOADING -->
+  <div class="state-loading" id="stateLoading">
+    <div class="spinner"></div>
+    <div class="state-text">Looking up certificate…</div>
+  </div>
+
+  <!-- ERROR -->
+  <div class="state-error" id="stateError" style="display:none">
+    <div class="state-icon" id="errorIcon">⚠</div>
+    <div class="state-title" id="errorTitle">Certificate not found</div>
+    <div class="state-text" id="errorText">The cert ID may be mistyped, or this cert may have been canceled.</div>
+    <a href="/" class="state-cta">Back to 4cite.ai →</a>
+  </div>
+
+  <!-- CERT CARD -->
+  <article class="cert-card" id="certCard" style="display:none">
+    <div class="cert-id-row">
+      <div>
+        <div class="cert-id-label">Certificate ID</div>
+        <div class="cert-id-val" id="fldCertId">—</div>
+      </div>
+      <div class="cert-status ok" id="fldStatus">Active</div>
+    </div>
+
+    <div class="fields">
+      <div>
+        <div class="fld-label">Issued</div>
+        <div class="fld-val" id="fldIssuedAt">—</div>
+      </div>
+      <div>
+        <div class="fld-label">Vertical</div>
+        <div class="fld-val" id="fldVertical">—</div>
+      </div>
+      <div>
+        <div class="fld-label">Document type</div>
+        <div class="fld-val muted" id="fldDocType">—</div>
+      </div>
+      <div>
+        <div class="fld-label">Document hash</div>
+        <div class="fld-val mono" id="fldDocHash">—</div>
+      </div>
+
+      <div>
+        <div class="fld-label">Tier</div>
+        <div id="fldTierBadge"><span class="tier-badge t1" id="fldTierPill">—</span></div>
+        <div class="tier-name" id="fldTierName">—</div>
+      </div>
+      <div>
+        <div class="fld-label">Composite score</div>
+        <div class="fld-val" id="fldComposite">—</div>
+      </div>
+
+      <div>
+        <div class="fld-label">Archetype</div>
+        <div class="fld-val muted" id="fldArchetype">—</div>
+      </div>
+      <div>
+        <div class="fld-label">Internal audit</div>
+        <div class="fld-val muted" id="fldAudit">—</div>
+      </div>
+    </div>
+
+    <div class="attendant">
+      <div class="attendant-label">Certifying Attendant</div>
+      <div class="attendant-name" id="fldAttendantName">—</div>
+      <div class="attendant-domain" id="fldAttendantDomain">—</div>
+    </div>
+
+    <p class="disclaimer">
+      This certificate attests that structural integrity signals were present in the analyzed
+      document at the moment of certification. 4CITE certificates are not legal advice or
+      factual-truth verification. The full audit log lives in the Private Vault accessible only
+      to the certifying party.
+    </p>
+  </article>
+</main>
+
+<footer>
+  <a href="/">4cite.ai</a> · Structural Integrity Engine · 4 SHIELD LLC
+</footer>
+
+<script>
+const API_BASE = 'https://api.4cite.ai';
+const CERT_ID_PATTERN = /^[A-Za-z0-9_-]{8,64}$/;
+
+const TIER_LABELS = {
+  T1: { name: 'Real Deal',   cls: 't1' },
+  T2: { name: 'Good Faith',  cls: 't2' },
+  T3: { name: 'Thin Ice',    cls: 't3' },
+  T4: { name: 'Paper Doll',  cls: 't4' },
+};
+
+const VERTICAL_LABELS = {
+  law: '4CITE⁴law',
+  biz: '4CITE⁴biz',
+  gov: '4CITE⁴gov',
+};
+
+function showError(title, text, icon) {
+  document.getElementById('stateLoading').style.display = 'none';
+  document.getElementById('certCard').style.display = 'none';
+  const e = document.getElementById('stateError');
+  e.style.display = 'block';
+  document.getElementById('errorIcon').textContent = icon || '⚠';
+  document.getElementById('errorTitle').textContent = title;
+  document.getElementById('errorText').textContent = text;
+}
+
+function fmtDate(iso) {
+  if (!iso) return '—';
+  try {
+    const d = new Date(iso);
+    return d.toLocaleString('en-US', {
+      year: 'numeric', month: 'short', day: 'numeric',
+      hour: '2-digit', minute: '2-digit', timeZoneName: 'short',
+    });
+  } catch (e) {
+    return iso;
+  }
+}
+
+function fmtHash(h) {
+  if (!h) return '—';
+  return String(h).slice(0, 20) + '…';
+}
+
+async function load() {
+  const m = location.pathname.match(/^\/verify\/([^\/]+)\/?$/);
+  const certId = m ? decodeURIComponent(m[1]) : null;
+  if (!certId || !CERT_ID_PATTERN.test(certId)) {
+    showError('Invalid certificate ID', 'Certificate IDs are 8–64 chars, letters/digits/dashes/underscores.', '✕');
+    return;
+  }
+
+  let res;
+  try {
+    res = await fetch(`${API_BASE}/api/cert/${encodeURIComponent(certId)}`);
+  } catch (e) {
+    showError('Registry unavailable', 'The verification registry is temporarily unreachable. Please retry in a moment.', '⏳');
+    return;
+  }
+
+  if (res.status === 404) {
+    showError('Certificate not found', 'The cert ID may be mistyped, or this cert may have been canceled.', '✕');
+    return;
+  }
+  if (!res.ok) {
+    showError('Registry error', `The registry returned status ${res.status}. Please retry in a moment.`, '⚠');
+    return;
+  }
+
+  let data;
+  try { data = await res.json(); } catch (e) {
+    showError('Bad response', 'The registry response could not be parsed.', '⚠');
+    return;
+  }
+
+  // Populate fields
+  document.getElementById('fldCertId').textContent = data.cert_id || certId;
+  document.getElementById('fldIssuedAt').textContent = fmtDate(data.issued_at);
+  document.getElementById('fldVertical').textContent = VERTICAL_LABELS[data.vertical] || data.vertical || '—';
+  document.getElementById('fldDocType').textContent = data.document_type || '—';
+  document.getElementById('fldDocHash').textContent = fmtHash(data.doc_hash);
+
+  const tier = (data.tier || '').toUpperCase();
+  const tierInfo = TIER_LABELS[tier];
+  const pill = document.getElementById('fldTierPill');
+  if (tierInfo) {
+    pill.className = 'tier-badge ' + tierInfo.cls;
+    pill.textContent = tier;
+    document.getElementById('fldTierName').textContent = tierInfo.name;
+  } else {
+    pill.textContent = tier || '—';
+    document.getElementById('fldTierName').textContent = '—';
+  }
+
+  const comp = data.composite;
+  document.getElementById('fldComposite').textContent =
+    (comp == null) ? '—' : Number(comp).toFixed(2);
+
+  document.getElementById('fldArchetype').textContent =
+    data.archetype_id ? `Catalogued (${data.archetype_library_version || 'lib v1'})` : 'Uncatalogued';
+  document.getElementById('fldAudit').textContent =
+    data.internal_audit_performed ? 'Performed' : 'Not performed';
+
+  document.getElementById('fldAttendantName').textContent =
+    data.certifying_attendant_name || '—';
+  const dom = data.certifying_attendant_email_domain;
+  document.getElementById('fldAttendantDomain').textContent =
+    dom ? '@' + dom : '—';
+
+  // Status pill
+  const status = (data.status || 'active').toLowerCase();
+  const sp = document.getElementById('fldStatus');
+  if (status === 'cancelled' || status === 'canceled') {
+    sp.className = 'cert-status cancelled';
+    sp.textContent = 'Cancelled';
+  } else if (status === 'pending') {
+    sp.className = 'cert-status pending';
+    sp.textContent = 'Pending';
+  } else {
+    sp.className = 'cert-status ok';
+    sp.textContent = 'Verified by Registry';
+  }
+
+  document.getElementById('stateLoading').style.display = 'none';
+  document.getElementById('certCard').style.display = 'block';
+}
+
+load();
+</script>
+
+</body>
+</html>
