@@ -286,9 +286,11 @@ function renderMeter() {
   const dispTotal = Math.floor(unit_allotment / w.divisor);
   const pct = unit_allotment > 0 ? (units_consumed_this_period / unit_allotment) * 100 : 0;
 
+  // Replacing meterHeadline.innerHTML removes the inner <span id="meterUnitWord">,
+  // so we don't need (and can't safely) call getElementById('meterUnitWord') again
+  // — the noun is already included in the new innerHTML below.
   document.getElementById('meterHeadline').innerHTML =
     `<span class="num">${dispRemaining.toLocaleString()}</span> of <span class="num">${dispTotal.toLocaleString()}</span> <span class="of">${w.noun} remaining</span>`;
-  document.getElementById('meterUnitWord').textContent = w.noun;
 
   const fill = document.getElementById('meterBarFill');
   fill.style.width = Math.min(100, pct) + '%';
