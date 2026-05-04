@@ -652,18 +652,27 @@ function renderReport(d) {
   const comp = d.composite ?? d.composite_score;
   document.getElementById('reportComposite').textContent = comp != null ? Number(comp).toFixed(1) : '—';
 
-  // Gate cards
+  // Gate cards — /api/explain returns gates as {g4:{score,evidence}, g6:{...}, ...}
   const gateNames = { g4:'G4 Paradox Resolution', g6:'G6 Recursive Mirror', g7:'G7 Ethical Pivot', g8:'G8 Identity Stake' };
+  const gatesObj = (d && d.gates) || {};
   const wrap = document.getElementById('reportGates');
   wrap.innerHTML = '';
   ['g4','g6','g7','g8'].forEach(k => {
-    const score = d[k] ?? d[k+'_score'];
+    // Tolerate both nested ({g4:{score}}) and flat (g4: 75) shapes.
+    const slot = gatesObj[k];
+    const score = (slot && typeof slot === 'object' && slot.score != null) ? slot.score :
+                  (typeof slot === 'number') ? slot :
+                  (d[k] ?? d[k+'_score']);
     const card = document.createElement('div');
     card.className = 'gate';
-    card.innerHTML = `
-      <div class="gate-id">${k.toUpperCase()}</div>
-      <div class="gate-name">${gateNames[k]}</div>
-      <div class="gate-score">${score != null ? Number(score).toFixed(0) : '—'}</div>`;
+    const idEl = document.createElement('div');
+    idEl.className = 'gate-id'; idEl.textContent = k.toUpperCase();
+    const nameEl = document.createElement('div');
+    nameEl.className = 'gate-name'; nameEl.textContent = gateNames[k];
+    const scoreEl = document.createElement('div');
+    scoreEl.className = 'gate-score';
+    scoreEl.textContent = score != null ? Number(score).toFixed(0) : '—';
+    card.appendChild(idEl); card.appendChild(nameEl); card.appendChild(scoreEl);
     wrap.appendChild(card);
   });
 
@@ -677,9 +686,84 @@ function renderReport(d) {
     document.getElementById('reportArchetype').style.display = 'none';
   }
 
-  // Synthesis
-  const synth = d.synthesis || d.synthesis_output?.text || d.synthesis_text || '';
-  document.getElementById('reportSynth').textContent = synth || '(No synthesis available.)';
+  // Synthesis — d.synthesis is { synthesis: [entries], explanation: "" }.
+  // Each entry: { question, question_type: "big"|"secondary",
+  //               disposition: "Answered"|"Partially answered"|"Unanswered",
+  //               evidence: [{gate_id, signal, quote}], gap, structural_reason }.
+  const synthBlock = document.getElementById('reportSynth');
+  synthBlock.innerHTML = '';
+  const synth = (d && d.synthesis) || {};
+  const entries = synth.synthesis || [];
+  const expl = synth.explanation || '';
+  if (expl) {
+    const p = document.createElement('div');
+    p.style.marginBottom = entries.length ? '14px' : '0';
+    p.style.fontStyle = 'italic';
+    p.style.color = 'var(--steel)';
+    p.textContent = expl;
+    synthBlock.appendChild(p);
+  }
+  if (!expl && entries.length === 0) {
+    const empty = document.createElement('div');
+    empty.style.color = 'var(--muted)';
+    empty.textContent = '(No synthesis content.)';
+    synthBlock.appendChild(empty);
+  }
+  const dispColor = { 'Answered': 'var(--green)', 'Partially answered': 'var(--amber)', 'Unanswered': 'var(--red)' };
+  entries.forEach(e => {
+    const card = document.createElement('div');
+    card.style.padding = '10px 0';
+    card.style.borderTop = '1px solid rgba(26,48,96,0.4)';
+    const qLabel = (e.question_type === 'big') ? 'BIG question' : 'Secondary question';
+    const head = document.createElement('div');
+    head.style.fontSize = '11px';
+    head.style.letterSpacing = '2px';
+    head.style.textTransform = 'uppercase';
+    head.style.color = 'var(--muted)';
+    head.style.marginBottom = '4px';
+    const headInner = document.createElement('span');
+    headInner.textContent = qLabel + ' · ';
+    head.appendChild(headInner);
+    const dispSpan = document.createElement('span');
+    dispSpan.style.color = dispColor[e.disposition] || 'var(--steel)';
+    dispSpan.style.fontWeight = '700';
+    dispSpan.textContent = e.disposition || '';
+    head.appendChild(dispSpan);
+    card.appendChild(head);
+    const qText = document.createElement('div');
+    qText.style.fontSize = '13px';
+    qText.style.color = 'var(--text)';
+    qText.style.marginBottom = '6px';
+    qText.textContent = e.question || '';
+    card.appendChild(qText);
+    (e.evidence || []).forEach(ev => {
+      const ed = document.createElement('div');
+      ed.style.fontSize = '12px';
+      ed.style.color = 'var(--steel)';
+      ed.style.marginLeft = '10px';
+      const gateBadge = document.createElement('strong');
+      gateBadge.style.color = 'var(--cyan)';
+      gateBadge.textContent = ev.gate_id || '';
+      ed.appendChild(gateBadge);
+      const tail = document.createTextNode(' · ' + (ev.quote ? '“' + ev.quote + '”' : (ev.signal || '')));
+      ed.appendChild(tail);
+      card.appendChild(ed);
+    });
+    if (e.gap) {
+      const g = document.createElement('div');
+      g.style.fontSize = '12px'; g.style.color = 'var(--amber)'; g.style.marginLeft = '10px'; g.style.marginTop = '4px';
+      g.textContent = 'Gap: ' + e.gap;
+      card.appendChild(g);
+    }
+    if (e.structural_reason) {
+      const sr = document.createElement('div');
+      sr.style.fontSize = '12px'; sr.style.color = 'var(--red)'; sr.style.marginLeft = '10px'; sr.style.marginTop = '4px';
+      sr.textContent = 'Structural reason: ' + e.structural_reason;
+      sr.style.fontStyle = 'italic';
+      card.appendChild(sr);
+    }
+    synthBlock.appendChild(card);
+  });
 }
 
 // ─── Step 3 → Issue cert ───────────────────────────────
