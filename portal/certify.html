@@ -530,18 +530,49 @@ runScanBtn.addEventListener('click', async () => {
   }
 });
 
+// Snake-case → display name mapping (mirrors engine/cert_pdf.py PATTERN_DISPLAY_NAMES).
+const PATTERN_DISPLAY_NAMES = {
+  belief_phrases: 'Belief-Installation Phrasings',
+  self_claims_of_prudence: 'Self-Claims of Prudence',
+  forward_looking_reassurance: 'Forward-Looking Reassurance',
+  adjusted_or_reframed_metrics: 'Adjusted / Reframed Metrics',
+  unquantified_risk_references: 'Unquantified Risk References',
+  capability_claims_without_evidence: 'Capability Claims Without Evidence',
+};
+
 function renderScan(scan) {
-  const obs = scan?.observations || [];
-  const qs  = scan?.secondary_questions || [];
-  const big = scan?.big_question || '';
+  // observations is an object with 6 named patterns, each { count, examples: [str, str] }
+  const obsObj = (scan && scan.observations) || {};
+  const obsEntries = Object.entries(obsObj);
   const obsList = document.getElementById('scanObsList');
   obsList.innerHTML = '';
-  obs.forEach(o => {
+  let renderedAny = false;
+  obsEntries.forEach(([key, val]) => {
+    const count = (val && val.count) || 0;
+    if (count === 0) return;
+    const display = PATTERN_DISPLAY_NAMES[key] || key.replace(/_/g, ' ');
+    const examples = (val && val.examples) || [];
     const li = document.createElement('li');
-    li.textContent = (typeof o === 'string') ? o : (o.text || JSON.stringify(o));
+    const head = document.createElement('strong');
+    head.textContent = `${display} · ×${count}`;
+    li.appendChild(head);
+    if (examples.length) {
+      const ex = document.createElement('div');
+      ex.style.color = 'var(--steel)';
+      ex.style.fontSize = '12px';
+      ex.style.marginTop = '4px';
+      ex.style.fontStyle = 'italic';
+      ex.textContent = '“' + examples.slice(0, 2).join('” · “') + '”';
+      li.appendChild(ex);
+    }
     obsList.appendChild(li);
+    renderedAny = true;
   });
-  document.getElementById('scanObservations').style.display = obs.length ? 'block' : 'none';
+  document.getElementById('scanObservations').style.display = renderedAny ? 'block' : 'none';
+
+  // secondary_questions is { questions: [str, str, str], explanation: str }
+  const sec = (scan && scan.secondary_questions) || {};
+  const qs = sec.questions || [];
   const qList = document.getElementById('scanQList');
   qList.innerHTML = '';
   qs.forEach(q => {
@@ -549,9 +580,21 @@ function renderScan(scan) {
     li.textContent = (typeof q === 'string') ? q : (q.text || JSON.stringify(q));
     qList.appendChild(li);
   });
-  document.getElementById('scanQuestions').style.display = qs.length ? 'block' : 'none';
-  document.getElementById('scanBigText').textContent = big || '—';
-  document.getElementById('scanBig').style.display = big ? 'block' : 'none';
+  if (qs.length === 0 && sec.explanation) {
+    const li = document.createElement('li');
+    li.style.color = 'var(--steel)';
+    li.style.fontStyle = 'italic';
+    li.textContent = sec.explanation;
+    qList.appendChild(li);
+  }
+  document.getElementById('scanQuestions').style.display =
+    (qs.length || sec.explanation) ? 'block' : 'none';
+
+  // big_question is { question: str|null, explanation: str }
+  const bq = (scan && scan.big_question) || {};
+  const bigText = bq.question || bq.explanation || '';
+  document.getElementById('scanBigText').textContent = bigText || '—';
+  document.getElementById('scanBig').style.display = bigText ? 'block' : 'none';
 }
 
 // ─── Step 2 → Report ────────────────────────────────────
