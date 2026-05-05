@@ -27,14 +27,19 @@
     { "source": "/account/login",          "destination": "/account/login.html" },
     { "source": "/account/login/verify",   "destination": "https://api.4cite.ai/account/login/verify" },
     { "source": "/account/usage",          "destination": "/account/usage.html" },
+    { "source": "/account/history",        "destination": "/account/history.html" },
     { "source": "/account/billing",        "destination": "/account/billing.html" },
 
-    { "source": "/portal/certify",       "destination": "/portal/certify.html" },
-    { "source": "/portal/cert/recover",  "destination": "/portal/cert/recover.html" },
-    { "source": "/portal/cert/pending",  "destination": "/portal/cert/pending.html" },
+    { "source": "/portal/certify",                "destination": "/portal/certify.html" },
+    { "source": "/portal/cert/recover",           "destination": "/portal/cert/recover.html" },
+    { "source": "/portal/cert/recover/landing",   "destination": "/portal/cert/recover/landing.html" },
+    { "source": "/portal/cert/pending",           "destination": "/portal/cert/pending.html" },
 
     { "source": "/cert",                 "destination": "/cert.html" },
-    { "source": "/verify/:cert_id",      "destination": "/verify/[cert_id].html" }
+    { "source": "/verify/:cert_id",      "destination": "/verify/[cert_id].html" },
+
+    { "source": "/report/:id",          "destination": "/report/[id].html" },
+    { "source": "/check",               "destination": "/check.html" }
   ],
   "headers": [
     {
@@ -69,6 +74,12 @@
       "source": "/portal/(.*)",
       "headers": [
         { "key": "X-Robots-Tag", "value": "noindex, nofollow" }
+      ]
+    },
+    {
+      "source": "/report/(.*)",
+      "headers": [
+        { "key": "Cache-Control", "value": "public, s-maxage=3600, stale-while-revalidate=600" }
       ]
     }
   ]

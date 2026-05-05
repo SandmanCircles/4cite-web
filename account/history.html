@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex,nofollow">
+<title>Cert history — 4CITE.ai account</title>
+<meta name="description" content="Itemized history of all certificates issued under your 4CITE.ai account.">
+<meta name="theme-color" content="#07152E">
+<link rel="apple-touch-icon" href="/icons/icon-192.png">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --midnight:#07152E; --navy:#0B2358; --card:#0C1628; --border:#1A3060;
+  --blue:#2B63D9; --cyan:#7DEBFF; --gold:#D89A0B; --goldf:#F7D85D;
+  --steel:#7A9ABE; --muted:#3A5A80; --text:#C8D8EE; --white:#FFFFFF;
+  --green:#22C97A; --amber:#F0A020; --red:#E05050;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+html, body { height:100%; }
+body { background:var(--midnight); color:var(--text); font-family:'Space Grotesk',-apple-system,sans-serif; line-height:1.65; font-size:16px; min-height:100vh; display:flex; flex-direction:column; }
+
+.app-header { background:rgba(7,21,46,0.95); backdrop-filter:blur(16px); border-bottom:1px solid var(--border); padding:0 40px; height:56px; display:flex; align-items:center; gap:28px; flex-shrink:0; }
+.app-brand { font-size:20px; font-weight:700; letter-spacing:-0.5px; text-decoration:none; text-transform:none; margin-right:8px; }
+.app-brand .n4 { color:var(--goldf); } .app-brand .nc { color:var(--white); } .app-brand .na { color:var(--cyan); font-weight:300; }
+.beta-badge { font-size:9px; font-weight:700; letter-spacing:2px; background:rgba(247,216,93,0.10); border:1px solid rgba(247,216,93,0.35); border-radius:4px; padding:3px 8px; color:var(--goldf); }
+.acct-nav { display:flex; gap:22px; margin-right:auto; }
+.acct-nav a { font-size:11px; color:var(--steel); text-decoration:none; letter-spacing:2px; text-transform:uppercase; transition:color 0.2s; padding:4px 0; }
+.acct-nav a:hover { color:var(--text); }
+.acct-nav a.active { color:var(--goldf); border-bottom:1px solid var(--goldf); padding-bottom:2px; }
+.acct-email { font-size:11px; color:var(--muted); letter-spacing:0.5px; }
+.acct-logout { font-size:11px; color:var(--muted); text-decoration:none; letter-spacing:2px; text-transform:uppercase; transition:color 0.2s; }
+.acct-logout:hover { color:var(--red); }
+
+.acct-main { flex:1; max-width:1280px; width:100%; margin:0 auto; padding:40px 40px 60px; }
+.page-eyebrow { font-size:10px; font-weight:700; letter-spacing:5px; color:var(--muted); text-transform:uppercase; margin-bottom:14px; display:flex; align-items:center; gap:12px; }
+.page-eyebrow::before { content:''; display:block; width:32px; height:1px; background:var(--muted); }
+h1 { font-size:32px; font-weight:700; color:var(--white); margin-bottom:6px; line-height:1.2; }
+h1 .g { color:var(--goldf); }
+.page-lead { font-size:14px; color:var(--steel); margin-bottom:28px; }
+
+.filter-card { background:var(--card); border:1px solid var(--border); border-radius:12px; padding:20px 24px; margin-bottom:18px; }
+.filter-row { display:grid; grid-template-columns:repeat(auto-fit,minmax(160px,1fr)); gap:12px; align-items:end; }
+.filter-row .field { display:flex; flex-direction:column; gap:6px; }
+.filter-row label { font-size:9px; font-weight:700; letter-spacing:2px; color:var(--muted); text-transform:uppercase; }
+.filter-row input, .filter-row select { background:rgba(7,21,46,0.6); border:1px solid var(--border); border-radius:6px; color:var(--text); font-family:'Space Grotesk',sans-serif; font-size:13px; padding:9px 11px; outline:none; transition:border-color 0.2s; }
+.filter-row input:focus, .filter-row select:focus { border-color:var(--blue); }
+.filter-actions { display:flex; gap:10px; margin-top:16px; flex-wrap:wrap; }
+.btn { background:transparent; border:1px solid var(--border); color:var(--steel); font-family:'Space Grotesk',sans-serif; font-size:11px; font-weight:600; letter-spacing:2px; text-transform:uppercase; padding:9px 16px; border-radius:6px; cursor:pointer; transition:all 0.2s; text-decoration:none; display:inline-flex; align-items:center; gap:6px; }
+.btn:hover { border-color:var(--steel); color:var(--text); }
+.btn-primary { background:linear-gradient(135deg,#2B63D9,#0A2E80); border-color:rgba(43,99,217,0.6); color:var(--white); }
+.btn-primary:hover { background:linear-gradient(135deg,#3D7BE8,#1A40A8); }
+
+.results-meta { display:flex; align-items:center; justify-content:space-between; margin-bottom:14px; flex-wrap:wrap; gap:10px; font-size:12px; color:var(--muted); letter-spacing:1px; text-transform:uppercase; }
+
+.history-card { background:var(--card); border:1px solid var(--border); border-radius:12px; overflow:hidden; }
+.history-table { width:100%; border-collapse:collapse; font-size:13px; }
+.history-table th { text-align:left; background:rgba(7,21,46,0.7); color:var(--muted); font-size:9px; font-weight:700; letter-spacing:2px; text-transform:uppercase; padding:14px 16px; border-bottom:1px solid var(--border); white-space:nowrap; }
+.history-table td { padding:14px 16px; border-bottom:1px solid rgba(26,48,96,0.4); color:var(--text); vertical-align:top; }
+.history-table tr:last-child td { border-bottom:none; }
+.history-table tr:hover { background:rgba(43,99,217,0.04); }
+.cell-cert-id { font-family:ui-monospace,monospace; font-size:12px; color:var(--cyan); }
+.cell-doc-title { color:var(--white); font-weight:500; }
+.cell-secondary { color:var(--steel); font-size:12px; }
+.cell-date { white-space:nowrap; }
+
+.tier-pill { display:inline-block; padding:3px 9px; border-radius:4px; font-size:10px; font-weight:700; letter-spacing:1px; }
+.tier-T1 { background:rgba(34,201,122,0.12); color:var(--green); border:1px solid rgba(34,201,122,0.4); }
+.tier-T2 { background:rgba(125,235,255,0.10); color:var(--cyan); border:1px solid rgba(125,235,255,0.35); }
+.tier-T3 { background:rgba(240,160,32,0.10); color:var(--amber); border:1px solid rgba(240,160,32,0.4); }
+.tier-T4 { background:rgba(224,80,80,0.10); color:var(--red); border:1px solid rgba(224,80,80,0.4); }
+
+.status-pill { display:inline-block; padding:2px 8px; border-radius:3px; font-size:9px; font-weight:700; letter-spacing:1.5px; text-transform:uppercase; }
+.status-issued { background:rgba(125,235,255,0.10); color:var(--cyan); }
+.status-pre-filing { background:rgba(247,216,93,0.10); color:var(--goldf); }
+.status-filed { background:rgba(34,201,122,0.10); color:var(--green); }
+.status-cancelled { background:rgba(122,154,190,0.10); color:var(--steel); }
+
+.row-links { display:flex; gap:10px; flex-wrap:wrap; }
+.row-links a { font-size:11px; color:var(--cyan); text-decoration:none; letter-spacing:1px; }
+.row-links a:hover { color:var(--goldf); }
+
+.empty-state { padding:60px 24px; text-align:center; color:var(--muted); }
+.empty-state .icon { font-size:36px; margin-bottom:14px; }
+.empty-state h3 { font-size:16px; color:var(--steel); margin-bottom:8px; }
+
+.loading-state { padding:60px 24px; text-align:center; color:var(--muted); }
+.spin { display:inline-block; width:24px; height:24px; border:3px solid var(--border); border-top-color:var(--cyan); border-radius:50%; animation:spin 0.8s linear infinite; margin-bottom:14px; }
+@keyframes spin { to { transform:rotate(360deg); } }
+
+.pagination { display:flex; align-items:center; justify-content:center; gap:14px; margin-top:20px; font-size:12px; color:var(--muted); letter-spacing:1px; }
+.pagination button { background:transparent; border:1px solid var(--border); color:var(--steel); font-family:inherit; font-size:11px; padding:8px 14px; border-radius:6px; cursor:pointer; letter-spacing:2px; text-transform:uppercase; transition:all 0.2s; }
+.pagination button:disabled { opacity:0.4; cursor:not-allowed; }
+.pagination button:hover:not(:disabled) { border-color:var(--steel); color:var(--text); }
+
+footer { background:#030710; border-top:1px solid var(--border); padding:16px 40px; display:flex; align-items:center; justify-content:space-between; flex-shrink:0; font-size:11px; color:var(--muted); letter-spacing:1px; }
+
+@media (max-width:720px) {
+  .acct-main { padding:24px 18px 40px; }
+  .app-header { padding:0 18px; gap:14px; }
+  .acct-nav { gap:14px; }
+  .history-table th, .history-table td { padding:10px 8px; font-size:12px; }
+  .filter-row { grid-template-columns:1fr 1fr; }
+}
+</style>
+</head>
+<body>
+
+<header class="app-header">
+  <a href="/" class="app-brand"><span class="n4">4</span><span class="nc">CITE</span><span class="na">.ai</span></a>
+  <span class="beta-badge">BETA</span>
+  <nav class="acct-nav">
+    <a href="/account">Account</a>
+    <a href="/account/history" class="active">Cert history</a>
+    <a href="/account/usage">Usage</a>
+    <a href="/account/billing">Billing</a>
+  </nav>
+  <span class="acct-email" id="acctEmail">—</span>
+  <a href="#" class="acct-logout" id="logoutBtn">Sign out</a>
+</header>
+
+<main class="acct-main">
+  <div class="page-eyebrow">Account · Cert history</div>
+  <h1>All <span class="g">certificates</span></h1>
+  <p class="page-lead">Every certificate issued under your account, with download + verify links and CSV export for firm audit.</p>
+
+  <section class="filter-card">
+    <div class="filter-row">
+      <div class="field">
+        <label for="fAttendant">Attendant email</label>
+        <input id="fAttendant" type="email" placeholder="any">
+      </div>
+      <div class="field">
+        <label for="fStatus">Status</label>
+        <select id="fStatus">
+          <option value="">Any</option>
+          <option value="issued">Issued</option>
+          <option value="pre-filing">Pre-filing</option>
+          <option value="filed">Filed</option>
+          <option value="cancelled">Cancelled</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="fTier">Tier</label>
+        <select id="fTier">
+          <option value="">Any</option>
+          <option value="T1">T1 — Real Deal</option>
+          <option value="T2">T2 — Good Faith</option>
+          <option value="T3">T3 — Thin Ice</option>
+          <option value="T4">T4 — Paper Doll</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="fVertical">Vertical</label>
+        <select id="fVertical">
+          <option value="">Any</option>
+          <option value="law">⁴law</option>
+          <option value="biz">⁴biz</option>
+          <option value="gov">⁴gov</option>
+          <option value="generic">Generic</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="fFrom">Date from</label>
+        <input id="fFrom" type="date">
+      </div>
+      <div class="field">
+        <label for="fTo">Date to</label>
+        <input id="fTo" type="date">
+      </div>
+    </div>
+    <div class="filter-actions">
+      <button class="btn btn-primary" id="applyBtn">Apply filters</button>
+      <button class="btn" id="resetBtn">Reset</button>
+      <button class="btn" id="csvBtn" style="margin-left:auto">⇣ Export CSV</button>
+    </div>
+  </section>
+
+  <div class="results-meta">
+    <span id="resultsMeta">—</span>
+  </div>
+
+  <section class="history-card" id="historyCard">
+    <div class="loading-state" id="loadingState">
+      <div class="spin"></div>
+      <div>Loading…</div>
+    </div>
+  </section>
+
+  <div class="pagination" id="pagination" style="display:none">
+    <button id="prevBtn">← Prev</button>
+    <span id="pageInfo">—</span>
+    <button id="nextBtn">Next →</button>
+  </div>
+</main>
+
+<footer>
+  <span>© 2026 4 SHIELD LLC</span>
+  <span><a href="/contact" style="color:var(--muted);text-decoration:none">Contact</a></span>
+</footer>
+
+<script>
+const API_BASE = 'https://api.4cite.ai';
+const PAGE_SIZE = 25;
+
+const TIER_LABELS = {
+  T1: 'Real Deal',
+  T2: 'Good Faith',
+  T3: 'Thin Ice',
+  T4: 'Paper Doll',
+};
+
+let state = { offset: 0, lastResponse: null };
+
+async function fetchJSON(path, opts = {}) {
+  const res = await fetch(`${API_BASE}${path}`, {
+    credentials: 'include',
+    headers: { 'Content-Type': 'application/json', ...(opts.headers || {}) },
+    ...opts,
+  });
+  if (res.status === 401) { window.location.href = '/account/login'; return null; }
+  if (!res.ok) throw new Error(`HTTP ${res.status}`);
+  return res.status === 204 ? null : res.json();
+}
+
+function buildQuery(extra = {}) {
+  const params = new URLSearchParams();
+  const att = document.getElementById('fAttendant').value.trim();
+  const status = document.getElementById('fStatus').value;
+  const tier = document.getElementById('fTier').value;
+  const vertical = document.getElementById('fVertical').value;
+  const from = document.getElementById('fFrom').value;
+  const to = document.getElementById('fTo').value;
+  if (att)      params.set('attendant_email', att);
+  if (status)   params.set('status', status);
+  if (tier)     params.set('tier', tier);
+  if (vertical) params.set('vertical', vertical);
+  if (from)     params.set('date_from', from);
+  if (to)       params.set('date_to', to + 'T23:59:59Z');
+  params.set('limit', PAGE_SIZE);
+  params.set('offset', state.offset);
+  for (const [k, v] of Object.entries(extra)) params.set(k, v);
+  return params.toString();
+}
+
+function fmtIssued(iso) {
+  if (!iso) return '—';
+  try {
+    return new Date(iso).toLocaleString(undefined, { dateStyle: 'medium', timeStyle: 'short' });
+  } catch { return iso; }
+}
+
+function shortCertId(id) {
+  return id ? id.slice(0, 8) + '…' : '—';
+}
+
+function escapeHtml(s) {
+  if (s == null) return '';
+  return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+
+function renderRows(items) {
+  if (!items || items.length === 0) {
+    return `<div class="empty-state"><div class="icon">▤</div><h3>No certificates yet</h3><div>Try adjusting filters or <a href="/portal/certify" style="color:var(--cyan)">run your first check</a>.</div></div>`;
+  }
+  const head = `<table class="history-table"><thead><tr>
+    <th>Cert</th><th>Document</th><th>Attendant</th><th>Issued</th><th>Tier</th><th>Status</th><th>Composite</th><th>Vertical</th><th>Links</th>
+  </tr></thead><tbody>`;
+  const body = items.map(it => {
+    const tierLbl = TIER_LABELS[it.tier] || it.tier || '—';
+    const tierCls = it.tier ? `tier-${it.tier}` : '';
+    const statusCls = `status-${(it.status || '').replace(/\s+/g, '-')}`;
+    return `<tr>
+      <td class="cell-cert-id">${escapeHtml(shortCertId(it.cert_id))}</td>
+      <td><div class="cell-doc-title">${escapeHtml(it.document_type || '(untitled)')}</div></td>
+      <td><div>${escapeHtml(it.attendant_name || '—')}</div><div class="cell-secondary">${escapeHtml(it.attendant_email || '')}</div></td>
+      <td class="cell-date">${escapeHtml(fmtIssued(it.issued_at))}</td>
+      <td><span class="tier-pill ${tierCls}">${escapeHtml(tierLbl)}</span></td>
+      <td><span class="status-pill ${statusCls}">${escapeHtml(it.status || '—')}</span></td>
+      <td>${it.composite != null ? Number(it.composite).toFixed(1) : '—'}</td>
+      <td>${escapeHtml(it.vertical || '—')}</td>
+      <td><div class="row-links">
+        <a href="${escapeHtml(it.registry_url)}" target="_blank" rel="noopener">Verify ↗</a>
+        <a href="#" data-resend-cert="${escapeHtml(it.cert_id)}">Re-email PDF</a>
+      </div></td>
+    </tr>`;
+  }).join('');
+  return head + body + '</tbody></table>';
+}
+
+function renderResultsMeta(count) {
+  const start = count === 0 ? 0 : state.offset + 1;
+  const end = Math.min(state.offset + PAGE_SIZE, count);
+  document.getElementById('resultsMeta').textContent = count === 0
+    ? '0 certificates'
+    : `Showing ${start}–${end} of ${count}`;
+}
+
+function renderPagination(count) {
+  const wrap = document.getElementById('pagination');
+  if (count <= PAGE_SIZE) { wrap.style.display = 'none'; return; }
+  wrap.style.display = 'flex';
+  document.getElementById('prevBtn').disabled = state.offset === 0;
+  document.getElementById('nextBtn').disabled = (state.offset + PAGE_SIZE) >= count;
+  const totalPages = Math.ceil(count / PAGE_SIZE);
+  const cur = Math.floor(state.offset / PAGE_SIZE) + 1;
+  document.getElementById('pageInfo').textContent = `Page ${cur} of ${totalPages}`;
+}
+
+async function loadPage() {
+  const card = document.getElementById('historyCard');
+  card.innerHTML = '<div class="loading-state"><div class="spin"></div><div>Loading…</div></div>';
+  try {
+    const data = await fetchJSON(`/api/account/cert-history?${buildQuery()}`);
+    if (!data) return;
+    state.lastResponse = data;
+    card.innerHTML = renderRows(data.items);
+    renderResultsMeta(data.count || 0);
+    renderPagination(data.count || 0);
+    wireResendButtons();
+  } catch (err) {
+    card.innerHTML = `<div class="empty-state"><div class="icon">⚠</div><h3>Could not load history</h3><div>${escapeHtml(err.message)}</div></div>`;
+  }
+}
+
+function wireResendButtons() {
+  document.querySelectorAll('[data-resend-cert]').forEach(a => {
+    a.addEventListener('click', async (e) => {
+      e.preventDefault();
+      const certId = a.dataset.resendCert;
+      const orig = a.textContent;
+      a.textContent = 'Sending…';
+      try {
+        // /api/cert/{id}/magic-link is unauth and always returns 204 (no info disclosure).
+        await fetch(`${API_BASE}/api/cert/${encodeURIComponent(certId)}/magic-link`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ purpose: 'recover' }),
+        });
+        a.textContent = '✓ Email sent';
+        setTimeout(() => { a.textContent = orig; }, 4000);
+      } catch (err) {
+        a.textContent = '⚠ Try again';
+        setTimeout(() => { a.textContent = orig; }, 4000);
+      }
+    });
+  });
+}
+
+document.getElementById('applyBtn').addEventListener('click', () => {
+  state.offset = 0;
+  loadPage();
+});
+document.getElementById('resetBtn').addEventListener('click', () => {
+  ['fAttendant','fFrom','fTo'].forEach(id => document.getElementById(id).value = '');
+  ['fStatus','fTier','fVertical'].forEach(id => document.getElementById(id).value = '');
+  state.offset = 0;
+  loadPage();
+});
+document.getElementById('prevBtn').addEventListener('click', () => {
+  state.offset = Math.max(0, state.offset - PAGE_SIZE);
+  loadPage();
+});
+document.getElementById('nextBtn').addEventListener('click', () => {
+  state.offset += PAGE_SIZE;
+  loadPage();
+});
+document.getElementById('csvBtn').addEventListener('click', () => {
+  const url = `${API_BASE}/api/account/cert-history?${buildQuery({ format: 'csv', limit: 10000, offset: 0 })}`;
+  // Server returns text/csv with same auth — fetch as blob, trigger download.
+  fetch(url, { credentials: 'include' })
+    .then(r => r.ok ? r.blob() : Promise.reject(new Error(`HTTP ${r.status}`)))
+    .then(blob => {
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = `4cite-certs-${new Date().toISOString().slice(0,10)}.csv`;
+      a.click();
+      setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+    })
+    .catch(err => alert(`CSV export failed: ${err.message}`));
+});
+
+document.getElementById('logoutBtn').addEventListener('click', async (e) => {
+  e.preventDefault();
+  await fetch(`${API_BASE}/api/account/logout`, { method: 'POST', credentials: 'include' });
+  window.location.href = '/';
+});
+
+loadPage();
+</script>
+
+</body>
+</html>

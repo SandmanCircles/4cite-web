@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cert recovery — 4CITE.ai</title>
+<meta name="description" content="Magic-link cert recovery landing.">
+<meta name="theme-color" content="#07152E">
+<meta name="robots" content="noindex, nofollow">
+<link rel="apple-touch-icon" href="/icons/icon-192.png">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --midnight:#07152E; --navy:#0B2358; --card:#0C1628; --border:#1A3060;
+  --blue:#2B63D9; --cyan:#7DEBFF; --gold:#D89A0B; --goldf:#F7D85D;
+  --steel:#7A9ABE; --muted:#3A5A80; --text:#C8D8EE; --white:#FFFFFF;
+  --green:#22C97A; --amber:#F0A020; --red:#E05050;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+html, body { height:100%; }
+body { background:var(--midnight); color:var(--text); font-family:'Space Grotesk',-apple-system,sans-serif; line-height:1.65; font-size:16px; min-height:100vh; display:flex; flex-direction:column; }
+
+.app-header { background:rgba(7,21,46,0.95); backdrop-filter:blur(16px); border-bottom:1px solid var(--border); padding:0 40px; height:56px; display:flex; align-items:center; flex-shrink:0; }
+.app-brand { font-size:20px; font-weight:700; letter-spacing:-0.5px; text-decoration:none; text-transform:none; }
+.app-brand .n4 { color:var(--goldf); } .app-brand .nc { color:var(--white); } .app-brand .na { color:var(--cyan); font-weight:300; }
+.beta-badge { font-size:9px; font-weight:700; letter-spacing:2px; background:rgba(247,216,93,0.10); border:1px solid rgba(247,216,93,0.35); border-radius:4px; padding:3px 8px; color:var(--goldf); margin-left:12px; margin-right:auto; }
+.app-back { font-size:11px; color:var(--muted); text-decoration:none; letter-spacing:2px; text-transform:uppercase; transition:color 0.2s; }
+.app-back:hover { color:var(--steel); }
+
+.recover-wrap { flex:1; display:flex; align-items:center; justify-content:center; padding:60px 24px; }
+.recover-card { background:var(--card); border:1px solid var(--border); border-radius:16px; padding:48px 44px; max-width:560px; width:100%; box-shadow:0 32px 80px rgba(0,0,0,0.4); }
+.recover-eyebrow { font-size:10px; font-weight:700; letter-spacing:5px; color:var(--muted); text-transform:uppercase; margin-bottom:16px; }
+.recover-title { font-size:24px; font-weight:700; color:var(--white); margin-bottom:10px; }
+.recover-title .g { color:var(--goldf); }
+.recover-sub { font-size:14px; color:var(--steel); line-height:1.75; margin-bottom:24px; }
+.recover-sub strong { color:var(--text); }
+
+.cert-meta { background:rgba(43,99,217,0.06); border:1px solid rgba(43,99,217,0.22); border-radius:8px; padding:18px 20px; margin-bottom:24px; }
+.cert-meta dl { display:grid; grid-template-columns:max-content 1fr; column-gap:18px; row-gap:8px; font-size:13px; }
+.cert-meta dt { color:var(--muted); font-size:10px; font-weight:700; letter-spacing:2px; text-transform:uppercase; align-self:center; }
+.cert-meta dd { color:var(--text); font-family:'Space Grotesk',sans-serif; }
+.cert-meta .tier-pill { display:inline-block; padding:3px 10px; border-radius:4px; font-size:11px; font-weight:700; letter-spacing:1px; }
+.tier-T1 { background:rgba(34,201,122,0.12); color:var(--green); border:1px solid rgba(34,201,122,0.4); }
+.tier-T2 { background:rgba(125,235,255,0.10); color:var(--cyan); border:1px solid rgba(125,235,255,0.35); }
+.tier-T3 { background:rgba(240,160,32,0.10); color:var(--amber); border:1px solid rgba(240,160,32,0.4); }
+.tier-T4 { background:rgba(224,80,80,0.10); color:var(--red); border:1px solid rgba(224,80,80,0.4); }
+
+.btn-primary, .btn-secondary { width:100%; font-family:'Space Grotesk',sans-serif; font-size:13px; font-weight:700; letter-spacing:2px; text-transform:uppercase; padding:14px; border-radius:8px; cursor:pointer; transition:all 0.2s; display:block; text-align:center; text-decoration:none; }
+.btn-primary { background:linear-gradient(135deg,#D89A0B,#8B5E00); border:1px solid rgba(216,154,11,0.6); color:#07152E; margin-bottom:10px; }
+.btn-primary:hover { background:linear-gradient(135deg,#F7D85D,#D89A0B); }
+.btn-secondary { background:transparent; border:1px solid var(--border); color:var(--steel); }
+.btn-secondary:hover { color:var(--text); border-color:var(--steel); }
+
+.note { font-size:12px; color:var(--muted); line-height:1.7; margin-top:18px; }
+.note a { color:var(--steel); text-decoration:none; border-bottom:1px dotted var(--muted); }
+.note a:hover { color:var(--goldf); border-color:var(--goldf); }
+
+.state { display:none; }
+.state.visible { display:block; }
+
+.error-state .err-icon { font-size:42px; margin-bottom:14px; text-align:center; }
+.error-state .err-title { font-size:18px; font-weight:700; color:var(--red); margin-bottom:14px; text-align:center; }
+.error-state .err-body { font-size:14px; color:var(--steel); line-height:1.7; margin-bottom:18px; text-align:center; }
+
+.loading-state { text-align:center; padding:32px 0; }
+.loading-state .spin { display:inline-block; width:32px; height:32px; border:3px solid var(--border); border-top-color:var(--cyan); border-radius:50%; animation:spin 0.8s linear infinite; margin-bottom:16px; }
+.loading-state .l-msg { font-size:13px; color:var(--steel); letter-spacing:2px; text-transform:uppercase; }
+@keyframes spin { to { transform:rotate(360deg); } }
+
+footer { background:#030710; border-top:1px solid var(--border); padding:24px 40px; display:flex; align-items:center; justify-content:space-between; flex-shrink:0; }
+.fb { font-size:18px; font-weight:700; }
+.fb .n4 { color:var(--goldf); } .fb .nc { color:var(--white); } .fb .na { color:var(--cyan); font-weight:300; }
+.fl { display:flex; gap:24px; flex-wrap:wrap; }
+.fl a { font-size:11px; color:var(--muted); text-decoration:none; letter-spacing:1px; transition:color 0.2s; }
+.fl a:hover { color:var(--steel); }
+.fr { font-size:11px; color:var(--muted); letter-spacing:1px; }
+
+@media (max-width:520px) {
+  .recover-card { padding:32px 24px; }
+  .app-header { padding:0 20px; }
+  footer { flex-direction:column; gap:16px; padding:24px 20px; text-align:center; }
+  .cert-meta dl { grid-template-columns:1fr; row-gap:4px; }
+  .cert-meta dt { margin-top:6px; }
+}
+</style>
+</head>
+<body>
+
+<header class="app-header">
+  <a href="/" class="app-brand"><span class="n4">4</span><span class="nc">CITE</span><span class="na">.ai</span></a>
+  <span class="beta-badge">BETA</span>
+  <a href="/" class="app-back">← Back to site</a>
+</header>
+
+<main class="recover-wrap">
+  <div class="recover-card">
+
+    <section id="loadingState" class="state loading-state visible">
+      <div class="spin"></div>
+      <div class="l-msg">Verifying your link…</div>
+    </section>
+
+    <section id="successState" class="state">
+      <div class="recover-eyebrow">Cert Vault · Recovery</div>
+      <h1 class="recover-title">Your <span class="g">4CITE Cert</span></h1>
+      <p class="recover-sub">
+        Verified. Use the button below to download a fresh PDF. This link is now consumed —
+        request a new one if you need to come back.
+      </p>
+
+      <div class="cert-meta">
+        <dl>
+          <dt>Cert ID</dt>     <dd id="metaCertId">—</dd>
+          <dt>Issued</dt>      <dd id="metaIssued">—</dd>
+          <dt>Tier</dt>        <dd><span id="metaTier" class="tier-pill">—</span></dd>
+          <dt>Composite</dt>   <dd id="metaComposite">—</dd>
+          <dt>Status</dt>      <dd id="metaStatus">—</dd>
+        </dl>
+      </div>
+
+      <a id="pdfLink" class="btn-primary" href="#" target="_blank" rel="noopener">Download PDF →</a>
+      <a id="verifyLink" class="btn-secondary" href="#">View public registry entry</a>
+
+      <p class="note">
+        Need to cancel this cert (pre-filing only)? Sign in to your <a href="/account">subscriber portal</a>
+        — pay-per customers should email <a href="mailto:certs@4cite.ai">certs@4cite.ai</a>.
+      </p>
+    </section>
+
+    <section id="errorState" class="state error-state">
+      <div class="err-icon">⚠</div>
+      <div class="err-title" id="errTitle">Link is invalid or expired</div>
+      <p class="err-body" id="errBody">
+        Magic-link recovery URLs expire after 30 minutes and can only be used once. If you need
+        another link, request a fresh recovery email.
+      </p>
+      <a href="/portal/cert/recover" class="btn-primary">Request a new link</a>
+      <a href="/account" class="btn-secondary">Sign in to your account</a>
+    </section>
+
+  </div>
+</main>
+
+<footer>
+  <div class="fb"><span class="n4">4</span><span class="nc">CITE</span><span class="na">.ai</span></div>
+  <div class="fl">
+    <a href="/about">About</a>
+    <a href="/contact">Contact</a>
+    <a href="/privacy">Privacy</a>
+    <a href="/terms">Terms</a>
+  </div>
+  <div class="fr">© 2026 4 SHIELD LLC</div>
+</footer>
+
+<script>
+const API_BASE = 'https://api.4cite.ai';
+
+const TIER_LABELS = {
+  T1: 'Real Deal',
+  T2: 'Good Faith',
+  T3: 'Thin Ice',
+  T4: 'Paper Doll',
+};
+
+const loadingState = document.getElementById('loadingState');
+const successState = document.getElementById('successState');
+const errorState   = document.getElementById('errorState');
+const errTitle     = document.getElementById('errTitle');
+const errBody      = document.getElementById('errBody');
+
+function showOnly(el) {
+  [loadingState, successState, errorState].forEach(s => s.classList.remove('visible'));
+  el.classList.add('visible');
+}
+
+function showError(title, body) {
+  errTitle.textContent = title;
+  errBody.textContent = body;
+  showOnly(errorState);
+}
+
+function fmtIssued(iso) {
+  if (!iso) return '—';
+  try {
+    const d = new Date(iso);
+    return d.toLocaleString(undefined, { dateStyle: 'medium', timeStyle: 'short' });
+  } catch { return iso; }
+}
+
+function shortCert(id) {
+  return id ? `${id.slice(0, 8)}…` : '—';
+}
+
+async function consumeLink() {
+  const params = new URLSearchParams(window.location.search);
+  const certId = params.get('cert_id');
+  const token  = params.get('token');
+
+  if (!certId || !token) {
+    showError('Missing link parameters', 'Open the link directly from your recovery email — copy/paste sometimes drops the token.');
+    return;
+  }
+
+  let resp;
+  try {
+    resp = await fetch(`${API_BASE}/api/cert/${encodeURIComponent(certId)}/recover`, {
+      method: 'POST',
+      headers: { 'Authorization': `MagicLink ${token}` },
+    });
+  } catch (err) {
+    showError('Network error', 'Could not reach 4cite.ai. Check your connection and try the link again.');
+    return;
+  }
+
+  if (resp.status === 401) {
+    showError('Link is invalid or expired', 'Magic-link recovery URLs expire after 30 minutes and can only be used once. Request a fresh recovery email.');
+    return;
+  }
+  if (resp.status === 404) {
+    showError('Cert not found', 'This cert no longer exists in the registry.');
+    return;
+  }
+  if (!resp.ok) {
+    showError('Something went wrong', `The recovery service returned an unexpected status (${resp.status}).`);
+    return;
+  }
+
+  const body = await resp.json();
+  document.getElementById('metaCertId').textContent    = body.cert_id || '—';
+  document.getElementById('metaIssued').textContent    = fmtIssued(body.issued_at);
+  document.getElementById('metaComposite').textContent = (body.composite != null) ? Number(body.composite).toFixed(1) : '—';
+  document.getElementById('metaStatus').textContent    = body.status || '—';
+
+  const tierEl = document.getElementById('metaTier');
+  tierEl.textContent = TIER_LABELS[body.tier] || body.tier || '—';
+  tierEl.className = `tier-pill tier-${body.tier || 'T2'}`;
+
+  const pdfLink = document.getElementById('pdfLink');
+  if (body.pdf_url) {
+    pdfLink.href = body.pdf_url;
+  } else {
+    pdfLink.style.display = 'none';
+  }
+
+  document.getElementById('verifyLink').href = `/verify/${encodeURIComponent(body.cert_id)}`;
+
+  showOnly(successState);
+}
+
+consumeLink();
+</script>
+
+</body>
+</html>

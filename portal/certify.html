@@ -86,6 +86,26 @@ body { background:var(--midnight); color:var(--text); font-family:'Space Grotesk
 .btn-primary { background:linear-gradient(135deg,#D89A0B,#8B5E00); border-color:rgba(216,154,11,0.6); color:#07152E; }
 .btn-primary:hover:not(:disabled) { background:linear-gradient(135deg,#F7D85D,#D89A0B); }
 .btn-primary:disabled { opacity:0.4; cursor:not-allowed; }
+.btn-spin { display:inline-block; width:12px; height:12px; border:2px solid currentColor; border-right-color:transparent; border-radius:50%; animation:btn-spin 0.7s linear infinite; vertical-align:-2px; }
+@keyframes btn-spin { to { transform:rotate(360deg); } }
+
+/* ── DEDUPE MODAL ──────────────────────────────────── */
+.modal-overlay { display:none; position:fixed; inset:0; z-index:1000; background:rgba(7,21,46,0.88); backdrop-filter:blur(12px); align-items:center; justify-content:center; padding:24px; }
+.modal-overlay.visible { display:flex; }
+.modal-box { background:var(--card); border:1px solid var(--border); border-radius:14px; padding:32px 30px; max-width:480px; width:100%; box-shadow:0 32px 80px rgba(0,0,0,0.5); }
+.modal-eyebrow { font-size:9px; font-weight:700; letter-spacing:3px; text-transform:uppercase; color:var(--amber); margin-bottom:10px; }
+.modal-title { font-size:18px; font-weight:700; color:var(--white); margin-bottom:14px; }
+.modal-body { font-size:13px; color:var(--steel); line-height:1.7; margin-bottom:18px; }
+.modal-body strong { color:var(--text); }
+.modal-cert-meta { background:rgba(7,21,46,0.55); border:1px solid var(--border); border-radius:8px; padding:12px 14px; margin-bottom:20px; font-size:12px; color:var(--text); }
+.modal-cert-meta .row { display:flex; justify-content:space-between; gap:12px; padding:3px 0; }
+.modal-cert-meta .row .k { color:var(--muted); font-size:10px; letter-spacing:2px; text-transform:uppercase; }
+.modal-cert-meta .row .v { font-family:'Space Grotesk',ui-monospace,monospace; }
+.modal-row { display:flex; gap:10px; flex-direction:column; }
+.modal-info { font-size:12px; color:var(--green); margin-top:10px; display:none; }
+.modal-info.visible { display:block; }
+.modal-error { font-size:12px; color:var(--red); margin-top:10px; display:none; }
+.modal-error.visible { display:block; }
 .btn-secondary { background:transparent; border-color:var(--border); color:var(--steel); }
 .btn-secondary:hover { border-color:var(--steel); color:var(--text); }
 .btn-row { display:flex; gap:10px; flex-wrap:wrap; margin-top:6px; }
@@ -367,6 +387,31 @@ footer a:hover { color:var(--goldf); }
   </section>
 </main>
 
+<!-- ───────── DEDUPE MODAL ───────── -->
+<div class="modal-overlay" id="dedupeModal">
+  <div class="modal-box">
+    <div class="modal-eyebrow">Already certified</div>
+    <div class="modal-title">This document was previously certified</div>
+    <div class="modal-body">
+      A certificate already exists for this document under
+      <strong id="dedupeAttName">—</strong>. You can re-email the existing cert PDF (no charge),
+      or issue a new attestation for the same document under the same attendant (charges 1 unit).
+    </div>
+    <div class="modal-cert-meta">
+      <div class="row"><span class="k">Cert ID</span><span class="v" id="dedupeCertId">—</span></div>
+      <div class="row"><span class="k">Issued</span><span class="v" id="dedupeIssuedAt">—</span></div>
+      <div class="row"><span class="k">Status</span><span class="v" id="dedupeStatus">—</span></div>
+    </div>
+    <div class="modal-row">
+      <button class="btn btn-secondary" id="dedupeRetrieveBtn">Retrieve previous certificate (no charge)</button>
+      <button class="btn btn-primary" id="dedupeNewBtn">Issue new certification</button>
+      <button class="btn btn-secondary" id="dedupeCancelBtn" style="opacity:0.7">Cancel</button>
+    </div>
+    <div class="modal-info" id="dedupeInfo"></div>
+    <div class="modal-error" id="dedupeError"></div>
+  </div>
+</div>
+
 <footer>
   <a href="/account">Account</a> · <a href="/contact?ref=portal">Help</a> · <a href="/">4cite.ai</a>
 </footer>
@@ -415,6 +460,19 @@ async function api(path, opts = {}) {
   return res;
 }
 
+// ─── idempotency key (one per page session per endpoint) ───
+// Same UUID for every /api/explain + /api/certify call from this page load.
+// Re-mint after a confirmed cert success (re-running is intentional).
+function _uuid() {
+  if (window.crypto && crypto.randomUUID) return crypto.randomUUID();
+  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, c => {
+    const r = Math.random()*16|0, v = c == 'x' ? r : (r&0x3|0x8);
+    return v.toString(16);
+  });
+}
+let IDEMPOTENCY_KEY = _uuid();
+function rerollIdempotency() { IDEMPOTENCY_KEY = _uuid(); }
+
 function showAlert(id, msg, isWarn) {
   const el = document.getElementById(id);
   el.textContent = msg;
@@ -423,6 +481,18 @@ function showAlert(id, msg, isWarn) {
 }
 function clearAlert(id) {
   document.getElementById(id).classList.remove('visible');
+}
+
+// Disable a button on click, swap label for spinner + verb-ing copy.
+// Use unlockBtn() in the finally branch to restore.
+function lockBtn(btn, label) {
+  if (!btn.dataset._origLabel) btn.dataset._origLabel = btn.textContent;
+  btn.disabled = true;
+  btn.innerHTML = '<span class="btn-spin" aria-hidden="true"></span>' + label;
+}
+function unlockBtn(btn) {
+  btn.disabled = false;
+  if (btn.dataset._origLabel) btn.textContent = btn.dataset._origLabel;
 }
 
 function unlockStep(n) {
@@ -523,8 +593,7 @@ async function handleFile(f) {
 // ─── Step 1 → Scan ──────────────────────────────────────
 runScanBtn.addEventListener('click', async () => {
   clearAlert('step1Error');
-  runScanBtn.disabled = true;
-  runScanBtn.textContent = 'Scanning…';
+  lockBtn(runScanBtn, 'Scanning…');
   try {
     const body = {
       text: fldText.value,
@@ -553,8 +622,7 @@ runScanBtn.addEventListener('click', async () => {
   } catch (e) {
     if (e.message !== 'AUTH') showAlert('step1Error', `Network error: ${e.message}`);
   } finally {
-    runScanBtn.disabled = false;
-    runScanBtn.textContent = 'Run Scan →';
+    unlockBtn(runScanBtn);
   }
 });
 
@@ -629,13 +697,17 @@ function renderScan(scan) {
 document.getElementById('buildReportBtn').addEventListener('click', async () => {
   clearAlert('step2Error');
   const btn = document.getElementById('buildReportBtn');
-  btn.disabled = true; btn.textContent = 'Building Report…';
+  lockBtn(btn, 'Reporting…');
   try {
     const body = {
       text: fldText.value,
       vertical: document.getElementById('fldVertical').value,
     };
-    const res = await api('/api/explain', { method: 'POST', body: JSON.stringify(body) });
+    const res = await api('/api/explain', {
+      method: 'POST',
+      headers: { 'Idempotency-Key': IDEMPOTENCY_KEY },
+      body: JSON.stringify(body),
+    });
     if (!res.ok) {
       const txt = await res.text();
       let msg = `Report failed (HTTP ${res.status}).`;
@@ -654,7 +726,7 @@ document.getElementById('buildReportBtn').addEventListener('click', async () => 
   } catch (e) {
     if (e.message !== 'AUTH') showAlert('step2Error', `Network error: ${e.message}`);
   } finally {
-    btn.disabled = false; btn.textContent = 'Build Report →';
+    unlockBtn(btn);
   }
 });
 
@@ -1000,13 +1072,13 @@ document.getElementById('useSomeoneElseBtn').addEventListener('click', (e) => {
 });
 
 // ─── Step 4 → Certify ──────────────────────────────────
-document.getElementById('generateCertBtn').addEventListener('click', async () => {
-  clearAlert('step4Error');
+async function submitCertify(opts = {}) {
   const btn = document.getElementById('generateCertBtn');
-  btn.disabled = true; btn.textContent = 'Generating…';
   const attName  = document.getElementById('fldAttName').value.trim();
   const attEmail = document.getElementById('fldAttEmail').value.trim();
   const attTitle = document.getElementById('fldAttTitle').value.trim();
+  clearAlert('step4Error');
+  lockBtn(btn, 'Certifying…');
   try {
     const body = {
       text: fldText.value,
@@ -1014,8 +1086,21 @@ document.getElementById('generateCertBtn').addEventListener('click', async () =>
       document_type: document.getElementById('fldDocTitle').value || 'memo',
       certifying_attendant: { name: attName, email: attEmail, title: attTitle || null },
       research_corpus_opt_in: false,
+      confirm_new_attestation: !!opts.confirm,
     };
-    const res = await api('/api/certify', { method: 'POST', body: JSON.stringify(body) });
+    const res = await api('/api/certify', {
+      method: 'POST',
+      headers: { 'Idempotency-Key': IDEMPOTENCY_KEY },
+      body: JSON.stringify(body),
+    });
+
+    if (res.status === 409) {
+      const j = await res.json().catch(() => ({}));
+      if (j.detail?.error?.code === 'duplicate_attestation') {
+        openDedupeModal(j.detail.existing);
+        return;
+      }
+    }
     if (!res.ok) {
       const txt = await res.text();
       let msg = `Certify failed (HTTP ${res.status}).`;
@@ -1024,10 +1109,8 @@ document.getElementById('generateCertBtn').addEventListener('click', async () =>
       return;
     }
     const data = await res.json();
-    // Persist prefill cookies on success
     writeCookie('4cite_attendant_name', attName);
     writeCookie('4cite_attendant_email', attEmail);
-    // Show done state
     document.getElementById('step4').classList.add('done');
     document.getElementById('step4Body').style.display = 'none';
     document.getElementById('doneCertId').textContent = data.cert_id;
@@ -1035,12 +1118,66 @@ document.getElementById('generateCertBtn').addEventListener('click', async () =>
     document.getElementById('doneVerifyLink').href = `/verify/${encodeURIComponent(data.cert_id)}`;
     document.getElementById('doneCard').style.display = 'block';
     document.getElementById('doneCard').scrollIntoView({ behavior: 'smooth' });
+    rerollIdempotency();
     loadMeter();
   } catch (e) {
     if (e.message !== 'AUTH') showAlert('step4Error', `Network error: ${e.message}`);
   } finally {
-    btn.disabled = false; btn.textContent = 'Generate Cert PDF →';
+    unlockBtn(btn);
   }
+}
+
+document.getElementById('generateCertBtn').addEventListener('click', () => submitCertify());
+
+// ─── Dedupe modal ──────────────────────────────────────
+const dedupeModal = document.getElementById('dedupeModal');
+let dedupeExisting = null;
+
+function openDedupeModal(existing) {
+  dedupeExisting = existing;
+  document.getElementById('dedupeAttName').textContent = existing.attendant_name || 'this attendant';
+  document.getElementById('dedupeCertId').textContent = (existing.cert_id || '').slice(0, 12) + '…';
+  document.getElementById('dedupeIssuedAt').textContent = existing.issued_at || '—';
+  document.getElementById('dedupeStatus').textContent = existing.status || '—';
+  document.getElementById('dedupeInfo').classList.remove('visible');
+  document.getElementById('dedupeError').classList.remove('visible');
+  dedupeModal.classList.add('visible');
+}
+function closeDedupeModal() {
+  dedupeModal.classList.remove('visible');
+  dedupeExisting = null;
+}
+
+document.getElementById('dedupeCancelBtn').addEventListener('click', closeDedupeModal);
+
+document.getElementById('dedupeRetrieveBtn').addEventListener('click', async () => {
+  if (!dedupeExisting) return;
+  const btn = document.getElementById('dedupeRetrieveBtn');
+  const info = document.getElementById('dedupeInfo');
+  const err  = document.getElementById('dedupeError');
+  err.classList.remove('visible');
+  lockBtn(btn, 'Re-emailing…');
+  try {
+    // Unauth endpoint — issues a fresh magic-link, emails it to the attendant on the prior cert.
+    const res = await fetch(`${API_BASE}/api/cert/${encodeURIComponent(dedupeExisting.cert_id)}/magic-link`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ purpose: 'recover' }),
+    });
+    // Endpoint always returns 204 (no information disclosure).
+    info.textContent = `Recovery link emailed to the attendant on the prior cert. Check your inbox.`;
+    info.classList.add('visible');
+  } catch (e) {
+    err.textContent = `Could not request recovery: ${e.message}`;
+    err.classList.add('visible');
+  } finally {
+    unlockBtn(btn);
+  }
+});
+
+document.getElementById('dedupeNewBtn').addEventListener('click', () => {
+  closeDedupeModal();
+  submitCertify({ confirm: true });
 });
 
 // ─── boot ──────────────────────────────────────────────

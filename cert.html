@@ -70,6 +70,8 @@ h1 .g { color:var(--goldf); }
 .btn-pay { width:100%; background:linear-gradient(135deg,#D89A0B,#8B5E00); border:1px solid rgba(216,154,11,0.6); color:#07152E; font-family:'Space Grotesk',sans-serif; font-size:13px; font-weight:700; letter-spacing:2px; text-transform:uppercase; padding:14px; border-radius:8px; cursor:pointer; transition:all 0.2s; }
 .btn-pay:hover:not(:disabled) { background:linear-gradient(135deg,#F7D85D,#D89A0B); }
 .btn-pay:disabled { opacity:0.5; cursor:not-allowed; }
+.btn-spin { display:inline-block; width:12px; height:12px; border:2px solid currentColor; border-right-color:transparent; border-radius:50%; animation:btn-spin 0.7s linear infinite; vertical-align:-2px; margin-right:8px; }
+@keyframes btn-spin { to { transform:rotate(360deg); } }
 
 .error-msg { display:none; background:rgba(224,80,80,0.08); border:1px solid rgba(224,80,80,0.32); border-radius:8px; padding:12px 14px; margin-top:14px; font-size:13px; color:var(--red); }
 .error-msg.visible { display:block; }
@@ -338,7 +340,7 @@ certForm.addEventListener('submit', async (e) => {
   if (!tos) return showError('Please accept the Terms of Service to continue.');
 
   payBtn.disabled = true;
-  payBtn.textContent = 'Preparing checkout…';
+  payBtn.innerHTML = '<span class="btn-spin" aria-hidden="true"></span>Processing…';
   errorMsg.classList.remove('visible');
 
   try {
@@ -380,7 +382,7 @@ certForm.addEventListener('submit', async (e) => {
     console.error('cert checkout failed', err);
     showError(`Could not start checkout: ${err.message}. Please try again or email hello@4cite.ai.`);
     payBtn.disabled = false;
-    payBtn.textContent = 'Continue to payment — $15';
+    payBtn.innerHTML = 'Continue to payment — $15';
   }
 });
 
